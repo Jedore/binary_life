@@ -13,7 +13,7 @@ class ArticleType(models.Model):
 
 class Article(models.Model):
     title = models.CharField(max_length=100)
-    summary = models.CharField(max_length=1024, null=True)
+    summary = models.CharField(max_length=1024, null=True, default=None)
     content = models.TextField()
     views = models.IntegerField(default=0)
     create_time = models.DateTimeField(default=timezone.now())

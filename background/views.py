@@ -1,22 +1,25 @@
+import json
+
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.views import View
-from django.http import JsonResponse
+
 from common.models import Article
 from common.models import ArticleType
-import json
 
 
 # Create your views here.
 
 
-def control(request):
-    return render(request, 'control/base.html')
+class BackgroundView(View):
+    def get(self, request):
+        return render(request, 'background/base_background.html')
 
 
 class PublishView(View):
     def get(self, request):
         article_types = ArticleType.objects.all()
-        return render(request, 'control/publish.html', locals())
+        return render(request, 'background/publish.html', locals())
 
     def post(self, request):
         data = json.loads(request.body)
@@ -32,7 +35,7 @@ class PublishView(View):
 class ArticleTypeView(View):
     def get(self, request):
         article_types = ArticleType.objects.all()
-        return render(request, 'control/article_type.html', locals())
+        return render(request, 'background/article_type.html', locals())
 
     def post(self, request):
         article_type = json.loads(request.body).get('name', '')
@@ -43,7 +46,7 @@ class ArticleTypeView(View):
 class ArticleView(View):
     def get(self, request):
         articles = Article.objects.all().order_by('-create_time')
-        return render(request, 'control/article.html', locals())
+        return render(request, 'background/article.html', locals())
 
     def post(self, request):
         pass

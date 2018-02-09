@@ -16,8 +16,8 @@ class Article(models.Model):
     summary = models.CharField(max_length=1024, null=True, default=None)
     content = models.TextField()
     views = models.IntegerField(default=0)
-    create_time = models.DateTimeField(default=timezone.now())
-    update_time = models.DateTimeField(default=timezone.now())
+    create_time = models.DateTimeField(default=timezone.now)
+    update_time = models.DateTimeField(default=timezone.now)
     article_type = models.ForeignKey(ArticleType, related_name='articles', null=True, on_delete=models.SET_NULL)
 
 

@@ -1,0 +1,49 @@
+{% extends 'common/base.html' %}
+
+{% block body %}
+  <div id="background" class="container">
+    <div class="row">
+      <div id="col-left" class="col-2 bg-light border-right">
+        <div class="side-bar">
+          <div class="">
+            <a class="nav-link" href="/">BinaryLife</a>
+          </div>
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" href="/background/article">Article</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/background/article_type">ArticleType</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/background/publish">Publish</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-right col-10 border-right">
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script>
+      function resize_height() {
+          var base_h = $("#side-bar").height(),
+              body_h = $(window).outerHeight();
+          $("#col-left").css("min-height", base_h > body_h ? base_h : body_h);
+      }
+
+      $(function () {
+          resize_height();
+          $(window).resize(function () {
+              resize_height();
+          });
+      })
+  </script>
+{% endblock %}

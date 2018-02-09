@@ -1,0 +1,42 @@
+{% extends 'foreground/base_foreground.html' %}
+{% block foreground %}
+  <div id="index" class="container">
+    <div class="row justify-content-center mt-2">
+      <!--<div id="side-bar" class="col-2 bg-dark"></div>-->
+      <div id="content" class="col-10">
+        {% for article in articles %}
+          <div class="card bg-dark mb-1">
+            <div class="card-body pb-1 pt-2">
+              <h5 class="card-title">{{ article.title }}</h5>
+              <p class="card-text">
+                {% if article.summary %}
+                  {{ article.summary }}
+                {% endif %}
+              </p>
+              <div class="badge bg-info">{{ article.article_type.name }}</div>
+              <div class="badge bg-dark create-time">{{ article.create_time | localtime }}</div>
+              <a href="#" class="btn btn-link btn-sm float-right">Read more</a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script>
+      function resize_height() {
+          var base_h = $("#content").height(),
+              body_h = $(window).outerHeight();
+          $("#index").css("min-height", base_h > body_h ? base_h : body_h);
+      }
+
+      $(function () {
+          resize_height();
+          $(window).resize(function () {
+              resize_height();
+          });
+      })
+  </script>
+{% endblock %}

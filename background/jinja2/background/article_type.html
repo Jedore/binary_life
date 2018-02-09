@@ -1,0 +1,75 @@
+{% extends 'background/base_background.html' %}
+
+{% block content %}
+  <div class="article-type mt-5">
+    <form>
+      <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+      <div class="form-row">
+        <div class="col-auto">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">Name</div>
+            </div>
+            <input type="text" class="form-control" id="article-type" placeholder="type name">
+          </div>
+        </div>
+        <div class="col-auto">
+          <div class="col-auto">
+            <button type="button" id="add-type" class="btn btn-primary mb-2">AddType</button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <table class="table mt-5">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Last</th>
+        <th scope="col">Handle</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for article_type in article_types %}
+        <tr>
+          <th scope="row">{{ article_type.id }}</th>
+          <td>{{ article_type.name }}</td>
+          <td>Otto</td>
+          <td>@mdo</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script>
+      function add_type() {
+          $.ajax({
+              type: "POST",
+              url: window.location,
+              beforeSend: function (xhr, settings) {
+                  xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+              },
+              data: JSON.stringify({
+                  "name": $("#article-type").val()
+              }),
+              contentType: "application/json; charset=utf-8",
+              dataType: "json"
+          }).done(function (data) {
+              if (data['ret'] === 'SUCCESS') {
+                  alert("Success!");
+              } else {
+                  alert("Failed:" + data['ret']);
+              }
+          });
+      }
+
+      $(function () {
+          $("#add-type").click(function () {
+              add_type();
+          });
+      })
+  </script>
+{% endblock %}

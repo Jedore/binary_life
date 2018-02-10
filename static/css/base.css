@@ -1,3 +1,7 @@
+#loginModal .modal-dialog {
+  width: 300px;
+}
+
 #foreground {
   background: #28282b;
 }

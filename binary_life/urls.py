@@ -15,10 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+
+from common.views import bl_login, bl_logout
 from foreground.views import index
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('login/', bl_login),
+    path('logout/', bl_logout),
     path('', index),
     path('background/', include('background.urls')),
 ]

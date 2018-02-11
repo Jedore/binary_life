@@ -1,4 +1,4 @@
-{% extends 'background/base_background.html' %}
+{% extends 'background/base.html' %}
 
 {% block content %}
   <div class="article-type mt-5">
@@ -34,8 +34,6 @@
         <tr>
           <th scope="row">{{ article_type.id }}</th>
           <td>{{ article_type.name }}</td>
-          <td>Otto</td>
-          <td>@mdo</td>
         </tr>
       {% endfor %}
       </tbody>
@@ -44,6 +42,7 @@
 {% endblock %}
 
 {% block script %}
+  {{ super() }}
   <script>
       function add_type() {
           $.ajax({

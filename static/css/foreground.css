@@ -2,19 +2,19 @@
   width: 300px;
 }
 
-#foreground {
+body {
   background: #28282b;
 }
 
-#foreground #side-bar {
+#side-bar {
   background: rgba(0, 0, 0, 0.1);
 }
 
-#foreground #index {
+#index {
   color: #fff;
 }
 
-#foreground nav {
+nav {
   background-color: black;
 }
 

@@ -1,0 +1,24 @@
+#loginModal .modal-dialog {
+  width: 300px;
+}
+
+body {
+  background: #28282b;
+}
+
+#side-bar {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+#index {
+  color: #fff;
+}
+
+nav {
+  background-color: black;
+}
+
+.container-fluid {
+  margin: 0;
+  padding: 0;
+}

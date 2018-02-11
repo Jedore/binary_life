@@ -13,7 +13,7 @@ from common.models import ArticleType
 
 class BackgroundView(View):
     def get(self, request):
-        return render(request, 'background/base_background.html')
+        return render(request, 'background/base.html')
 
 
 class PublishView(View):

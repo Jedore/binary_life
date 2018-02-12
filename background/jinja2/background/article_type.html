@@ -1,7 +1,7 @@
 {% extends 'background/base.html' %}
 
 {% block content %}
-  <div class="article-type mt-5">
+  <div class="article-type mt-4">
     <form>
       <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
       <div class="form-row">
@@ -20,20 +20,22 @@
         </div>
       </div>
     </form>
-    <table class="table mt-5">
+    <table class="table table-hover table-bordered mt-4">
       <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
+        <th scope="col" class="text-center">ID</th>
+        <th scope="col" class="text-center">Name</th>
+        <th scope="col" class="text-center">Delete</th>
       </tr>
       </thead>
       <tbody>
       {% for article_type in article_types %}
         <tr>
-          <th scope="row">{{ article_type.id }}</th>
-          <td>{{ article_type.name }}</td>
+          <th scope="row" class="text-center">{{ article_type.id }}</th>
+          <td class="text-center">{{ article_type.name }}</td>
+          <td class="text-center">
+            <button class="btn btn-danger" onclick="del_type({{ article_type.id }})">delete</button>
+          </td>
         </tr>
       {% endfor %}
       </tbody>
@@ -44,6 +46,28 @@
 {% block script %}
   {{ super() }}
   <script>
+      function del_type(type_id) {
+          $.ajax({
+              type: "DELETE",
+              url: window.location,
+              beforeSend: function (xhr, settings) {
+                  xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+              },
+              data: JSON.stringify({
+                  "typeId": type_id
+              }),
+              contentType: "application/json; charset=utf-8",
+              dataType: "json"
+          }).done(function (data) {
+              if (data['ret_code'] === 0) {
+                  alert("Delete successfully.");
+                  window.location.href = window.location.href;
+              } else {
+                  alert("Delete failed:" + data['error']);
+              }
+          })
+      }
+
       function add_type() {
           $.ajax({
               type: "POST",

@@ -16,9 +16,75 @@ body {
 
 nav {
   background-color: black;
+  padding: 0 1rem !important;
+  line-height: 2.4 !important;
 }
 
 .container-fluid {
   margin: 0;
   padding: 0;
+}
+
+#profile .dropdown-menu {
+  left: auto;
+  right: 0;
+  background: black;
+}
+
+#profile .dropdown-menu a:hover {
+  background-color: transparent;
+}
+
+#profile .dropdown-menu a:hover::after {
+  content: '';
+  position: absolute;
+  background: #28a745;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+}
+
+nav .navbar-brand {
+  font-weight: 500;
+  font-size: 25px;
+}
+
+#nav-type > li > a {
+  font-size: 19px;
+  font-weight: 500;
+}
+
+#nav-type > li > a:hover::after {
+  content: '';
+  position: absolute;
+  background: #28a745;
+  bottom: 0;
+  left: 10%;
+  width: 80%;
+  height: 4px;
+}
+
+#nav-type a.active::after {
+  content: '';
+  position: absolute;
+  background: #28a745;
+  bottom: 0;
+  left: 10%;
+  width: 80%;
+  height: 4px;
+}
+
+#article #content {
+  width: 100%;
+  -webkit-border-radius: .25rem;
+  -moz-border-radius: .25rem;
+  border-radius: .25rem;
+  border: 1px solid rgba(0,0,0,.125);
+  padding: 10px;
+  outline: none;
+}
+
+#article #content:focus {
+  border: 1px solid rgba(0,0,0,.125);
 }

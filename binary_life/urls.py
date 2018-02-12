@@ -24,5 +24,6 @@ urlpatterns = [
     path('login/', bl_login),
     path('logout/', bl_logout),
     path('', index),
+    path('foreground/', include('foreground.urls')),
     path('background/', include('background.urls')),
 ]

@@ -11,13 +11,14 @@
 
   <link rel="stylesheet" href="/static/css/foreground.css">
 
+  <link rel="icon" href="/static/image/binarylife.ico" type="image/x-icon"/>
   <title>{% block title %}BINARY_LIFE{% endblock %}</title>
   {% block head %}{% endblock %}
 </head>
 <body>
 <div class="container-fluid">
   <nav class="navbar navbar-expand-lg navbar-dark">
-    <a class="navbar-brand" href="#">Navbar</a>
+    <a class="navbar-brand" href="/"> BL </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -26,9 +27,10 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul id="nav-type" class="navbar-nav mr-auto">
         {% for article_type in article_types %}
-        <li class="nav-item">
-          <a class="nav-link position-relative text-white" href="#">{{ article_type.name }}</a>
-        </li>
+          <li class="nav-item">
+          {% set typeid = request.path.split('/') | last %}
+            <a class="nav-link position-relative text-white {% if typeid|int == article_type.id %}active{% endif %}" href="/foreground/type_articles/{{ article_type.id }}">{{ article_type.name }}</a>
+          </li>
         {% endfor %}
         <!--
         <li class="nav-item dropdown">
@@ -45,13 +47,15 @@
       <ul class="navbar-nav ml-auto">
         {% if request.user.is_active %}
           <li id="profile" class="nav-item dropdown">
-            <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+            <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true"
                     aria-expanded="false">
               <i class="fa fa-user"></i> {{ request.user }}
             </button>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item text-info position-relative" href="/background"><i class="fa fa-inbox"></i> background</a>
-              <a class="dropdown-item text-info position-relative" href="/logout"><i class="fa fa-sign-out"></i> log out</a>
+              <a class="dropdown-item text-success position-relative" href="/background"><i class="fa fa-inbox"></i>
+                background</a>
+              <a class="dropdown-item text-success position-relative" href="/logout"><i class="fa fa-sign-out"></i> log out</a>
             </div>
           </li>
         {% else %}
@@ -69,24 +73,24 @@
       #}
     </div>
   </nav>
-  {% block foreground %}{% endblock %}
+  {% block content %}{% endblock %}
 
   <!-- Modal -->
   <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
        aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content bg-light">
         <div class="modal-body">
           <form>
             <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
             <div class="form-group">
-              <input type="text" class="form-control" id="username" name="username" placeholder="username">
+              <input type="text" class="form-control border-success" id="username" name="username" placeholder="username">
             </div>
             <div class="form-group">
-              <input type="text" class="form-control" id="password" name="password" placeholder="password">
+              <input type="password" class="form-control border-success" id="password" name="password" placeholder="password">
             </div>
             <p id="error" class="text-center" style="color: red;"></p>
-            <button id="login-click" type="button" class="btn btn-info w-100">LOGIN</button>
+            <button id="login-click" type="button" class="btn btn-outline-success w-100">LOGIN</button>
           </form>
         </div>
       </div>
@@ -106,7 +110,7 @@
     function login_click() {
         $.ajax({
             type: "POST",
-            url: window.location + "login/",
+            url: window.location.origin + "/login/",
             beforeSend: function (xhr, settings) {
                 xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
             },
@@ -119,7 +123,7 @@
             dataType: "json"
         }).done(function (data) {
             if (data['ret_code'] === 0) {
-                window.location.href = "/"
+                window.location.href = window.location.href
             } else {
                 $("#error").text(data['error']);
             }

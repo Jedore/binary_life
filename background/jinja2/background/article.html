@@ -20,7 +20,7 @@
           <td class="text-center"><a href="/foreground/articles/{{ article.id }}">{{ article.title }}</a></td>
           <td class="text-center">{{ article.article_type.name }}</td>
           <td class="text-center">{{ article.views }}</td>
-          <td class="text-center">{{ article.create_time }}</td>
+          <td class="text-center create-time" utc_time="{{ article.create_time }}"></td>
           <td class="text-center">
             <button class="btn btn-danger" onclick="delete_article({{ article.id }})">delete</button>
           </td>
@@ -33,7 +33,19 @@
 
 {% block script %}
   {{ super() }}
+  <script src="https://cdn.bootcss.com/moment.js/2.20.1/moment.min.js"></script>
+  <script src="https://cdn.bootcss.com/moment-timezone/0.5.14/moment-timezone.min.js"></script>
+  <script src="https://cdn.bootcss.com/moment-timezone/0.5.14/moment-timezone-with-data.min.js"></script>
   <script>
+      function transform_time() {
+          $.each($(".create-time"), function () {
+              var utc_time = $(this).attr('utc_time');
+              time_zone = moment.tz.guess();
+              local_time = moment.tz(utc_time, time_zone).format("MM-DD-YYYY HH:mm:ss");
+              $(this).text(local_time);
+          })
+      }
+
       function delete_article(article_id) {
           $.ajax({
               type: "DELETE",
@@ -55,5 +67,9 @@
               }
           })
       }
+
+      $(function () {
+          transform_time();
+      })
   </script>
 {% endblock %}

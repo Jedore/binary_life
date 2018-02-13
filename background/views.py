@@ -1,12 +1,12 @@
 import json
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views import View
 
 from common.models import Article
 from common.models import ArticleType
-from django.core.exceptions import ObjectDoesNotExist
 
 
 # Create your views here.

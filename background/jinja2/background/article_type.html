@@ -2,20 +2,21 @@
 
 {% block content %}
   <div class="article-type mt-4">
-    <form>
+    <form method="post" action="/background/article_type/">
       <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+      <input type="hidden" name="method" value="post">
       <div class="form-row">
         <div class="col-auto">
           <div class="input-group">
             <div class="input-group-prepend">
               <div class="input-group-text">Name</div>
             </div>
-            <input type="text" class="form-control" id="article-type" placeholder="type name">
+            <input type="text" class="form-control" name="name" id="article-type" placeholder="type name">
           </div>
         </div>
         <div class="col-auto">
           <div class="col-auto">
-            <button type="button" id="add-type" class="btn btn-primary mb-2">AddType</button>
+            <button type="submit" id="add-type" class="btn btn-primary mb-2">AddType</button>
           </div>
         </div>
       </div>
@@ -34,65 +35,16 @@
           <th scope="row" class="text-center">{{ article_type.id }}</th>
           <td class="text-center">{{ article_type.name }}</td>
           <td class="text-center">
-            <button class="btn btn-danger" onclick="del_type({{ article_type.id }})">delete</button>
+            <form method="post" action="/background/article_type/">
+              <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+              <input type="hidden" name="method" value="delete">
+              <input type="hidden" name="typeId" value="{{ article_type.id }}">
+              <button class="btn btn-sm btn-danger" type="submit">delete</button>
+            </form>
           </td>
         </tr>
       {% endfor %}
       </tbody>
     </table>
   </div>
-{% endblock %}
-
-{% block script %}
-  {{ super() }}
-  <script>
-      function del_type(type_id) {
-          $.ajax({
-              type: "DELETE",
-              url: window.location,
-              beforeSend: function (xhr, settings) {
-                  xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-              },
-              data: JSON.stringify({
-                  "typeId": type_id
-              }),
-              contentType: "application/json; charset=utf-8",
-              dataType: "json"
-          }).done(function (data) {
-              if (data['ret_code'] === 0) {
-                  alert("Delete successfully.");
-                  window.location.href = window.location.href;
-              } else {
-                  alert("Delete failed:" + data['error']);
-              }
-          })
-      }
-
-      function add_type() {
-          $.ajax({
-              type: "POST",
-              url: window.location,
-              beforeSend: function (xhr, settings) {
-                  xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-              },
-              data: JSON.stringify({
-                  "name": $("#article-type").val()
-              }),
-              contentType: "application/json; charset=utf-8",
-              dataType: "json"
-          }).done(function (data) {
-              if (data['ret'] === 'SUCCESS') {
-                  alert("Success!");
-              } else {
-                  alert("Failed:" + data['ret']);
-              }
-          });
-      }
-
-      $(function () {
-          $("#add-type").click(function () {
-              add_type();
-          });
-      })
-  </script>
 {% endblock %}

@@ -1,7 +1,6 @@
-import json
+import sys
 
-from django.core.exceptions import ObjectDoesNotExist
-from django.http import JsonResponse
+from django.contrib import messages
 from django.shortcuts import render
 from django.views import View
 
@@ -23,14 +22,20 @@ class PublishView(View):
         return render(request, 'background/publish.html', locals())
 
     def post(self, request):
-        data = json.loads(request.body)
-        title = data.get('title', '')
-        content = data.get('content', '')
-        article_type = data.get('article_type', '')
+        title = request.POST.get('title', '')
+        content = request.POST.get('content', '')
+        article_type = request.POST.get('article_type', '')
 
-        Article.objects.create(title=title, content=content, article_type=ArticleType.objects.get(name=article_type))
+        try:
+            Article.objects.create(title=title, content=content,
+                                   article_type=ArticleType.objects.get(id=article_type))
+            messages.success(request, "success")
+        except:
+            messages.error(request, "failed: {}".format(sys.exc_info()[1]))
 
-        return JsonResponse({"ret": "SUCCESS"})
+        article_types = ArticleType.objects.all()
+
+        return render(request, 'background/publish.html', locals())
 
 
 class ArticleTypeView(View):
@@ -39,19 +44,23 @@ class ArticleTypeView(View):
         return render(request, 'background/article_type.html', locals())
 
     def post(self, request):
-        article_type = json.loads(request.body).get('name', '')
-        ArticleType.objects.create(name=article_type)
-        return JsonResponse({"ret": "SUCCESS"})
-
-    def delete(self, request):
-        data = json.loads(request.body)
-        type_id = data.get("typeId", 0)
-        try:
-            article_type = ArticleType.objects.get(id=type_id)
-            article_type.delete()
-            return JsonResponse({"ret_code": 0})
-        except ObjectDoesNotExist:
-            return JsonResponse({"ret_code": 1, "error": "ObjectDoesNotExist"})
+        if request.POST.get('method', '') == 'post':
+            article_type = request.POST.get('name', '')
+            try:
+                ArticleType.objects.create(name=article_type)
+                messages.success(request, "success")
+            except:
+                messages.error(request, "failed: {}".format(sys.exc_info()[1]))
+        elif request.POST.get('method', '') == 'delete':
+            type_id = request.POST.get("typeId", 0)
+            try:
+                article_type = ArticleType.objects.get(id=type_id)
+                article_type.delete()
+                messages.success(request, "success")
+            except:
+                messages.error(request, "failed: {}".format(sys.exc_info()[1]))
+        article_types = ArticleType.objects.all()
+        return render(request, 'background/article_type.html', locals())
 
 
 class ArticleView(View):
@@ -59,12 +68,14 @@ class ArticleView(View):
         articles = Article.objects.all().order_by('-create_time')
         return render(request, 'background/article.html', locals())
 
-    def delete(self, request):
-        data = json.loads(request.body)
-        article_id = data.get("articleId", 0)
-        try:
-            article = Article.objects.get(id=article_id)
-            article.delete()
-            return JsonResponse({"ret_code": 0})
-        except ObjectDoesNotExist as e:
-            return JsonResponse({"ret_code": 1, "error": "ObjectDoesNotExist"})
+    def post(self, request):
+        if request.POST.get('method', '') == 'delete':
+            article_id = request.POST.get("articleId", 0)
+            try:
+                article = Article.objects.get(id=article_id)
+                article.delete()
+                messages.success(request, "success")
+            except:
+                messages.error(request, "failed: {}".format(sys.exc_info()[1]))
+        articles = Article.objects.all().order_by('-create_time')
+        return render(request, 'background/article.html', locals())

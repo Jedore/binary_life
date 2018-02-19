@@ -8,14 +8,14 @@
 
 {% block content %}
   <div class="publish mt-2">
-    <form>
+    <form method="post" action="/background/publish/">
       <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
       <div class="form-group">
         <div class="input-group">
           <div class="input-group-prepend w-25">
-            <select id="article-type" class="form-control">
+            <select id="article-type" name="article_type" class="form-control">
               {% for type in article_types %}
-                <option>{{ type.name }}</option>
+                <option value="{{ type.id }}">{{ type.name }}</option>
               {% endfor %}
             </select>
           </div>
@@ -26,7 +26,7 @@
         <textarea id="content" name="content"></textarea>
       </div>
       <div class="col-auto pull-right">
-        <button id="submit" type="button" class="btn btn-primary mb-2">Submit</button>
+        <button id="submit" type="submit" class="btn btn-primary mb-2">Submit</button>
       </div>
     </form>
   </div>
@@ -39,29 +39,6 @@
   <script src="/static/libs/markdown/bootstrap-markdown.js"></script>
   <script src="/static/libs/markdown/bootstrap-markdown.fr.js"></script>
   <script>
-      function submit_article() {
-          $.ajax({
-              type: "POST",
-              url: window.location,
-              beforeSend: function (xhr, settings) {
-                  xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-              },
-              data: JSON.stringify({
-                  "title": $("#title").val(),
-                  "content": $("#content").val(),
-                  "article_type": $("#article-type").val(),
-              }),
-              contentType: "application/json; charset=utf-8",
-              dataType: "json"
-          }).done(function (data) {
-              if (data['ret'] === 'SUCCESS') {
-                  alert('Publish success!');
-              } else {
-                  alert('Publish Failed!' + data['ret']);
-              }
-          });
-      }
-
       function set_markdown() {
           $("#content").markdown({
               autofocus: true,
@@ -73,9 +50,6 @@
       }
 
       $(function () {
-          $("#submit").click(function () {
-              submit_article();
-          });
           set_markdown();
       })
   </script>

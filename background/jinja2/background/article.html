@@ -22,7 +22,12 @@
           <td class="text-center">{{ article.views }}</td>
           <td class="text-center create-time" utc_time="{{ article.create_time }}"></td>
           <td class="text-center">
-            <button class="btn btn-danger" onclick="delete_article({{ article.id }})">delete</button>
+            <form method="post" action="/background/article/">
+              <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+              <input type="hidden" name="method" value="delete">
+              <input type="hidden" name="articleId" value="{{ article.id }}">
+              <button class="btn btn-sm btn-danger" type="submit">delete</button>
+            </form>
           </td>
         </tr>
       {% endfor %}
@@ -43,28 +48,6 @@
               time_zone = moment.tz.guess();
               local_time = moment.tz(utc_time, time_zone).format("MM-DD-YYYY HH:mm:ss");
               $(this).text(local_time);
-          })
-      }
-
-      function delete_article(article_id) {
-          $.ajax({
-              type: "DELETE",
-              url: window.location,
-              beforeSend: function (xhr, settings) {
-                  xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-              },
-              data: JSON.stringify({
-                  "articleId": article_id
-              }),
-              contentType: "application/json; charset=utf-8",
-              dataType: "json"
-          }).done(function (data) {
-              if (data["ret_code"] === 0) {
-                  alert("Delete successfully.");
-                  window.location.href = window.location.href;
-              } else {
-                  alert("Delete failed:" + data["error"]);
-              }
           })
       }
 

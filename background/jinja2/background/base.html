@@ -9,6 +9,8 @@
 
   <link rel="stylesheet" href="/static/css/background.css">
 
+  <link rel="icon" href="/static/image/binarylife.ico" type="image/x-icon"/>
+
   <title>{% block title %}BINARY_LIFE{% endblock %}</title>
   {% block head %}{% endblock %}
 </head>
@@ -37,6 +39,36 @@
       </div>
     </div>
     <div class="col-right col-10 border-right bg-light">
+      {% if messages %}
+        {% for message in messages(request) %}
+          {% if message.tags == 'success' %}
+            <div class="alert alert-success mt-2">{{ message }}
+              <button type="button" id="close" class="close" aria-label="Close"><span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% elif message.tags == 'error' %}
+            <div class="alert alert-danger mt-2">{{ message }}
+              <button type="button" id="close" class="close" aria-label="Close"><span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% elif message.tags == 'info' %}
+            <div class="alert alert-info mt-2">{{ message }}
+              <button type="button" id="close" class="close" aria-label="Close"><span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% elif message.tags == 'warning' %}
+            <div class="alert alert-warning mt-2">{{ message }}
+              <button type="button" id="close" class="close" aria-label="Close"><span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% elif message.tags == 'debug' %}
+            <div class="alert alert-primary mt-2">{{ message }}
+              <button type="button" id="close" class="close" aria-label="Close"><span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
       {% block content %}{% endblock %}
     </div>
   </div>
@@ -64,6 +96,10 @@
         resize_height();
         $(window).resize(function () {
             resize_height();
+        });
+
+        $("#close").click(function () {
+            $(this).parent().remove();
         });
     })
 </script>

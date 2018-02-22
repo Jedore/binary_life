@@ -107,3 +107,4 @@ venv.bak/
 # custom
 pd_static/
 venv*/
+*.sqlite3

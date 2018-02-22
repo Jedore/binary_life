@@ -126,4 +126,4 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'binary_life/static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'binary_life/pd_static')

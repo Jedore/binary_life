@@ -108,3 +108,4 @@ venv.bak/
 pd_static/
 venv*/
 *.sqlite3
+*.out

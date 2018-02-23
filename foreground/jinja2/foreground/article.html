@@ -11,8 +11,8 @@
         <h1>{{ _article.title }}</h1>
         <hr class="bg-secondary mb-0 mt-2">
         <div id="second" class="mb-2">
-          <span class="badge bg-dark">{{ _article.article_type.name }}</span>
-          <span class="badge bg-dark text-right create-time" utc_time="{{ _article.create_time }}"></span>
+          <span class="badge badge-dark">{{ _article.article_type.name }}</span>
+          <span class="badge badge-dark text-right create-time" utc_time="{{ _article.create_time }}"></span>
           {% if request.user.is_superuser %}
             <a id="edit" href="/background/publish/?articleId={{ _article.id }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
           {% endif %}

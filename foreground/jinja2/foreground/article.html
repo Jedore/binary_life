@@ -5,10 +5,19 @@
 {% endblock %}
 
 {% block content %}
-  <div id="article" class="container mt-2">
+  <div id="article" class="container">
     <div class="row justify-content-center">
-      <div class="col-10">
-        <div id="content" class="bg-light">
+      <div class="col-10 article">
+        <h1>{{ _article.title }}</h1>
+        <hr class="bg-secondary mb-0 mt-2">
+        <div id="second" class="mb-2">
+          <span class="badge bg-dark">{{ _article.article_type.name }}</span>
+          <span class="badge bg-dark text-right create-time" utc_time="{{ _article.create_time }}"></span>
+          {% if request.user.is_superuser %}
+            <a id="edit" href="/background/publish/?articleId={{ _article.id }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+          {% endif %}
+        </div>
+        <div id="content">
           <textarea style="display:none;">{{ _article.content }}</textarea>
         </div>
       </div>
@@ -29,6 +38,7 @@
   <script>
       var testEditor;
       $(function () {
+          transform_time();
           testEditor = editormd.markdownToHTML("content", {//注意：这里是上面DIV的id
               htmlDecode: "style,script,iframe",
               emoji: true,

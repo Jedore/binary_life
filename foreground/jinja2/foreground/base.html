@@ -28,21 +28,12 @@
       <ul id="nav-type" class="navbar-nav mr-auto">
         {% for article_type in article_types %}
           <li class="nav-item">
-          {% set typeid = request.path.split('/') | last %}
-            <a class="nav-link position-relative text-white {% if typeid|int == article_type.id %}active{% endif %}" href="/foreground/type_articles/{{ article_type.id }}">{{ article_type.name }}</a>
+            {% set typeid = request.path.split('/') | last %}
+            {% set url_path = request.path.split('/').2 %}
+            <a class="nav-link position-relative text-white {% if url_path == 'type_articles' and typeid|int == article_type.id %}active{% endif %}"
+               href="/foreground/type_articles/{{ article_type.id }}">{{ article_type.name }}</a>
           </li>
         {% endfor %}
-        <!--
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-             aria-haspopup="true" aria-expanded="false">
-            Dropdown
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Action</a>
-          </div>
-        </li>
-        -->
       </ul>
       <ul class="navbar-nav ml-auto">
         {% if request.user.is_active %}
@@ -55,7 +46,8 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item text-success position-relative" href="/background"><i class="fa fa-inbox"></i>
                 background</a>
-              <a class="dropdown-item text-success position-relative" href="/logout"><i class="fa fa-sign-out"></i> log out</a>
+              <a class="dropdown-item text-success position-relative" href="/logout"><i class="fa fa-sign-out"></i> log
+                out</a>
             </div>
           </li>
         {% else %}
@@ -84,10 +76,12 @@
           <form>
             <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
             <div class="form-group">
-              <input type="text" class="form-control border-success" id="username" name="username" placeholder="username">
+              <input type="text" class="form-control border-success" id="username" name="username"
+                     placeholder="username">
             </div>
             <div class="form-group">
-              <input type="password" class="form-control border-success" id="password" name="password" placeholder="password">
+              <input type="password" class="form-control border-success" id="password" name="password"
+                     placeholder="password">
             </div>
             <p id="error" class="text-center" style="color: red;"></p>
             <button id="login-click" type="button" class="btn btn-outline-success w-100">LOGIN</button>
@@ -106,6 +100,9 @@
 <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.20.1/moment.min.js"></script>
+<script src="https://cdn.bootcss.com/moment-timezone/0.5.14/moment-timezone.min.js"></script>
+<script src="https://cdn.bootcss.com/moment-timezone/0.5.14/moment-timezone-with-data.min.js"></script>
 <script>
     function login_click() {
         $.ajax({
@@ -128,6 +125,15 @@
                 $("#error").text(data['error']);
             }
         });
+    }
+
+    function transform_time() {
+        $.each($(".create-time"), function () {
+            var utc_time = $(this).attr('utc_time');
+            time_zone = moment.tz.guess();
+            local_time = moment.tz(utc_time, time_zone).format("MM-DD-YYYY HH:mm:ss");
+            $(this).text(local_time);
+        })
     }
 
     $(function () {

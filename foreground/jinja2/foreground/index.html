@@ -26,18 +26,7 @@
 
 {% block script %}
   {{ super() }}
-  <script src="https://cdn.bootcss.com/moment.js/2.20.1/moment.min.js"></script>
-  <script src="https://cdn.bootcss.com/moment-timezone/0.5.14/moment-timezone.min.js"></script>
-  <script src="https://cdn.bootcss.com/moment-timezone/0.5.14/moment-timezone-with-data.min.js"></script>
   <script>
-      function transform_time() {
-          $.each($(".create-time"), function () {
-              var utc_time = $(this).attr('utc_time');
-              time_zone = moment.tz.guess();
-              local_time = moment.tz(utc_time, time_zone).format("MM-DD-YYYY HH:mm:ss");
-              $(this).text(local_time);
-          })
-      }
 
       function resize_height() {
           var base_h = $("#article-list").height(),

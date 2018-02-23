@@ -3,7 +3,7 @@
 }
 
 body {
-  background: #28282b;
+  background: #191919;
 }
 
 #side-bar {
@@ -75,16 +75,7 @@ nav .navbar-brand {
   height: 4px;
 }
 
-#article #content {
-  width: 100%;
-  -webkit-border-radius: .25rem;
-  -moz-border-radius: .25rem;
-  border-radius: .25rem;
-  border: 1px solid rgba(0,0,0,.125);
-  padding: 10px;
-  outline: none;
-}
-
-#article #content:focus {
-  border: 1px solid rgba(0,0,0,.125);
+#article .article {
+  background-color: #28282b;
+  color: #b3b3b3;
 }

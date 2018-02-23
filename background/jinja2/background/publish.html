@@ -2,8 +2,7 @@
 
 {% block head %}
   {{ super() }}
-  <link href="https://cdn.bootcss.com/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css" rel="stylesheet">
-  <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="/static/libs/editor.md/css/editormd.min.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -23,7 +22,9 @@
         </div>
       </div>
       <div class="form-group">
-        <textarea id="content" name="content"></textarea>
+        <div id="my-editormd" class="m-0 w-100">
+          <textarea id="content" name="content" style="display:none;"></textarea>
+        </div>
       </div>
       <div class="col-auto pull-right">
         <button id="submit" type="submit" class="btn btn-primary mb-2">Submit</button>
@@ -34,18 +35,15 @@
 
 {% block script %}
   {{ super() }}
-  <script src="/static/libs/markdown/markdown.min.js"></script>
-  <script src="/static/libs/markdown/to-markdown.min.js"></script>
-  <script src="/static/libs/markdown/bootstrap-markdown.js"></script>
-  <script src="/static/libs/markdown/bootstrap-markdown.fr.js"></script>
+  <script src="/static/libs/editor.md/editormd.min.js"></script>
   <script>
       function set_markdown() {
-          $("#content").markdown({
-              autofocus: true,
-              savable: false,
-              resize: 'vertical',
-              iconlibrary: 'fa',
-              height: '500',
+          editormd("my-editormd", {
+              width: "90%",
+              height: 640,
+              syncScrolling: "single",
+              path: "/static/libs/editor.md/lib/",
+              saveHTMLToTextarea: true
           });
       }
 

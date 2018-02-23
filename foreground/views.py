@@ -32,5 +32,5 @@ def article(request, article_id):
 @require_http_methods(["GET"])
 def type_article(request, type_id):
     article_types = ArticleType.objects.all().order_by("id")
-    articles = Article.objects.filter(article_type=type_id)
+    articles = Article.objects.filter(article_type=type_id).order_by("-create_time")
     return render(request, "foreground/index.html", locals())

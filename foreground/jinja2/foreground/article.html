@@ -1,0 +1,29 @@
+{% extends "foreground/base.html" %}
+
+{% block head %}
+  {{ super() }}
+  <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+  <div id="article" class="container mt-2">
+    <div class="row justify-content-center">
+      <div class="col-10">
+        <div id="content" class="bg-light"></div>
+        <div id="rawContent" type="hidden">{{ _article.content }}</div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  {{ super() }}
+  <script src="/static/libs/markdown/markdown.min.js"></script>
+  <script>
+  $(function () {
+      var content = $("#rawContent").text();
+      $("#content").prepend(markdown.toHTML(content));
+      $("#rawContent").remove();
+  })
+  </script>
+{% endblock %}

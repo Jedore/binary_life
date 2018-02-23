@@ -1,0 +1,56 @@
+{% extends 'foreground/base.html' %}
+{% block content %}
+  <div id="index" class="container">
+    <div class="row justify-content-center mt-2">
+      <!--<div id="side-bar" class="col-2 bg-dark"></div>-->
+      <div id="article-list" class="col-10">
+        {% for article in articles %}
+          <div class="card bg-dark mb-1">
+            <div class="card-body pb-1 pt-2">
+              <h5 class="card-title">{{ article.title }}</h5>
+              <p class="card-text">
+                {% if article.summary %}
+                  {{ article.summary }}
+                {% endif %}
+              </p>
+              <div class="badge bg-dark create-time" utc_time="{{ article.create_time }}"></div>
+              <div class="badge bg-info">{{ article.article_type.name }}</div>
+              <a href="/foreground/articles/{{ article.id }}" class="btn btn-link btn-sm float-right">Read more</a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  {{ super() }}
+  <script src="https://cdn.bootcss.com/moment.js/2.20.1/moment.min.js"></script>
+  <script src="https://cdn.bootcss.com/moment-timezone/0.5.14/moment-timezone.min.js"></script>
+  <script src="https://cdn.bootcss.com/moment-timezone/0.5.14/moment-timezone-with-data.min.js"></script>
+  <script>
+      function transform_time() {
+          $.each($(".create-time"), function () {
+              var utc_time = $(this).attr('utc_time');
+              time_zone = moment.tz.guess();
+              local_time = moment.tz(utc_time, time_zone).format("MM-DD-YYYY HH:mm:ss");
+              $(this).text(local_time);
+          })
+      }
+
+      function resize_height() {
+          var base_h = $("#article-list").height(),
+              body_h = $(window).outerHeight();
+          $("#index").css("min-height", base_h > body_h ? base_h : body_h);
+      }
+
+      $(function () {
+          transform_time();
+          resize_height();
+          $(window).resize(function () {
+              resize_height();
+          });
+      })
+  </script>
+{% endblock %}

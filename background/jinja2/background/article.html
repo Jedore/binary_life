@@ -1,0 +1,58 @@
+{% extends 'background/base.html' %}
+
+{% block content %}
+  <div class="articles">
+    <table class="table table-hover table-bordered mt-4">
+      <thead>
+      <tr>
+        <th scope="col" class="text-center">ID</th>
+        <th scope="col" class="text-center">Title</th>
+        <th scope="col" class="text-center">Type</th>
+        <th scope="col" class="text-center">Views</th>
+        <th scope="col" class="text-center">CreateTime</th>
+        <th scope="col" class="text-center">Del</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for article in articles %}
+        <tr>
+          <th scope="row" class="text-center">{{ article.id }}</th>
+          <td class="text-center"><a href="/foreground/articles/{{ article.id }}">{{ article.title }}</a></td>
+          <td class="text-center">{{ article.article_type.name }}</td>
+          <td class="text-center">{{ article.views }}</td>
+          <td class="text-center create-time" utc_time="{{ article.create_time }}"></td>
+          <td class="text-center">
+            <form method="post" action="/background/article/">
+              <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+              <input type="hidden" name="method" value="delete">
+              <input type="hidden" name="articleId" value="{{ article.id }}">
+              <button class="btn btn-sm btn-danger" type="submit">delete</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+
+{% block script %}
+  {{ super() }}
+  <script src="https://cdn.bootcss.com/moment.js/2.20.1/moment.min.js"></script>
+  <script src="https://cdn.bootcss.com/moment-timezone/0.5.14/moment-timezone.min.js"></script>
+  <script src="https://cdn.bootcss.com/moment-timezone/0.5.14/moment-timezone-with-data.min.js"></script>
+  <script>
+      function transform_time() {
+          $.each($(".create-time"), function () {
+              var utc_time = $(this).attr('utc_time');
+              time_zone = moment.tz.guess();
+              local_time = moment.tz(utc_time, time_zone).format("MM-DD-YYYY HH:mm:ss");
+              $(this).text(local_time);
+          })
+      }
+
+      $(function () {
+          transform_time();
+      })
+  </script>
+{% endblock %}

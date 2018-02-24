@@ -109,3 +109,8 @@ pd_static/
 venv*/
 *.sqlite3
 *.out
+!/static/libs/editor.md/lib/
+!/static/libs/editor.md/plugins/
+!/static/libs/editor.md/LICENSE
+!/static/libs/editor.md/package.json
+

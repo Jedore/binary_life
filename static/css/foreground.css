@@ -75,21 +75,15 @@ nav .navbar-brand {
   height: 4px;
 }
 
-#article .article h1,
 #index #article-list > div h5 {
   color: white;
-}
-
-#index #article-list > div,
-#article .article {
-  background-color: #28282b;
-}
-
-#article .article #content {
-  color: whitesmoke;
 }
 
 #article .article span,
 #index #article-list > div > div {
   color: gray;
+}
+
+#index #article-list > div {
+  background-color: #28282b;
 }

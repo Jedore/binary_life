@@ -3969,7 +3969,7 @@
             saveTo.remove();
         }
         
-        div.addClass("markdown-body " + this.classPrefix + "html-preview").append(markdownParsed);
+        div.addClass("markdown-body " + this.classPrefix + "preview-container").append(markdownParsed);
         
         var tocContainer = (settings.tocContainer !== "") ? $(settings.tocContainer) : div;
         

@@ -1,0 +1,29 @@
+{% extends 'background/base.html' %}
+
+{% block content %}
+  <div id="dashboard" class="mt-3">
+    <h3>DashBoard</h3>
+    <hr class="m-0 p-0" style="height: 2px; background: gray;">
+
+    <h5 class="mt-4">Views <span class="badge badge-secondary">{{ views }}</span></h5>
+    <hr class="m-0 p-0">
+    <br>
+    <table class="table table-sm table-hover table-bordered w-50">
+    <caption>Article Views</caption>
+      <thead class="thead-dark">
+      <tr>
+        <th scope="col">title</th>
+        <th scope="col">views</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for article in articles %}
+      <tr>
+        <th scope="row">{{ article.title }}</th>
+        <td>{{ article.views }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

@@ -7,6 +7,7 @@ from django.views import View
 
 from common.models import Article
 from common.models import ArticleType
+from common.models import BinaryLife
 
 
 # Create your views here.
@@ -14,7 +15,9 @@ from common.models import ArticleType
 
 class BackgroundView(View):
     def get(self, request):
-        return render(request, 'background/base.html')
+        articles = Article.objects.all().order_by("-views")
+        views = BinaryLife.objects.all().first().views
+        return render(request, 'background/dashboard.html', locals())
 
 
 class PublishView(View):

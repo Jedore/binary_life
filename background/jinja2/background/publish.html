@@ -2,7 +2,7 @@
 
 {% block head %}
   {{ super() }}
-  <link href="/static/libs/editor.md/css/editormd.min.css" rel="stylesheet">
+  <link href="/static/libs/editormd/css/editormd.min.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -42,7 +42,7 @@
 
 {% block script %}
   {{ super() }}
-  <script src="/static/libs/editor.md/editormd.min.js"></script>
+  <script src="/static/libs/editormd/editormd.min.js"></script>
   <script>
       function set_markdown() {
           editormd("my-editormd", {

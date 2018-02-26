@@ -5,7 +5,8 @@
     <h3>DashBoard</h3>
     <hr class="m-0 p-0" style="height: 2px; background: gray;">
 
-    <h5 class="mt-4">Views <span class="badge badge-secondary">{{ views }}</span></h5>
+    <h5 class="mt-4 float-left">AllViews <span class="badge badge-secondary">{{ all_views }}</span></h5>
+    <h5 class="mt-4">&nbsp;&nbsp;&nbsp;&nbsp;Visitors <span class="badge badge-secondary">{{ visitors }}</span></h5>
     <hr class="m-0 p-0">
     <br>
     <table class="table table-sm table-hover table-bordered w-50">
@@ -20,7 +21,7 @@
       {% for article in articles %}
       <tr>
         <th scope="row">{{ article.title }}</th>
-        <td>{{ article.views }}</td>
+        <td>{{ article.views.count() }}</td>
       </tr>
       {% endfor %}
       </tbody>

@@ -19,7 +19,7 @@
           <th scope="row" class="text-center">{{ article.id }}</th>
           <td class="text-center"><a href="/foreground/articles/{{ article.id }}">{{ article.title }}</a></td>
           <td class="text-center">{{ article.article_type.name }}</td>
-          <td class="text-center">{{ article.views }}</td>
+          <td class="text-center">{{ article.views.count() }}</td>
           <td class="text-center create-time" utc_time="{{ article.create_time }}"></td>
           <td class="text-center">
             <form method="post" action="/background/article/">

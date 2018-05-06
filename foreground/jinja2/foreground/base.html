@@ -17,7 +17,7 @@
 </head>
 <body>
 <div class="container-fluid mb-5">
-  <nav class="navbar sticky-top navbar-expand-lg navbar-dark pl-5">
+  <nav class="navbar sticky-top navbar-expand-lg navbar-dark pl-5 bg-info">
     <a class="navbar-brand" href="/"> BL </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,21 +38,22 @@
       <ul class="navbar-nav ml-auto">
         {% if request.user.is_active %}
           <li id="profile" class="nav-item dropdown">
-            <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown"
+            <button type="button" class="btn btn-info dropdown-toggle pl-4 pr-4" data-toggle="dropdown"
                     aria-haspopup="true"
                     aria-expanded="false">
               <i class="fa fa-user"></i> {{ request.user }}
             </button>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item text-success position-relative" href="/background"><i class="fa fa-inbox"></i>
+            <div class="dropdown-menu bg-info" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item text-light position-relative" href="/background"><i class="fa fa-inbox"></i>
                 background</a>
-              <a class="dropdown-item text-success position-relative" href="/logout"><i class="fa fa-sign-out"></i> log
+              <a class="dropdown-item text-light position-relative" href="/background/publish"><i class="fa fa-paper-plane"></i> publish</a>
+              <a class="dropdown-item text-light position-relative" href="/logout"><i class="fa fa-sign-out"></i> log
                 out</a>
             </div>
           </li>
         {% else %}
           <li class="nav-item">
-            <button class="btn btn-outline-success my-2 my-sm-0" data-toggle="modal" data-target="#loginModal">Login
+            <button class="btn btn-info my-2 my-sm-0" data-toggle="modal" data-target="#loginModal">LOGIN
             </button>
           </li>
         {% endif %}
@@ -91,7 +92,7 @@
     </div>
   </div>
 </div>
-<nav class="footer fixed-bottom">
+<nav class="footer fixed-bottom bg-info">
   <div class="container text-center">
     <span> &copy;2018</span>
     <span class="ml-5"> JEDORE </span>

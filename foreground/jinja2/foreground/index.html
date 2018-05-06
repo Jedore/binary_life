@@ -5,10 +5,10 @@
       <!--<div id="side-bar" class="col-2 bg-dark"></div>-->
       <div id="article-list" class="col-10">
         {% for article in articles %}
-          <div class="m-3 p-2">
+          <div class="m-3 p-2 bg-light">
             <h5 class="">{{ article.title }}</h5>
-            <div class="badge badge-dark pl-0 create-time" utc_time="{{ article.create_time }}"></div>
-            <div class="badge badge-dark">{{ article.article_type.name }}</div>
+            <div class="badge badge-secondary create-time" utc_time="{{ article.create_time }}"></div>
+            <div class="badge badge-secondary">{{ article.article_type.name }}</div>
             <a href="/foreground/articles/{{ article.id }}" class="btn btn-link btn-sm float-right">More <i
                 class="fa fa-arrow-circle-right" aria-hidden="true"></i></a>
           </div>

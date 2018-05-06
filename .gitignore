@@ -113,4 +113,5 @@ venv*/
 !/static/libs/editor.md/plugins/
 !/static/libs/editor.md/LICENSE
 !/static/libs/editor.md/package.json
+.idea/
 

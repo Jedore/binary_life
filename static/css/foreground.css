@@ -2,8 +2,9 @@
   width: 300px;
 }
 
-body {
-  background: #191919;
+body,
+.footer {
+  background: #e3f2fd;
 }
 
 #side-bar {
@@ -25,16 +26,19 @@ nav {
   padding: 0;
 }
 
+/*
 #profile .dropdown-menu {
   left: auto;
   right: 0;
   background: black;
 }
+*/
 
 #profile .dropdown-menu a:hover {
   background-color: transparent;
 }
 
+/*
 #profile .dropdown-menu a:hover::after {
   content: '';
   position: absolute;
@@ -44,6 +48,7 @@ nav {
   width: 4px;
   height: 100%;
 }
+*/
 
 nav .navbar-brand {
   font-weight: 500;
@@ -55,6 +60,7 @@ nav .navbar-brand {
   font-weight: 500;
 }
 
+/*
 #nav-type > li > a:hover::after {
   content: '';
   position: absolute;
@@ -74,16 +80,21 @@ nav .navbar-brand {
   width: 80%;
   height: 4px;
 }
+*/
 
 #index #article-list > div h5 {
-  color: white;
+  color: black;
 }
 
+/*
 #article .article span,
 #index #article-list > div > div {
   color: gray;
 }
+*/
 
+/*
 #index #article-list > div {
   background-color: #28282b;
 }
+*/

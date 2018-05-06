@@ -9,8 +9,7 @@
   <div id="article" class="container">
     <div class="row justify-content-center">
       <div class="col-10 article">
-        <hr class="bg-secondary mb-0 mt-4" style="height: 1px;">
-        <div id="second" class="mb-3">
+        <div id="second" class="mb-0 mt-2">
           <span class="badge badge-dark">{{ _article.article_type.name }}</span>
           <span class="badge badge-dark text-right create-time" utc_time="{{ _article.create_time }}"></span>
           {% if request.user.is_superuser %}
@@ -18,7 +17,8 @@
                                                                                     aria-hidden="true"></i></a>
           {% endif %}
         </div>
-        <div class="editormd-preview-theme-dark d-block">
+        <hr class="bg-info mb-3 mt-0" style="height: 1px;">
+        <div class="editormd-preview-theme-light d-block">
           <div id="content">
             <textarea style="display:none;">{{ _article.content }}</textarea>
           </div>

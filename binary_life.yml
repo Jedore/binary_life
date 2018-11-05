@@ -1,7 +1,6 @@
 name: binary_life
 channels:
   - defaults
-  - conda-forge
 dependencies:
   - django=2.0.2
   - python=3.6.5

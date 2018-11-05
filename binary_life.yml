@@ -3,7 +3,6 @@ channels:
   - defaults
   - conda-forge
 dependencies:
-  - django=2.0.2=py36hd476221_0
-  - python=3.6.5=h0c2934d_0
-prefix: D:\Anaconda3\envs\binary_life
+  - django=2.0.2
+  - python=3.6.5
 

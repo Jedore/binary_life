@@ -28,9 +28,7 @@
       <ul id="nav-type" class="navbar-nav mr-auto">
         {% for article_type in article_types %}
           <li class="nav-item">
-            {% set typeid = request.path.split('/') | last %}
-            {% set url_path = request.path.split('/').2 %}
-            <a class="nav-link position-relative text-white {% if url_path == 'type_articles' and typeid|int == article_type.id %}active{% endif %}"
+            <a class="nav-link position-relative text-white {% if 'type_articles' in request.path and article_type.id|stringformat:"s" in request.path %}active{% endif %}"
                href="/foreground/type_articles/{{ article_type.id }}">{{ article_type.name }}</a>
           </li>
         {% endfor %}
@@ -46,7 +44,8 @@
             <div class="dropdown-menu bg-info" aria-labelledby="navbarDropdown">
               <a class="dropdown-item text-light position-relative" href="/background"><i class="fa fa-inbox"></i>
                 background</a>
-              <a class="dropdown-item text-light position-relative" href="/background/publish"><i class="fa fa-paper-plane"></i> publish</a>
+              <a class="dropdown-item text-light position-relative" href="/background/publish"><i
+                  class="fa fa-paper-plane"></i> publish</a>
               <a class="dropdown-item text-light position-relative" href="/logout"><i class="fa fa-sign-out"></i> log
                 out</a>
             </div>
@@ -58,12 +57,10 @@
           </li>
         {% endif %}
       </ul>
-      {#
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
-      #}
+      {#      <form class="form-inline my-2 my-lg-0">#}
+      {#        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">#}
+      {#        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>#}
+      {#      </form>#}
     </div>
   </nav>
   {% block content %}{% endblock %}
@@ -98,7 +95,7 @@
     <span class="ml-5"> JEDORE </span>
     <span class="ml-5"> All Rights Reserved. </span>
   </div>
-</nav >
+</nav>
 
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 
@@ -112,57 +109,48 @@
 <script src="https://cdn.bootcss.com/moment-timezone/0.5.14/moment-timezone.min.js"></script>
 <script src="https://cdn.bootcss.com/moment-timezone/0.5.14/moment-timezone-with-data.min.js"></script>
 <script>
-    function login_click() {
-        $.ajax({
-            type: "POST",
-            url: window.location.origin + "/login/",
-            beforeSend: function (xhr, settings) {
-                xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-            },
-            cache: false,
-            data: JSON.stringify({
-                "username": $("#username").val(),
-                "password": $("#password").val()
-            }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json"
-        }).done(function (data) {
-            if (data['ret_code'] === 0) {
-                window.location.href = window.location.href
-            } else {
-                $("#error").text(data['error']);
-            }
-        });
-    }
+  function login_click() {
+    $.ajax({
+      type: "POST",
+      url: window.location.origin + "/login/",
+      beforeSend: function (xhr, settings) {
+        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+      },
+      cache: false,
+      data: JSON.stringify({
+        "username": $("#username").val(),
+        "password": $("#password").val()
+      }),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json"
+    }).done(function (data) {
+      if (data['ret_code'] === 0) {
+        window.location.href = window.location.href
+      } else {
+        $("#error").text(data['error']);
+      }
+    });
+  }
 
-    function transform_time() {
-        $.each($(".create-time"), function () {
-            var utc_time = $(this).attr('utc_time');
-            time_zone = moment.tz.guess();
-            local_time = moment.tz(utc_time, time_zone).format("MM-DD-YYYY HH:mm:ss");
-            $(this).text(local_time);
-        })
-    }
+  /*
+  function resize_height() {
+      var base_h = $("#article-list").height(),
+          body_h = $(window).outerHeight(),
+          footer_h = $("footer").height();
+      //$("#index").css("min-height", base_h - footer_h > body_h -footer_h ? base_h : body_h);
+      $("content").css("min-height", base_h > body_h ? base_h : body_h);
+  }
+  */
 
-    /*
-    function resize_height() {
-        var base_h = $("#article-list").height(),
-            body_h = $(window).outerHeight(),
-            footer_h = $("footer").height();
-        //$("#index").css("min-height", base_h - footer_h > body_h -footer_h ? base_h : body_h);
-        $("content").css("min-height", base_h > body_h ? base_h : body_h);
-    }
-    */
-
-    $(function () {
-        $("#login-click").click(function () {
-            login_click();
-        });
-        /*resize_height();
-        $(window).resize(function () {
-            resize_height();
-        });*/
-    })
+  $(function () {
+    $("#login-click").click(function () {
+      login_click();
+    });
+    /*resize_height();
+    $(window).resize(function () {
+        resize_height();
+    });*/
+  })
 </script>
 {% block script %}{% endblock %}
 </body>

@@ -1,9 +1,9 @@
 name: binary_life
 channels:
   - defaults
+  - conda-forge
 dependencies:
-  - Django=2.0
-  - Jinja2=2.9.6
-  - MarkupSafe=1.0
-prefix: /opt/modules/anaconda3/envs/binary_life
+  - django=2.0.2=py36hd476221_0
+  - python=3.6.5=h0c2934d_0
+prefix: D:\Anaconda3\envs\binary_life
 

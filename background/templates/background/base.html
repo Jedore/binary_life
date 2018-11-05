@@ -24,7 +24,7 @@
         </div>
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link" href="/background/">DashBoard</a>
+            <a class="nav-link" href="/background">DashBoard</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/background/article">Article</a>
@@ -43,7 +43,7 @@
     </div>
     <div class="col-right col-10 border-right">
       {% if messages %}
-        {% for message in messages(request) %}
+        {% for message in messages %}
           {% if message.tags == 'success' %}
             <div class="alert alert-success mt-2">{{ message }}
               <button type="button" id="close" class="close" aria-label="Close"><span aria-hidden="true">&times;</span>
@@ -88,23 +88,23 @@
         crossorigin="anonymous"></script>
 
 <script>
-    function resize_height() {
-        var sidebar_h = $("#side-bar").height(),
-            body_h = $(window).outerHeight();
-        <!-- For side-bar border line is from top to bottom -->
-        $("#col-left").css("min-height", sidebar_h > body_h ? sidebar_h : body_h);
-    }
+  function resize_height() {
+    var sidebar_h = $("#side-bar").height(),
+        body_h = $(window).outerHeight();
+    <!-- For side-bar border line is from top to bottom -->
+    $("#col-left").css("min-height", sidebar_h > body_h ? sidebar_h : body_h);
+  }
 
-    $(function () {
-        resize_height();
-        $(window).resize(function () {
-            resize_height();
-        });
+  $(function () {
+    resize_height();
+    $(window).resize(function () {
+      resize_height();
+    });
 
-        $("#close").click(function () {
-            $(this).parent().remove();
-        });
-    })
+    $("#close").click(function () {
+      $(this).parent().remove();
+    });
+  })
 </script>
 {% block script %}{% endblock %}
 </html>

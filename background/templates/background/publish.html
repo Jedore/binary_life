@@ -1,7 +1,6 @@
 {% extends 'background/base.html' %}
 
 {% block head %}
-  {{ super() }}
   <link href="/static/libs/editor.md/css/editormd.min.css" rel="stylesheet">
 {% endblock %}
 
@@ -20,7 +19,8 @@
           <div class="input-group-prepend w-25">
             <select id="article-type" name="article_type" class="form-control">
               {% for type in article_types %}
-                <option value="{{ type.id }}" {% if article and article.article_type.id == type.id %}selected{% endif %}>{{ type.name }}</option>
+                <option value="{{ type.id }}"
+                        {% if article and article.article_type.id == type.id %}selected{% endif %}>{{ type.name }}</option>
               {% endfor %}
             </select>
           </div>
@@ -30,7 +30,8 @@
       </div>
       <div class="form-group">
         <div id="my-editormd" class="m-0 w-100">
-          <textarea id="content" name="content" style="display:none;">{% if article %}{{ article.content }}{% endif %}</textarea>
+          <textarea id="content" name="content" style="display:none;">{% if article %}
+            {{ article.content }}{% endif %}</textarea>
         </div>
       </div>
       <div class="form-group col-auto pull-right">
@@ -41,21 +42,20 @@
 {% endblock %}
 
 {% block script %}
-  {{ super() }}
   <script src="/static/libs/editor.md/editormd.min.js"></script>
   <script>
-      function set_markdown() {
-          editormd("my-editormd", {
-              width: "90%",
-              height: 640,
-              syncScrolling: "single",
-              path: "/static/libs/editor.md/lib/",
-              saveHTMLToTextarea: true,
-          });
-      }
+    function set_markdown() {
+      editormd("my-editormd", {
+        width: "90%",
+        height: 640,
+        syncScrolling: "single",
+        path: "/static/libs/editor.md/lib/",
+        saveHTMLToTextarea: true,
+      });
+    }
 
-      $(function () {
-          set_markdown();
-      })
+    $(function () {
+      set_markdown();
+    })
   </script>
 {% endblock %}

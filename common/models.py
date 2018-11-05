@@ -28,4 +28,4 @@ class BinaryLifeViews(models.Model):
     remote_addr = models.GenericIPAddressField()
     path = models.CharField(max_length=128)
     cookies = models.CharField(max_length=256)
-    article = models.ForeignKey(Article, related_name='views', null=True, default=None,on_delete=models.SET_NULL)
+    article = models.ForeignKey(Article, related_name='views', null=True, default=None, on_delete=models.SET_NULL)

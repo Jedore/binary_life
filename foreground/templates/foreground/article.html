@@ -1,7 +1,6 @@
 {% extends "foreground/base.html" %}
 
 {% block head %}
-  {{ super() }}
   <link href="/static/libs/editor.md/css/editormd.min.css" rel="stylesheet">
 {% endblock %}
 
@@ -10,17 +9,17 @@
     <div class="row justify-content-center">
       <div class="col-10 article">
         <div id="second" class="mb-0 mt-2">
-          <span class="badge badge-dark">{{ _article.article_type.name }}</span>
-          <span class="badge badge-dark text-right create-time" utc_time="{{ _article.create_time }}"></span>
+          <span class="badge badge-dark">{{ article.article_type.name }}</span>
+          <span class="badge badge-dark text-right">{{ article.create_time | date:"Y-m-d" }}</span>
           {% if request.user.is_superuser %}
-            <a id="edit" href="/background/publish/?articleId={{ _article.id }}"><i class="fa fa-pencil-square-o"
-                                                                                    aria-hidden="true"></i></a>
+            <a id="edit" href="/background/publish/?articleId={{ article.id }}"><i class="fa fa-pencil-square-o"
+                                                                                   aria-hidden="true"></i></a>
           {% endif %}
         </div>
         <hr class="bg-info mb-3 mt-0" style="height: 1px;">
         <div class="editormd-preview-theme-light d-block">
           <div id="content">
-            <textarea style="display:none;">{{ _article.content }}</textarea>
+            <textarea style="display:none;">{{ article.content }}</textarea>
           </div>
         </div>
       </div>
@@ -29,7 +28,6 @@
 {% endblock %}
 
 {% block script %}
-  {{ super() }}
   <script src="/static/libs/editor.md/lib/marked.min.js"></script>
   <script src="/static/libs/editor.md/lib/prettify.min.js"></script>
   <script src="/static/libs/editor.md/lib/raphael.min.js"></script>
@@ -39,18 +37,17 @@
   <script src="/static/libs/editor.md/lib/jquery.flowchart.min.js"></script>
   <script src="/static/libs/editor.md/editormd.js"></script>
   <script>
-      var testEditor;
-      $(function () {
-          transform_time();
-          testEditor = editormd.markdownToHTML("content", {//注意：这里是上面DIV的id
-              htmlDecode: "style,script,iframe",
-              emoji: true,
-              taskList: true,
-              tex: true, // 默认不解析
-              flowChart: true, // 默认不解析
-              sequenceDiagram: true, // 默认不解析
-              codeFold: true,
-          });
-      })
+    let testEditor;
+    $(function () {
+      testEditor = editormd.markdownToHTML("content", {//注意：这里是上面DIV的id
+        htmlDecode: "style,script,iframe",
+        emoji: true,
+        taskList: true,
+        tex: true, // 默认不解析
+        flowChart: true, // 默认不解析
+        sequenceDiagram: true, // 默认不解析
+        codeFold: true,
+      });
+    })
   </script>
 {% endblock %}

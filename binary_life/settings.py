@@ -24,7 +24,7 @@ SECRET_KEY = 'd6#8=&akbdvbuve*2rc5u_jv#vi2y3x8d2)fcb-or+q#8g*%9)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'jedoremad.com']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 # Application definition
 

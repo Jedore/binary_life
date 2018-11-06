@@ -2,31 +2,31 @@
 
 {% block content %}
   <div class="articles">
-    <table class="table table-hover table-bordered mt-4">
+    <table class="table table-hover table-sm mt-4">
       <thead>
       <tr>
         <th scope="col" class="text-center">ID</th>
         <th scope="col" class="text-center">Title</th>
-        <th scope="col" class="text-center">Type</th>
         <th scope="col" class="text-center">Views</th>
         <th scope="col" class="text-center">CreateTime</th>
+        <th scope="col" class="text-center">UpdateTime</th>
         <th scope="col" class="text-center">Del</th>
       </tr>
       </thead>
       <tbody>
       {% for article in articles %}
         <tr>
-          <th scope="row" class="text-center">{{ article.id }}</th>
-          <td class="text-center"><a href="/foreground/articles/{{ article.id }}">{{ article.title }}</a></td>
-          <td class="text-center">{{ article.article_type.name }}</td>
+          <td class="text-center">{{ article.id }}</td>
+          <td class=""><a class="text-dark" href="/foreground/articles/{{ article.id }}">{{ article.title }}</a></td>
           <td class="text-center">{{ article.views.count }}</td>
           <td class="text-center">{{ article.create_time | date:"Y-m-d H:i:s" }}</td>
+          <td class="text-center">{{ article.update_time | date:"Y-m-d H:i:s" }}</td>
           <td class="text-center">
             <form method="post" action="/background/article/">
               <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
               <input type="hidden" name="method" value="delete">
               <input type="hidden" name="articleId" value="{{ article.id }}">
-              <button class="btn btn-sm btn-danger" type="submit">delete</button>
+              <button class="btn btn-sm btn-danger" type="submit">del</button>
             </form>
           </td>
         </tr>

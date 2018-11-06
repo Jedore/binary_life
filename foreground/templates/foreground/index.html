@@ -1,19 +1,15 @@
 {% extends 'foreground/base.html' %}
 {% block content %}
-  <div id="index" class="container">
-    <div class="row justify-content-center">
-      <!--<div id="side-bar" class="col-2 bg-dark"></div>-->
-      <div id="article-list" class="col-10">
-        {% for article in articles %}
-          <div class="m-3 p-2 bg-light">
-            <h5 class="">{{ article.title }}</h5>
-            <div class="badge badge-secondary">{{ article.create_time | date:"Y-m-d" }}</div>
-            <div class="badge badge-secondary">{{ article.article_type.name }}</div>
-            <a href="/foreground/articles/{{ article.id }}" class="btn btn-link btn-sm float-right">More <i
-                class="fa fa-arrow-circle-right" aria-hidden="true"></i></a>
-          </div>
-        {% endfor %}
-      </div>
-    </div>
+  <div id="article-list">
+    {% for article in articles %}
+      <a href="/foreground/articles/{{ article.id }}">
+        <div class="article rounded m-3 p-2">
+          <h5 class="text-dark">{{ article.title }}</h5>
+          <span class="badge badge-light text-secondary">
+              <i class="fa fa-clock-o"></i> {{ article.create_time | date:"Y-m-d" }} </span>
+          <span class="badge badge-light text-secondary"><i class="fa fa-eye"></i> {{ article.views.count }}</span>
+        </div>
+      </a>
+    {% endfor %}
   </div>
 {% endblock %}

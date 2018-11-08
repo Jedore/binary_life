@@ -11,6 +11,10 @@ class ArticleType(models.Model):
     name = models.CharField(max_length=16)
 
 
+class TagsType(models.Model):
+    name = models.CharField(max_length=16)
+
+
 class Article(models.Model):
     title = models.CharField(max_length=100)
     summary = models.CharField(max_length=1024, null=True, default=None)
@@ -18,6 +22,8 @@ class Article(models.Model):
     create_time = models.DateTimeField(default=timezone.now)
     update_time = models.DateTimeField(default=timezone.now)
     article_type = models.ForeignKey(ArticleType, related_name='articles', null=True, on_delete=models.SET_NULL)
+    tags = models.ForeignKey(TagsType, related_name='articles', null=True, on_delete=models.SET_NULL)
+    is_hide = models.BooleanField(default=False)
 
 
 class BinaryLifeViews(models.Model):

@@ -9,10 +9,14 @@ from django.utils import timezone
 
 class ArticleType(models.Model):
     name = models.CharField(max_length=16)
+    create_time = models.DateTimeField(default=timezone.now)
+    update_time = models.DateTimeField(default=timezone.now)
 
 
 class TagsType(models.Model):
     name = models.CharField(max_length=16)
+    create_time = models.DateTimeField(default=timezone.now)
+    update_time = models.DateTimeField(default=timezone.now)
 
 
 class Article(models.Model):

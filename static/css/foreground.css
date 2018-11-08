@@ -13,3 +13,8 @@ body, nav, #content {
 #article-list .article:hover {
   background: #d6d7d8;
 }
+
+.navbar .dropdown-menu {
+  left: auto;
+  right: 0;
+}

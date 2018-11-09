@@ -7,7 +7,7 @@
       <input type="hidden" name="method" value="post">
       <div class="form-row">
         <div class="col-auto">
-          <div class="input-group">
+          <div class="input-group input-group-sm">
             <div class="input-group-prepend">
               <div class="input-group-text">Name</div>
             </div>
@@ -16,7 +16,7 @@
         </div>
         <div class="col-auto">
           <div class="col-auto">
-            <button type="submit" id="add-type" class="btn btn-secondary mb-2">AddType</button>
+            <button type="submit" id="add-type" class="btn btn-sm btn-secondary mb-2">Add</button>
           </div>
         </div>
       </div>
@@ -35,16 +35,39 @@
           <td class="text-center">{{ article_type.id }}</td>
           <td class="text-center">{{ article_type.name }}</td>
           <td class="text-center">
-            <form method="post" action="/background/article_type/">
-              <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-              <input type="hidden" name="method" value="delete">
-              <input type="hidden" name="typeId" value="{{ article_type.id }}">
-              <button class="btn btn-sm btn-danger" type="submit">del</button>
-            </form>
+            <button class="btn btn-sm btn-danger"
+                    onclick="del_type(this, '{% url 'background:article_type_del' article_type.id %}')">Del
+            </button>
           </td>
         </tr>
       {% endfor %}
       </tbody>
     </table>
   </div>
+{% endblock %}
+
+{% block script %}
+  <script>
+    function del_type(event, the_url) {
+      let $row = event.parentNode.parentNode;
+      $.ajax({
+        url: the_url,
+        data: {
+          "csrfmiddlewaretoken": $("[name='csrfmiddlewaretoken']").val(),
+        },
+        success: function (data) {
+          if (data.hasOwnProperty('failed')) {
+            alert(data.failed);
+          } else {
+            // delete row
+            $row.parentNode.deleteRow($row.rowIndex - 1);
+          }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+          alert(XMLHttpRequest.status + ' ' + errorThrown);
+        },
+        dataType: "json",
+      });
+    }
+  </script>
 {% endblock %}

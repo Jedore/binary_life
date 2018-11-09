@@ -2,7 +2,7 @@
 
 {% block content %}
   <div class="articles">
-    <table class="table table-hover table-sm mt-4">
+    <table class="table table-hover table-sm mt-1">
       <thead>
       <tr>
         <th scope="col" class="text-center">ID</th>
@@ -19,17 +19,13 @@
       {% for article in articles %}
         <tr>
           <td class="text-center">{{ article.id }}</td>
-          <td class=""><a class="text-dark" href="{% url 'foreground:article' article.id %}">{{ article.title }}</a></td>
+          <td class=""><a class="text-dark" href="{% url 'foreground:article' article.id %}">{{ article.title }}</a>
+          </td>
           <td class="text-center">{{ article.views.count }}</td>
           <td class="text-center">{{ article.create_time | date:"Y-m-d H:i:s" }}</td>
           <td class="text-center">{{ article.update_time | date:"Y-m-d H:i:s" }}</td>
           <td class="text-center">{{ article.is_hide }}</td>
           <td class="text-center">
-            {#            <form method="post" action="/background/article/">#}
-            {#              <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">#}
-            {#              <input type="hidden" name="method" value="delete">#}
-            {#              <input type="hidden" name="articleId" value="{{ article.id }}">#}
-            {#            </form>#}
             <button class="btn btn-sm btn-warning"
                     onclick="hide_show_article(this, {{ article.id }})">
               {% if article.is_hide %}Show{% else %}Hide{% endif %}
@@ -37,7 +33,7 @@
           </td>
           <td class="text-center">
             <button class="btn btn-sm btn-danger ml-2"
-                    onclick="del_article(this, '{% url 'background:article_del' article.id %}')"> Delete
+                    onclick="del_article(this, '{% url 'background:article_del' article.id %}')"> Del
             </button>
           </td>
         </tr>

@@ -60,26 +60,7 @@ class PublishView(BaseView):
 class ArticleTypeView(BaseView):
     def get(self, request):
         super(ArticleTypeView, self).get(request)
-        article_types = ArticleType.objects.all()
-        return render(request, 'background/article_type.html', locals())
-    
-    def post(self, request):
-        if request.POST.get('method') == 'post':
-            article_type = request.POST.get('name')
-            try:
-                ArticleType.objects.create(name=article_type)
-                messages.success(request, "success")
-            except:
-                messages.error(request, "failed: {}".format(sys.exc_info()[1]))
-        elif request.POST.get('method') == 'delete':
-            type_id = request.POST.get("typeId", 0)
-            try:
-                article_type = ArticleType.objects.get(id=type_id)
-                article_type.delete()
-                messages.success(request, "success")
-            except:
-                messages.error(request, "failed: {}".format(sys.exc_info()[1]))
-        article_types = ArticleType.objects.all()
+        article_types = ArticleType.objects.all().order_by('-create_time')
         return render(request, 'background/article_type.html', locals())
 
 
@@ -115,8 +96,19 @@ def article_del(request, article_id):
         article = Article.objects.filter(id=article_id).first()
         if not article:
             raise Exception('article not exist')
-        if article:
-            article.delete()
+        article.delete()
+    except Exception as e:
+        ret['failed'] = str(e)
+    return JsonResponse(ret)
+
+
+def article_type_del(request, article_type_id):
+    ret = {}
+    try:
+        article_type = ArticleType.objects.filter(id=article_type_id).first()
+        if not article_type:
+            raise Exception('article type not exist')
+        article_type.delete()
     except Exception as e:
         ret['failed'] = str(e)
     return JsonResponse(ret)

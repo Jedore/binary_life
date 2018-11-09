@@ -20,23 +20,23 @@
     <div id="col-left" class="col-2 border-right pl-5 pt-3">
       <div id="side-bar">
         <div class="">
-          <a class="nav-link text-dark" href="/">Foreground</a>
+          <a class="nav-link text-dark" href="{% url 'index' %}">Foreground</a>
         </div>
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link text-dark" href="/background">DashBoard</a>
+            <a class="nav-link text-dark" href="{% url 'background:background' %}">DashBoard</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-dark" href="/background/article">Article</a>
+            <a class="nav-link text-dark" href="{% url 'background:article' %}">Article</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-dark" href="/background/article_type">ArticleType</a>
+            <a class="nav-link text-dark" href="{% url 'background:article_type' %}">ArticleType</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-dark" href="/background/publish">Publish</a>
+            <a class="nav-link text-dark" href="{% url 'background:publish' %}">Publish</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-dark" href="/logout">Logout</a>
+            <a class="nav-link text-dark" href="{% url 'logout' %}">Logout</a>
           </li>
         </ul>
       </div>

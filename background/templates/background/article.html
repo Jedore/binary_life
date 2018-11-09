@@ -19,7 +19,7 @@
       {% for article in articles %}
         <tr>
           <td class="text-center">{{ article.id }}</td>
-          <td class=""><a class="text-dark" href="/foreground/articles/{{ article.id }}">{{ article.title }}</a></td>
+          <td class=""><a class="text-dark" href="{% url 'foreground:article' article.id %}">{{ article.title }}</a></td>
           <td class="text-center">{{ article.views.count }}</td>
           <td class="text-center">{{ article.create_time | date:"Y-m-d H:i:s" }}</td>
           <td class="text-center">{{ article.update_time | date:"Y-m-d H:i:s" }}</td>
@@ -36,7 +36,9 @@
             </button>
           </td>
           <td class="text-center">
-            <button class="btn btn-sm btn-danger ml-2" onclick="del_article(this, {{ article.id }})">Delete</button>
+            <button class="btn btn-sm btn-danger ml-2"
+                    onclick="del_article(this, '{% url 'background:article_del' article.id %}')"> Delete
+            </button>
           </td>
         </tr>
       {% endfor %}
@@ -77,10 +79,10 @@
       });
     }
 
-    function del_article(event, article_id) {
+    function del_article(event, the_url) {
       let $row = event.parentNode.parentNode;
       $.ajax({
-        url: `/background/article/del/${article_id}/`,
+        url: the_url,
         data: {
           "csrfmiddlewaretoken": $("[name='csrfmiddlewaretoken']").val(),
         },

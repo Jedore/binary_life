@@ -2,7 +2,7 @@
 {% block content %}
   <div id="article-list">
     {% for article in articles %}
-      <a href="/foreground/articles/{{ article.id }}">
+      <a href="{% url 'foreground:article' article.id %}">
         <div class="article rounded m-3 p-2">
           <h5 class="text-dark">{{ article.title }}</h5>
           <span class="badge badge-light text-secondary">

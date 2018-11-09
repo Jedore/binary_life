@@ -23,9 +23,9 @@ from foreground.views import IndexView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', bl_login),
-    path('logout/', bl_logout),
-    path('', IndexView.as_view()),
+    path('login/', bl_login, name='login'),
+    path('logout/', bl_logout, name='logout'),
+    path('', IndexView.as_view(), name='index'),
     path('foreground/', include('foreground.urls')),
     path('background/', include('background.urls')),
 ]

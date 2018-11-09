@@ -110,7 +110,7 @@
   function login_click() {
     $.ajax({
       type: "POST",
-      url: window.location.origin + "/login/",
+      url: {% url 'login' %},
       beforeSend: function (xhr, settings) {
         xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
       },

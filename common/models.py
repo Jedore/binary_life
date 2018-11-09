@@ -30,7 +30,7 @@ class Article(models.Model):
     is_hide = models.BooleanField(default=False)
 
 
-class BinaryLifeViews(models.Model):
+class ViewsRecord(models.Model):
     username = models.CharField(max_length=32)
     is_anonymous = models.BooleanField()
     is_superuser = models.BooleanField()
@@ -38,4 +38,6 @@ class BinaryLifeViews(models.Model):
     remote_addr = models.GenericIPAddressField()
     path = models.CharField(max_length=128)
     cookies = models.CharField(max_length=256)
+    create_time = models.DateTimeField(default=timezone.now)
+    update_time = models.DateTimeField(default=timezone.now)
     article = models.ForeignKey(Article, related_name='views', null=True, default=None, on_delete=models.SET_NULL)

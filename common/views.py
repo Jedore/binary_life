@@ -7,7 +7,7 @@ from django.shortcuts import redirect
 from django.views import View
 
 from .models import Article
-from .models import BinaryLifeViews
+from .models import ViewsRecord
 
 
 # Create your views here.
@@ -42,7 +42,7 @@ class BaseView(View):
             article = get_object_or_404(Article, id=article_id)
         else:
             article = None
-        BinaryLifeViews.objects.create(
+        ViewsRecord.objects.create(
             username=request.user.username,
             is_anonymous=request.user.is_anonymous,
             is_superuser=request.user.is_superuser,

@@ -18,3 +18,13 @@ body, nav, #content {
   left: auto;
   right: 0;
 }
+
+#card-me {
+  background: transparent;
+  border: none;
+}
+
+#card-tags {
+  background: transparent;
+  border: none;
+}

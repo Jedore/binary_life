@@ -15,24 +15,33 @@
       {% else %}
         <input type="hidden" name="method" , value="post">
       {% endif %}
-      <div class="form-group m-0">
+      <div class="form-group mb-1">
         <div class="input-group">
+          <div class="input-group-prepend"><span class="input-group-text">Title</span></div>
+          <input type="text" id="title" name="title" class="form-control" placeholder="" required
+                 value="{% if article %}{{ article.title }}{% endif %}">
+        </div>
+      </div>
+      <div class="form-group mb-1">
+        <div class="input-group">
+          <div class="input-group-prepend"><span class="input-group-text">ArticleType</span></div>
           <div class="input-group-prepend w-25">
-            <select id="article-type" name="article_type" class="form-control">
+            <select id="article-type" name="article_type" class="form-control" required>
               {% for type in article_types %}
                 <option value="{{ type.id }}"
                         {% if article and article.article_type.id == type.id %}selected{% endif %}>{{ type.name }}</option>
               {% endfor %}
             </select>
           </div>
-          <input type="text" id="title" name="title" class="form-control" placeholder="Title"
-                 value="{% if article %}{{ article.title }}{% endif %}">
+          <div class="input-group-prepend ml-1"><span class="input-group-text">Tags</span></div>
+          <input type="text" id="tag" name="tag" class="form-control" placeholder="(e.g.(python sql-server linux)"
+                 required>
         </div>
       </div>
       <div class="form-group">
         <div id="my-editormd" class="m-0 w-100">
-          <textarea id="content" name="content" style="display:none;">{% if article %}
-            {{ article.content }}{% endif %}</textarea>
+          <textarea id="content" name="content" style="display:none;" required>
+            {% if article %}{{ article.content }}{% endif %}</textarea>
         </div>
       </div>
       <div class="form-group col-auto pull-right">

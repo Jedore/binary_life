@@ -36,6 +36,7 @@ class PublishView(BaseView):
         title = request.POST.get('title')
         content = request.POST.get('content')
         article_type = request.POST.get('article_type')
+        tag = request.POST.get('tag')
         
         try:
             if request.POST.get('method') == 'post':
@@ -49,7 +50,7 @@ class PublishView(BaseView):
                 article.article_type = get_object_or_404(ArticleType, id=article_type)
                 article.save()
             messages.success(request, "success")
-        except:
+        except Exception as e:
             messages.error(request, "failed: {}".format(sys.exc_info()[1]))
         
         article_types = ArticleType.objects.all()

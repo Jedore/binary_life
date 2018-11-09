@@ -12,7 +12,7 @@ from common.views import BaseView
 class IndexView(BaseView):
     def get(self, request):
         super(IndexView, self).get(request)
-        articles = Article.objects.all().order_by("-create_time")
+        articles = Article.objects.filter(is_hide=False).order_by("-create_time")
         article_types = ArticleType.objects.all().order_by("id")
         return render(request, 'foreground/index.html', locals())
 

@@ -10,7 +10,9 @@
         <th scope="col" class="text-center">Views</th>
         <th scope="col" class="text-center">CreateTime</th>
         <th scope="col" class="text-center">UpdateTime</th>
-        <th scope="col" class="text-center">Del</th>
+        <th scope="col" class="text-center">Hide</th>
+        <th scope="col" class="text-center">Hide&Show</th>
+        <th scope="col" class="text-center">Delete</th>
       </tr>
       </thead>
       <tbody>
@@ -21,17 +23,80 @@
           <td class="text-center">{{ article.views.count }}</td>
           <td class="text-center">{{ article.create_time | date:"Y-m-d H:i:s" }}</td>
           <td class="text-center">{{ article.update_time | date:"Y-m-d H:i:s" }}</td>
+          <td class="text-center">{{ article.is_hide }}</td>
           <td class="text-center">
-            <form method="post" action="/background/article/">
-              <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-              <input type="hidden" name="method" value="delete">
-              <input type="hidden" name="articleId" value="{{ article.id }}">
-              <button class="btn btn-sm btn-danger" type="submit">del</button>
-            </form>
+            {#            <form method="post" action="/background/article/">#}
+            {#              <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">#}
+            {#              <input type="hidden" name="method" value="delete">#}
+            {#              <input type="hidden" name="articleId" value="{{ article.id }}">#}
+            {#            </form>#}
+            <button class="btn btn-sm btn-warning"
+                    onclick="hide_show_article(this, {{ article.id }})">
+              {% if article.is_hide %}Show{% else %}Hide{% endif %}
+            </button>
+          </td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-danger ml-2" onclick="del_article(this, {{ article.id }})">Delete</button>
           </td>
         </tr>
       {% endfor %}
       </tbody>
     </table>
   </div>
+{% endblock %}
+
+{% block script %}
+  <script>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+
+    function hide_show_article(event, article_id) {
+      // hide or show article
+      let $is_hide = event.parentNode.previousElementSibling;
+      let is_hide = $is_hide.textContent;
+      $.ajax({
+        url: `/background/article/hide_show/${article_id}/${is_hide}`,
+        data: {
+          "csrfmiddlewaretoken": $("[name='csrfmiddlewaretoken']").val(),
+        },
+        success: function (data) {
+          if (data.hasOwnProperty('failed')) {
+            alert(data.failed);
+          } else if (data.hasOwnProperty('is_hide')) {
+            $is_hide.textContent = data.is_hide;
+            event.textContent = data.is_hide == 'True' ? 'Show' : 'Hide';
+          } else {
+            alert('something error');
+          }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+          alert(XMLHttpRequest.status + ' ' + errorThrown);
+        },
+        dataType: "json",
+      });
+    }
+
+    function del_article(event, article_id) {
+      let $row = event.parentNode.parentNode;
+      $.ajax({
+        url: `/background/article/del/${article_id}/`,
+        data: {
+          "csrfmiddlewaretoken": $("[name='csrfmiddlewaretoken']").val(),
+        },
+        success: function (data) {
+          if (data.hasOwnProperty('failed')) {
+            alert(data.failed);
+          } else {
+            // delete row
+            $row.parentNode.deleteRow($row.rowIndex - 1);
+          }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+          alert(XMLHttpRequest.status + ' ' + errorThrown);
+        },
+        dataType: "json",
+      });
+    }
+  </script>
 {% endblock %}

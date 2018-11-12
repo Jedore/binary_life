@@ -4,10 +4,12 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
+from django.db import transaction
 
 from common.models import Article
 from common.models import ArticleType
 from common.models import ViewsRecord
+from common.models import ArticleTags
 from common.views import BaseView
 
 
@@ -33,28 +35,43 @@ class PublishView(BaseView):
         return render(request, 'background/publish.html', locals())
     
     def post(self, request):
-        title = request.POST.get('title')
+        title = self.process_str(request.POST.get('title'))
         content = request.POST.get('content')
-        article_type = request.POST.get('article_type')
-        tag = request.POST.get('tag')
-        
+        article_type = self.process_str(request.POST.get('article_type'))
+        tags = self.process_str(request.POST.get('tags'))
+        is_hide = self.process_str(request.POST.get('is_hide'))
+        article_id = request.POST.get('article_id')
         try:
-            if request.POST.get('method') == 'post':
-                Article.objects.create(title=title, content=content,
-                                       article_type=ArticleType.objects.get(id=article_type))
-            elif request.POST.get('method') == 'put':
-                article_id = request.POST.get('articleId')
-                article = get_object_or_404(Article, id=article_id)
-                article.title = title
-                article.content = content
-                article.article_type = get_object_or_404(ArticleType, id=article_type)
-                article.save()
+            if not title or not tags or not article_type or not content or not is_hide:
+                raise Exception("parameter error")
+            if is_hide == 'True':
+                is_hide = True
+            elif is_hide == 'False':
+                is_hide = False
+            else:
+                raise Exception('is_hide error')
+            tags = tags.split()
+            with transaction.atomic():
+                for tag in tags:
+                    ArticleTags.objects.get_or_create(name=tag)
+                if request.POST.get('method') == 'post':
+                    article = Article.objects.create(title=title, content=content, is_hide=is_hide,
+                                                     article_type=ArticleType.objects.get(id=article_type))
+                    article.tags.set(list(ArticleTags.objects.filter(name__in=tags)))
+                elif request.POST.get('method') == 'put':
+                    article = Article.objects.filter(id=article_id).first()
+                    if not article:
+                        raise Exception('article not exist')
+                    article.title = title
+                    article.content = content
+                    article.article_type = get_object_or_404(ArticleType, id=article_type)
+                    article.is_hide = is_hide
+                    article.save()
+                    article.tags.set(list(ArticleTags.objects.filter(name__in=tags)), clear=True)
             messages.success(request, "success")
         except Exception as e:
             messages.error(request, "failed: {}".format(sys.exc_info()[1]))
-        
         article_types = ArticleType.objects.all()
-        
         return render(request, 'background/publish.html', locals())
 
 

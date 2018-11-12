@@ -8,13 +8,13 @@ from django.utils import timezone
 
 
 class ArticleType(models.Model):
-    name = models.CharField(max_length=16)
+    name = models.CharField(max_length=16, unique=True)
     create_time = models.DateTimeField(default=timezone.now)
     update_time = models.DateTimeField(default=timezone.now)
 
 
-class TagsType(models.Model):
-    name = models.CharField(max_length=16)
+class ArticleTags(models.Model):
+    name = models.CharField(max_length=16, unique=True)
     create_time = models.DateTimeField(default=timezone.now)
     update_time = models.DateTimeField(default=timezone.now)
 
@@ -26,7 +26,7 @@ class Article(models.Model):
     create_time = models.DateTimeField(default=timezone.now)
     update_time = models.DateTimeField(default=timezone.now)
     article_type = models.ForeignKey(ArticleType, related_name='articles', null=True, on_delete=models.SET_NULL)
-    tags = models.ForeignKey(TagsType, related_name='articles', null=True, on_delete=models.SET_NULL)
+    tags = models.ManyToManyField(ArticleTags, related_name='articles', null=True)
     is_hide = models.BooleanField(default=False)
 
 

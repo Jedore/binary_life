@@ -35,7 +35,7 @@ class BaseView(View):
     """
     Base View for foreground
     """
-
+    
     def get(self, request):
         if request.path.startswith('/foreground/articles/'):
             article_id = request.path.split('/')[-1]
@@ -52,3 +52,7 @@ class BaseView(View):
             cookies=json.dumps(request.COOKIES),
             article=article
         )
+    
+    @staticmethod
+    def process_str(src):
+        return src if src is None else src.strip()

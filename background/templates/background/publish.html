@@ -11,31 +11,41 @@
       <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
       {% if article %}
         <input type="hidden" name="method" , value="put">
-        <input type="hidden" name="articleId" , value="{{ article.id }}">
+        <input type="hidden" name="article_id" , value="{{ article.id }}">
       {% else %}
         <input type="hidden" name="method" , value="post">
       {% endif %}
       <div class="form-group mb-1">
-        <div class="input-group">
+        <div class="input-group input-group-sm">
           <div class="input-group-prepend"><span class="input-group-text">Title</span></div>
           <input type="text" id="title" name="title" class="form-control" placeholder="" required
                  value="{% if article %}{{ article.title }}{% endif %}">
+          <div class="input-group-append">
+            <button id="submit" type="submit" class="btn btn-secondary">Publish</button>
+          </div>
         </div>
       </div>
       <div class="form-group mb-1">
-        <div class="input-group">
-          <div class="input-group-prepend"><span class="input-group-text">ArticleType</span></div>
-          <div class="input-group-prepend w-25">
-            <select id="article-type" name="article_type" class="form-control" required>
+        <div class="input-group input-group-sm">
+          <div class="input-group-prepend"><span class="input-group-text">Type</span></div>
+          <div class="input-group-prepend">
+            <select id="article-type" name="article_type" class="custom-select custom-select-sm" required>
               {% for type in article_types %}
                 <option value="{{ type.id }}"
                         {% if article and article.article_type.id == type.id %}selected{% endif %}>{{ type.name }}</option>
               {% endfor %}
             </select>
           </div>
+          <div class="input-group-prepend ml-1"><span class="input-group-text">IsHide</span></div>
+          <div class="input-group-prepend">
+            <select id="is_hide" name="is_hide" class="custom-select custom-select-sm" required>
+              <option value="False" {% if not article.is_hide %}selected{% endif %}>PUBLIC</option>
+              <option value="True" {% if article.is_hide %}selected{% endif %}>PRIVATE</option>
+            </select>
+          </div>
           <div class="input-group-prepend ml-1"><span class="input-group-text">Tags</span></div>
-          <input type="text" id="tag" name="tag" class="form-control" placeholder="(e.g.(python sql-server linux)"
-                 required>
+          <input type="text" id="tags" name="tags" class="form-control" placeholder="(e.g.(python sql-server linux)"
+                 required value="{% for tag in article.tags.iterator %}{{ tag.name }} {% endfor %}">
         </div>
       </div>
       <div class="form-group">
@@ -43,9 +53,6 @@
           <textarea id="content" name="content" style="display:none;" required>
             {% if article %}{{ article.content }}{% endif %}</textarea>
         </div>
-      </div>
-      <div class="form-group col-auto pull-right">
-        <button id="submit" type="submit" class="btn btn-secondary mb-2">Submit</button>
       </div>
     </form>
   </div>

@@ -4,20 +4,18 @@ from django.contrib import messages
 from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from django.views import View
 from django.shortcuts import render
 
 from common.models import Article
 from common.models import ArticleTags
 from common.models import ArticleType
 from common.models import ViewsRecord
-from common.views import process_str, record_view
+from common.views import process_str
 
 
 # Create your views here.
 
 
-@record_view
 def index(request):
     articles = Article.objects.all()
     all_views = ViewsRecord.objects.all().count()
@@ -25,7 +23,6 @@ def index(request):
     return render(request, 'background/dashboard.html', locals())
 
 
-@record_view
 def publish_get(request):
     article_id = request.GET.get('articleId')
     if article_id is not None:
@@ -75,13 +72,11 @@ def publish_post(request):
     return render(request, 'background/publish.html', locals())
 
 
-@record_view
 def article_types(request):
     article_types = ArticleType.objects.all()
     return render(request, 'background/article_type.html', locals())
 
 
-@record_view
 def articles(request):
     articles = Article.objects.all().order_by('-create_time')
     return render(request, 'background/article.html', locals())

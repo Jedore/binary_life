@@ -4,13 +4,14 @@ from django.shortcuts import render
 from common.models import Article
 from common.models import ArticleTags
 from common.models import ArticleType
-from common.views import record_view
+from common.views import record_page_view
+from common.views import article_page_view
 
 
 # Create your views here.
 
 
-@record_view
+@record_page_view
 def index(request):
     articles = Article.objects.filter(is_hide=False).order_by("-create_time")
     types = ArticleType.objects.all()
@@ -18,7 +19,7 @@ def index(request):
     return render(request, 'foreground/index.html', locals())
 
 
-@record_view
+@article_page_view
 def article(request, article_id):
     types = ArticleType.objects.all()
     tags = ArticleTags.objects.all()
@@ -26,7 +27,7 @@ def article(request, article_id):
     return render(request, "foreground/article.html", locals())
 
 
-@record_view
+@record_page_view
 def type_articles(request, type_id):
     types = ArticleType.objects.all()
     tags = ArticleTags.objects.all()
@@ -34,7 +35,7 @@ def type_articles(request, type_id):
     return render(request, "foreground/index.html", locals())
 
 
-@record_view
+@record_page_view
 def tag_articles(request, tag_id):
     types = ArticleType.objects.all()
     tags = ArticleTags.objects.all()

@@ -36,16 +36,11 @@ def process_str(src):
     return src if src is None else src.strip()
 
 
-def record_view(func):
+def record_page_view(func):
     """ Decorator for recording views
     """
     
     def wrapper_func(request, *args, **kwargs):
-        if request.path.startswith('/foreground/articles/'):
-            article_id = request.path.split('/')[-1]
-            article = get_object_or_404(Article, id=article_id)
-        else:
-            article = None
         ViewsRecord.objects.create(
             username=request.user.username,
             is_anonymous=request.user.is_anonymous,
@@ -54,8 +49,20 @@ def record_view(func):
             remote_addr=request.environ['REMOTE_ADDR'],
             path=request.path,
             cookies=json.dumps(request.COOKIES),
-            article=article
         )
         return func(request, *args, **kwargs)
+    
+    return wrapper_func
+
+
+def article_page_view(func):
+    """page view for article"""
+    
+    def wrapper_func(request, article_id):
+        article = Article.objects.filter(id=article_id).first()
+        if article_id:
+            article.page_view += 1
+            article.save()
+        return func(request, article_id)
     
     return wrapper_func

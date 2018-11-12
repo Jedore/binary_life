@@ -28,6 +28,10 @@ class Article(models.Model):
     article_type = models.ForeignKey(ArticleType, related_name='articles', null=True, on_delete=models.SET_NULL)
     tags = models.ManyToManyField(ArticleTags, related_name='articles', null=True)
     is_hide = models.BooleanField(default=False)
+    page_view = models.PositiveIntegerField(default=0)
+    unique_view = models.PositiveIntegerField(default=0)
+    ip_view = models.PositiveIntegerField(default=0)
+    author = models.CharField(max_length=16)
 
 
 class ViewsRecord(models.Model):
@@ -40,4 +44,3 @@ class ViewsRecord(models.Model):
     cookies = models.CharField(max_length=256)
     create_time = models.DateTimeField(default=timezone.now)
     update_time = models.DateTimeField(default=timezone.now)
-    article = models.ForeignKey(Article, related_name='views', null=True, default=None, on_delete=models.SET_NULL)

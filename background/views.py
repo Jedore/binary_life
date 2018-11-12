@@ -24,7 +24,7 @@ def index(request):
 
 
 def publish_get(request):
-    article_id = request.GET.get('articleId')
+    article_id = request.GET.get('article_id')
     if article_id is not None:
         article = get_object_or_404(Article, id=article_id)
     article_types = ArticleType.objects.all()

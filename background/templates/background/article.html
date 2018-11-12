@@ -9,7 +9,7 @@
         <th scope="col" class="text-center">Title</th>
         <th scope="col" class="text-center">Views</th>
         <th scope="col" class="text-center">CreateTime</th>
-        <th scope="col" class="text-center">UpdateTime</th>
+{#        <th scope="col" class="text-center">UpdateTime</th>#}
         <th scope="col" class="text-center">Hide</th>
         <th scope="col" class="text-center">Hide&Show</th>
         <th scope="col" class="text-center">Delete</th>
@@ -21,18 +21,17 @@
           <td class="text-center">{{ article.id }}</td>
           <td class=""><a class="text-dark" href="{% url 'foreground:article' article.id %}">{{ article.title }}</a>
           </td>
-          <td class="text-center">{{ article.views.count }}</td>
+          <td class="text-center">{{ article.page_view }}</td>
           <td class="text-center">{{ article.create_time | date:"Y-m-d H:i:s" }}</td>
-          <td class="text-center">{{ article.update_time | date:"Y-m-d H:i:s" }}</td>
+{#          <td class="text-center">{{ article.update_time | date:"Y-m-d H:i:s" }}</td>#}
           <td class="text-center">{{ article.is_hide }}</td>
           <td class="text-center">
-            <button class="btn btn-sm btn-warning"
-                    onclick="hide_show_article(this, {{ article.id }})">
+            <button class="btn btn-sm btn-outline-warning" onclick="hide_show_article(this, {{ article.id }})">
               {% if article.is_hide %}Show{% else %}Hide{% endif %}
             </button>
           </td>
           <td class="text-center">
-            <button class="btn btn-sm btn-danger ml-2"
+            <button class="btn btn-sm btn-outline-danger ml-2"
                     onclick="del_article(this, '{% url 'background:article_del' article.id %}')"> Del
             </button>
           </td>

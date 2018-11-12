@@ -76,7 +76,8 @@
         <div class="card-body">
           <h5 class="card-title">CATEGORY</h5>
           {% for type in types %}
-            <a href="{% url 'foreground:type_articles' type.id %}" class="btn text-dark text-left w-100"> {{ type.name }}
+            <a href="{% url 'foreground:type_articles' type.id %}"
+               class="btn btn-sm btn-outline-dark text-left w-100 mb-1"> {{ type.name }}
               {% if type.articles.count %}
                 <span class="badge badge-secondary"> {{ type.articles.count }}</span>
               {% endif %}
@@ -89,7 +90,7 @@
         <div class="card-body">
           <h5 class="card-title">TAG</h5>
           {% for tag in tags %}
-            <a href="{% url 'foreground:tag_articles' tag.id %}" class="btn text-dark"> {{ tag.name }}
+            <a href="{% url 'foreground:tag_articles' tag.id %}" class="btn btn-sm btn-outline-dark mb-1"> {{ tag.name }}
               {% if tag.articles.count %}
                 <span class="badge badge-secondary"> {{ tag.articles.count }}</span>
               {% endif %}

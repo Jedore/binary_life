@@ -10,14 +10,14 @@
       <thead class="">
       <tr>
         <th scope="col">Title</th>
-        <th scope="col">Views</th>
+        <th scope="col">PageViews</th>
       </tr>
       </thead>
       <tbody>
       {% for article in articles %}
         <tr>
           <td>{{ article.title }}</td>
-          <td>{{ article.views.count }}</td>
+          <td>{{ article.page_view }}</td>
         </tr>
       {% endfor %}
       </tbody>

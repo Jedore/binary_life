@@ -71,11 +71,30 @@
           {#          <a href="#" class="btn btn-primary">Go somewhere</a>#}
         </div>
       </div>
+      <div id="card-types" class="card" style="width: 18rem;">
+        {#        <img class="card-img-top" src="..." alt="Card image cap">#}
+        <div class="card-body">
+          <h5 class="card-title">CATEGORY</h5>
+          {% for type in types %}
+            <a href="{% url 'foreground:type_articles' type.id %}" class="btn text-dark text-left w-100"> {{ type.name }}
+              {% if type.articles.count %}
+                <span class="badge badge-secondary"> {{ type.articles.count }}</span>
+              {% endif %}
+            </a>
+          {% endfor %}
+        </div>
+      </div>
       <div id="card-tags" class="card" style="width: 18rem;">
         {#        <img class="card-img-top" src="..." alt="Card image cap">#}
         <div class="card-body">
           <h5 class="card-title">TAG</h5>
-          <a href="#" class="btn">Go somewhere</a>
+          {% for tag in tags %}
+            <a href="{% url 'foreground:tag_articles' tag.id %}" class="btn text-dark"> {{ tag.name }}
+              {% if tag.articles.count %}
+                <span class="badge badge-secondary"> {{ tag.articles.count }}</span>
+              {% endif %}
+            </a>
+          {% endfor %}
         </div>
       </div>
     </div>

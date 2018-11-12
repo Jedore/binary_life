@@ -19,13 +19,13 @@ from django.urls import path, include, re_path
 from django.views import static
 
 from common.views import bl_login, bl_logout
-from foreground.views import IndexView
+from foreground.views import index
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', bl_login, name='login'),
     path('logout/', bl_logout, name='logout'),
-    path('', IndexView.as_view(), name='index'),
+    path('', index, name='index'),
     path('foreground/', include('foreground.urls')),
     path('background/', include('background.urls')),
 ]

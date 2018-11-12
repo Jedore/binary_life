@@ -4,7 +4,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
-from django.views import View
 
 from .models import Article
 from .models import ViewsRecord
@@ -31,12 +30,17 @@ def bl_logout(request):
     return redirect('/')
 
 
-class BaseView(View):
+def process_str(src):
+    """ Process parameter for request form data
     """
-    Base View for foreground
+    return src if src is None else src.strip()
+
+
+def record_view(func):
+    """ Decorator for recording views
     """
     
-    def get(self, request):
+    def wrapper_func(request, *args, **kwargs):
         if request.path.startswith('/foreground/articles/'):
             article_id = request.path.split('/')[-1]
             article = get_object_or_404(Article, id=article_id)
@@ -52,7 +56,6 @@ class BaseView(View):
             cookies=json.dumps(request.COOKIES),
             article=article
         )
+        return func(request, *args, **kwargs)
     
-    @staticmethod
-    def process_str(src):
-        return src if src is None else src.strip()
+    return wrapper_func

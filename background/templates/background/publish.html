@@ -7,7 +7,7 @@
 
 {% block content %}
   <div class="publish mt-2">
-    <form method="post" action="{% url 'background:publish' %}">
+    <form method="post" action="{% url 'background:publish_post' %}">
       <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
       {% if article %}
         <input type="hidden" name="method" , value="put">

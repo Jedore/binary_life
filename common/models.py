@@ -44,3 +44,11 @@ class ViewsRecord(models.Model):
     cookies = models.CharField(max_length=256)
     create_time = models.DateTimeField(default=timezone.now)
     update_time = models.DateTimeField(default=timezone.now)
+
+
+class ArticleComments(models.Model):
+    is_author = models.BooleanField(default=False)
+    name = models.CharField(max_length=16)
+    create_time = models.DateTimeField(auto_now_add=True)
+    article = models.ForeignKey(Article, related_name='comments', on_delete=models.CASCADE)
+    reply = models.ForeignKey('self', related_name='replies', on_delete=models.CASCADE)

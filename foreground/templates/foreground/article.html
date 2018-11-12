@@ -23,6 +23,20 @@
         <textarea style="display:none;">{{ article.content }}</textarea>
       </div>
     </div>
+    <div id="comments">
+      <h5>Comments</h5>
+      <hr>
+      <textarea class="w-100" placeholder="Your comment ..." style="height: 100px;"></textarea>
+      <div class="input-group input-group-sm mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Name</span>
+        </div>
+        <input type="text" class="form-control">
+        <div class="input-group-append">
+        <button class="btn btn-sm btn-secondary">Post</button>
+        </div>
+      </div>
+    </div>
   </div>
 {% endblock %}
 

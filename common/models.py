@@ -26,7 +26,7 @@ class Article(models.Model):
     create_time = models.DateTimeField(default=timezone.now)
     update_time = models.DateTimeField(default=timezone.now)
     article_type = models.ForeignKey(ArticleType, related_name='articles', null=True, on_delete=models.SET_NULL)
-    tags = models.ManyToManyField(ArticleTags, related_name='articles', null=True)
+    tags = models.ManyToManyField(ArticleTags, related_name='articles')
     is_hide = models.BooleanField(default=False)
     page_view = models.PositiveIntegerField(default=0)
     unique_view = models.PositiveIntegerField(default=0)

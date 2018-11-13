@@ -28,6 +28,7 @@ def article(request, article_id):
     types = ArticleType.objects.all()
     tags = ArticleTags.objects.all()
     article = get_object_or_404(Article, id=article_id)
+    comments = ArticleComments.objects.filter(article=article).order_by("-create_time")
     return render(request, "foreground/article.html", locals())
 
 
@@ -55,8 +56,7 @@ def commit_comment(request):
     comment = process_str(request.POST.get("comment"))
     article_id = process_str(request.POST.get("article_id"))
     reply_id = process_str(request.POST.get("reply_id"))
-    if request.user.is_authenticated:
-        name = request.user
+    
     ret = {}
     try:
         if not name or not comment or not article_id:
@@ -69,7 +69,10 @@ def commit_comment(request):
         if not article:
             raise Exception("article not exist")
         is_author = True if request.user.username == article.author else False
-        ArticleComments.objects.create(name=name, is_author=is_author, comment=comment, article=article, reply=reply)
+        comment = ArticleComments.objects.create(name=name, is_author=is_author, comment=comment, article=article,
+                                                 reply=reply)
+        ret["create_time"] = comment.create_time.strftime("%Y-%m-%d %H:%M")
+        ret["id"] = comment.id
     except Exception as e:
         ret["failed"] = str(e)
     return JsonResponse(ret)

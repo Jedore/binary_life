@@ -1,11 +1,14 @@
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 
 from common.models import Article
+from common.models import ArticleComments
 from common.models import ArticleTags
 from common.models import ArticleType
-from common.views import record_page_view
 from common.views import article_page_view
+from common.views import process_str
+from common.views import record_page_view
 
 
 # Create your views here.
@@ -19,6 +22,7 @@ def index(request):
     return render(request, 'foreground/index.html', locals())
 
 
+@record_page_view
 @article_page_view
 def article(request, article_id):
     types = ArticleType.objects.all()
@@ -41,3 +45,31 @@ def tag_articles(request, tag_id):
     tags = ArticleTags.objects.all()
     articles = Article.objects.filter(tags=tag_id, is_hide=False).order_by("-create_time")
     return render(request, "foreground/index.html", locals())
+
+
+@record_page_view
+def commit_comment(request):
+    if request.method != "POST":
+        return
+    name = process_str(request.POST.get("name"))
+    comment = process_str(request.POST.get("comment"))
+    article_id = process_str(request.POST.get("article_id"))
+    reply_id = process_str(request.POST.get("reply_id"))
+    if request.user.is_authenticated:
+        name = request.user
+    ret = {}
+    try:
+        if not name or not comment or not article_id:
+            raise Exception("parameters error")
+        article = Article.objects.filter(id=int(article_id)).first()
+        if reply_id:
+            reply = ArticleComments.objects.filter(id=int(reply_id)).first()
+        else:
+            reply = None
+        if not article:
+            raise Exception("article not exist")
+        is_author = True if request.user.username == article.author else False
+        ArticleComments.objects.create(name=name, is_author=is_author, comment=comment, article=article, reply=reply)
+    except Exception as e:
+        ret["failed"] = str(e)
+    return JsonResponse(ret)

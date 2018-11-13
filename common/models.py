@@ -49,6 +49,7 @@ class ViewsRecord(models.Model):
 class ArticleComments(models.Model):
     is_author = models.BooleanField(default=False)
     name = models.CharField(max_length=16)
+    comment = models.TextField()
     create_time = models.DateTimeField(auto_now_add=True)
     article = models.ForeignKey(Article, related_name='comments', on_delete=models.CASCADE)
-    reply = models.ForeignKey('self', related_name='replies', on_delete=models.CASCADE)
+    reply = models.ForeignKey('self', related_name='replies', null=True, on_delete=models.CASCADE)

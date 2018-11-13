@@ -11,11 +11,13 @@ from common.models import ArticleTags
 from common.models import ArticleType
 from common.models import ViewsRecord
 from common.views import process_str
+from common.views import record_page_view
 
 
 # Create your views here.
 
 
+@record_page_view
 def index(request):
     articles = Article.objects.all()
     all_views = ViewsRecord.objects.all().count()
@@ -23,6 +25,7 @@ def index(request):
     return render(request, 'background/dashboard.html', locals())
 
 
+@record_page_view
 def publish_get(request):
     article_id = request.GET.get('article_id')
     if article_id is not None:
@@ -31,6 +34,7 @@ def publish_get(request):
     return render(request, 'background/publish.html', locals())
 
 
+@record_page_view
 def publish_post(request):
     title = process_str(request.POST.get('title'))
     content = request.POST.get('content')
@@ -72,16 +76,19 @@ def publish_post(request):
     return render(request, 'background/publish.html', locals())
 
 
+@record_page_view
 def article_types(request):
     article_types = ArticleType.objects.all()
     return render(request, 'background/article_type.html', locals())
 
 
+@record_page_view
 def articles(request):
     articles = Article.objects.all().order_by('-create_time')
     return render(request, 'background/article.html', locals())
 
 
+@record_page_view
 def article_hide_show(request, article_id, is_hide):
     ret = {}
     try:
@@ -101,6 +108,7 @@ def article_hide_show(request, article_id, is_hide):
     return JsonResponse(ret)
 
 
+@record_page_view
 def article_del(request, article_id):
     ret = {}
     try:
@@ -113,6 +121,7 @@ def article_del(request, article_id):
     return JsonResponse(ret)
 
 
+@record_page_view
 def article_type_del(request, article_type_id):
     ret = {}
     try:

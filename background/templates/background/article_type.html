@@ -2,25 +2,15 @@
 
 {% block content %}
   <div class="article-type mt-4">
-    <form method="post" action="/background/article_type/">
-      <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-      <input type="hidden" name="method" value="post">
-      <div class="form-row">
-        <div class="col-auto">
-          <div class="input-group input-group-sm">
-            <div class="input-group-prepend">
-              <div class="input-group-text">Name</div>
-            </div>
-            <input type="text" class="form-control" name="name" id="article-type" placeholder="type name">
-          </div>
-        </div>
-        <div class="col-auto">
-          <div class="col-auto">
-            <button type="submit" id="add-type" class="btn btn-sm btn-secondary mb-2">Add</button>
-          </div>
-        </div>
+    <div class="input-group input-group-sm">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Name</span>
       </div>
-    </form>
+      <input type="text" class="pl-1 pr-1" name="name" id="type-name" placeholder="type name">
+      <div class="input-group-append">
+        <div id="add-type" class="btn btn-secondary" onclick="add_type()">Add</div>
+      </div>
+    </div>
     <table class="table table-hover table-sm mt-4">
       <thead>
       <tr>
@@ -35,8 +25,7 @@
           <td class="text-center">{{ article_type.id }}</td>
           <td class="text-center">{{ article_type.name }}</td>
           <td class="text-center">
-            <button class="btn btn-sm btn-outline-danger"
-                    onclick="del_type(this, '{% url 'background:article_type_del' article_type.id %}')">Del
+            <button class="btn btn-sm btn-outline-danger" onclick="del_type(this, {{ article_type.id }})">Del
             </button>
           </td>
         </tr>
@@ -48,12 +37,14 @@
 
 {% block script %}
   <script>
-    function del_type(event, the_url) {
+    function del_type(event, type_id) {
       let $row = event.parentNode.parentNode;
       $.ajax({
-        url: the_url,
+        type: "POST",
+        url: "{% url "background:article_type_del" %}",
         data: {
-          "csrfmiddlewaretoken": $("[name='csrfmiddlewaretoken']").val(),
+          "csrfmiddlewaretoken": "{{ csrf_token }}",
+          "type_id": type_id,
         },
         success: function (data) {
           if (data.hasOwnProperty('failed')) {
@@ -61,6 +52,39 @@
           } else {
             // delete row
             $row.parentNode.deleteRow($row.rowIndex - 1);
+          }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+          alert(XMLHttpRequest.status + ' ' + errorThrown);
+        },
+        dataType: "json",
+      });
+    }
+
+    function add_type() {
+      let type_name = $("#type-name").val();
+      $.ajax({
+        type: "POST",
+        url: "{% url "background:article_type_add" %}",
+        data: {
+          "csrfmiddlewaretoken": "{{ csrf_token }}",
+          "type_name": type_name,
+        },
+        success: function (data) {
+          if (data.hasOwnProperty('failed')) {
+            alert(data.failed);
+          } else {
+            // insert row
+            $("tbody").append(
+                "<tr>" +
+                `<td class="text-center">${data.id}</td>` +
+                `<td class="text-center">${type_name}</td>` +
+                "<td class=\"text-center\">" +
+                `<button class=\"btn btn-sm btn-outline-danger\" onclick=\"del_type(this, ${data.id})\">Del` +
+                "</button>" +
+                "</td>" +
+                "</tr>"
+            );
           }
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {

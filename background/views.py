@@ -26,7 +26,7 @@ def index(request):
 
 
 @record_page_view
-def publish_get(request):
+def publish(request):
     article_id = request.GET.get('article_id')
     if article_id is not None:
         article = get_object_or_404(Article, id=article_id)
@@ -35,7 +35,7 @@ def publish_get(request):
 
 
 @record_page_view
-def publish_post(request):
+def article_add(request):
     title = process_str(request.POST.get('title'))
     content = request.POST.get('content')
     article_type = process_str(request.POST.get('article_type'))
@@ -122,13 +122,32 @@ def article_del(request, article_id):
 
 
 @record_page_view
-def article_type_del(request, article_type_id):
+def article_type_del(request):
+    if request.method != 'POST':
+        return
+    type_id = process_str(request.POST.get('type_id'))
     ret = {}
     try:
-        article_type = ArticleType.objects.filter(id=article_type_id).first()
+        article_type = ArticleType.objects.filter(id=type_id).first()
         if not article_type:
             raise Exception('article type not exist')
         article_type.delete()
     except Exception as e:
         ret['failed'] = str(e)
+    return JsonResponse(ret)
+
+
+@record_page_view
+def article_type_add(request):
+    if request.method != 'POST':
+        return
+    type_name = process_str(request.POST.get('type_name'))
+    ret = {}
+    try:
+        if not type_name:
+            raise Exception("name is null")
+        article_type = ArticleType.objects.create(name=type_name)
+        ret["id"] = article_type.id
+    except Exception as e:
+        ret["failed"] = str(e)
     return JsonResponse(ret)

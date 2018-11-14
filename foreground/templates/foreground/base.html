@@ -90,9 +90,9 @@
         <div class="card-body">
           <h5 class="card-title">TAG</h5>
           {% for tag in tags %}
-            <a href="{% url 'foreground:tag_articles' tag.id %}" class="btn btn-sm btn-outline-dark mb-1"> {{ tag.name }}
+            <a href="{% url 'foreground:tag_articles' tag.id %}" class="btn btn-sm btn-outline-dark mb-1">{{ tag.name }}
               {% if tag.articles.count %}
-                <span class="badge badge-secondary"> {{ tag.articles.count }}</span>
+                <span class="badge badge-secondary">{{ tag.articles.count }}</span>
               {% endif %}
             </a>
           {% endfor %}

@@ -10,11 +10,11 @@
     <div class="article-head">
       <h3>{{ article.title }}</h3>
       <div class="badge badge-light text-right text-secondary">
-        <i class="fa fa-clock-o"></i> {{ article.create_time | date:"Y-m-d H:i:s" }}
+        <i class="fa fa-clock-o mr-1"></i>{{ article.create_time | date:"Y-m-d H:i:s" }}
       </div>
       {% if request.user.is_superuser %}
-        <a id="edit" href="{% url 'background:publish_get' %}?article_id={{ article_id }}" class="text-secondary">
-          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+        <a id="edit" href="{% url 'background:publish_get' %}?article_id={{ article_id }}" class="badge badge-secondary">
+          <i class="fa fa-pencil-square-o mr-1" aria-hidden="true"></i>Edit
         </a>
       {% endif %}
     </div>
@@ -24,19 +24,39 @@
       </div>
     </div>
     <div id="comments">
-      <h5>COMMENTS <span class="badge badge-secondary">{{ article.comments.count }}</span></h5>
+      <h5>COMMENTS <span class="badge badge-pill badge-secondary">{{ article.comments.count }}</span></h5>
       <hr id="split-line">
       <div id="comment-list">
-        {% for comment in comments %}
-          <div>
-            <div style="font-size: 20px">{{ comment.name }}</div>
-            <small class="text-secondary">{{ comment.create_time | date:"Y-m-d H:i" }}</small>
-            <p>{{ comment.comment }}</p>
-            <button class="btn btn-sm btn-link reply" onclick="reply(this, {{ comment.id }})">
-              <i class="fa fa-reply text-secondary"> Reply</i>
-            </button>
-          </div>
-          <hr>
+        {% for comment in article.comments.iterator %}
+          {% if not comment.reply_id %}
+            <div id="comment-{{ comment.id }}">
+              <div>
+                {% if comment.is_author %}
+                  <span class="fa fa-paint-brush"></span>
+                {% endif %}
+                {{ comment.name }}
+              </div>
+              <small class="text-secondary">{{ comment.create_time | date:"Y-m-d H:i" }}</small>
+              <p>{{ comment.comment }}</p>
+              <button class="btn btn-sm btn-link p-0 reply" onclick="reply(this, {{ comment.id }})">
+                <i class="fa fa-reply mr-1" aria-hidden="true"></i>Reply
+              </button>
+              <div class="reply-list ml-5">
+                {% for reply in comment.replies.iterator %}
+                  <hr>
+                  <div>
+                    {% if reply.is_author %}
+                      <span class="fa fa-paint-brush"></span>
+                    {% endif %}
+                    {{ reply.name }}
+                  </div>
+                  <small class="text-secondary">{{ reply.create_time | date:"Y-m-d H:i" }}</small>
+                  <p>{{ reply.comment }}</p>
+                {% endfor %}
+              </div>
+            </div>
+            <hr>
+          {% endif %}
         {% endfor %}
       </div>
       <div id="commit">
@@ -82,6 +102,7 @@
     function commit_comment() {
       let $comment = $("#commit #comment");
       let comment = $comment.val();
+      let reply_id = $("#reply-id").val();
       let name;
       {% if not request.user.is_authenticated %}
         let $name = $("#commit #name");
@@ -106,25 +127,41 @@
             "comment": comment,
             "name": name,
             "article_id": {{ article.id }},
+            "reply_id": reply_id,
           },
           success: function (data) {
             if (data.hasOwnProperty('failed')) {
               alert(data.failed);
+            } else if (data.hasOwnProperty('reply_id')) {
+              reset_commit();
+              // insert new comment reply
+              let author = "";
+              if (data.is_author === "True") {
+                author = "<span class=\"fa fa-paint-brush\"></span>"
+              }
+              $(`#comment-${reply_id} .reply-list`).prepend(
+                  "<hr>" +
+                  `<div>${author}${name}</div>` +
+                  `<small class="text-secondary">${data.create_time}</small>` +
+                  `<p>${comment}</p>`
+              );
             } else {
+              reset_commit();
+              // insert new comment
+              let author = "";
+              if (data.is_author === "True") {
+                author = "<span class=\"fa fa-paint-brush\"></span>"
+              }
               $("#comment-list").prepend(
                   " <div>" +
-                  `<div style="font-size: 20px">${name}</div>` +
+                  `<div>${author}${name}</div>` +
                   `<small class="text-secondary">${data.create_time}</small>` +
                   `<p>${comment}</p>` +
-                  `<button class="btn btn-sm btn-link reply" onclick="reply(this, ${data.id})"><i class="fa fa-reply text-secondary"> Reply</i>` +
+                  `<button class="btn btn-sm btn-link p-0 reply" onclick="reply(this, ${data.id})"><i class="fa fa-reply mr-1" aria-hidden="true"></i>Reply` +
                   "</button>" +
                   "</div>" +
                   "<hr>"
               );
-              $("#commit #comment").val("");
-              {% if not request.user.is_authenticated %}
-                $("#commit #name").val("");
-              {% endif %}
             }
           },
           error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -138,14 +175,24 @@
     function reply(event, reply_id) {
       $("#commit .cancel-reply").attr("hidden", false);
       $("#commit #reply-id").val(reply_id);
-      alert(reply_id);
       $("#commit").insertAfter((event.parentNode));
     }
 
     function cancel_reply() {
+      $("#commit").insertAfter(($("#comment-list")));
       $("#commit .cancel-reply").attr("hidden", true);
       $("#commit #reply-id").val("");
+    }
+
+    function reset_commit() {
       $("#commit").insertAfter(($("#comment-list")));
+      $("#commit .cancel-reply").attr("hidden", true);
+      $("#commit #reply-id").val("");
+
+      $("#commit #comment").val("");
+      {% if not request.user.is_authenticated %}
+        $("#commit #name").val("");
+      {% endif %}
     }
   </script>
 {% endblock %}

@@ -47,6 +47,9 @@ class ViewsRecord(models.Model):
 
 
 class ArticleComments(models.Model):
+    class Meta:
+        ordering = ('-create_time',)
+    
     is_author = models.BooleanField(default=False)
     name = models.CharField(max_length=16)
     comment = models.TextField()

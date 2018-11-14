@@ -28,7 +28,6 @@ def article(request, article_id):
     types = ArticleType.objects.all()
     tags = ArticleTags.objects.all()
     article = get_object_or_404(Article, id=article_id)
-    comments = ArticleComments.objects.filter(article=article).order_by("-create_time")
     return render(request, "foreground/article.html", locals())
 
 
@@ -73,6 +72,9 @@ def commit_comment(request):
                                                  reply=reply)
         ret["create_time"] = comment.create_time.strftime("%Y-%m-%d %H:%M")
         ret["id"] = comment.id
+        ret["is_author"] = is_author
+        if reply_id:
+            ret["reply_id"] = reply_id
     except Exception as e:
         ret["failed"] = str(e)
     return JsonResponse(ret)

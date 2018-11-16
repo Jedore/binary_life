@@ -35,8 +35,8 @@ body, nav, #content {
   box-shadow: 0 0 10px #719ECE;
 }
 
-#split-line {
-  height: 5px;
+.split-line {
+  height: 0.2rem;
   border: none;
-  background-color: #919191;
+  background-color: #9e9e9e;
 }

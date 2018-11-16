@@ -1,0 +1,46 @@
+#content pre {
+  white-space: pre-wrap; /* css-3 */
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* Internet Explorer 5.5+ */
+  background-color: #e2e2e2;
+  border: 1px solid #b9b9b9;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  padding: 0.125rem 0.3125rem 0.0625rem;
+}
+
+#content pre code {
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+}
+
+#content code {
+  background-color: #e2e2e2;
+  color: #282828;
+}
+
+#content ul {
+  padding-left: 1.2rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Old Standard TT', serif;
+  font-weight: bold;
+}
+
+#content a {
+  color: #008CBA;
+}
+
+#content blockquote {
+  padding: 0 1em;
+  color: #6a737d;
+  border-left: .25em solid #dfe2e5
+}
+
+#content dd {
+  padding-left: 2rem;
+}

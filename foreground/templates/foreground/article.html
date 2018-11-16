@@ -2,14 +2,14 @@
 {% load static %}
 
 {% block head %}
-  <link href="{% static 'libs/editor.md/css/editormd.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/markdown-jd.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
   <div id="article">
     <div class="article-head">
-      <h3>{{ article.title }}</h3>
-      <div class="badge badge-light text-right text-secondary">
+      <h1>{{ article.title }}</h1>
+      <div class="badge badge-light text-right text-secondary m-1">
         <i class="fa fa-clock-o mr-1"></i>{{ article.create_time | date:"Y-m-d H:i:s" }}
       </div>
       {% if request.user.is_superuser %}
@@ -17,15 +17,14 @@
           <i class="fa fa-pencil-square-o mr-1" aria-hidden="true"></i>Edit
         </a>
       {% endif %}
+      <hr class="split-line">
     </div>
-    <div class="editormd-preview-theme-light d-block">
-      <div id="content">
-        <textarea style="display:none;">{{ article.content }}</textarea>
-      </div>
+    <div id="content" class="mt-4">
+      <textarea hidden>{{ article.content }}</textarea>
     </div>
-    <div id="comments">
+    <div id="comments" class="pt-4">
       <h5>COMMENTS <span class="badge badge-pill badge-secondary">{{ article.comments.count }}</span></h5>
-      <hr id="split-line">
+      <hr class="split-line">
       <div id="comment-list">
         {% for comment in article.comments.iterator %}
           {% if not comment.reply_id %}
@@ -77,27 +76,18 @@
 {% endblock %}
 
 {% block script %}
-  <script src="{% static 'libs/editor.md/lib/marked.min.js' %}"></script>
-  <script src="{% static 'libs/editor.md/lib/prettify.min.js' %}"></script>
-  <script src="{% static 'libs/editor.md/lib/raphael.min.js' %}"></script>
-  <script src="{% static 'libs/editor.md/lib/underscore.min.js' %}"></script>
-  <script src="{% static 'libs/editor.md/lib/sequence-diagram.min.js' %}"></script>
-  <script src="{% static 'libs/editor.md/lib/flowchart.min.js' %}"></script>
-  <script src="{% static 'libs/editor.md/lib/jquery.flowchart.min.js' %}"></script>
-  <script src="{% static 'libs/editor.md/editormd.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/Markdown.Converter.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/Markdown.Sanitizer.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/Markdown.Extra.js' %}"></script>
   <script>
-    let testEditor;
-    $(function () {
-      testEditor = editormd.markdownToHTML("content", {//注意：这里是上面DIV的id
-        htmlDecode: "style,script,iframe",
-        emoji: true,
-        taskList: true,
-        tex: true, // 默认不解析
-        flowChart: true, // 默认不解析
-        sequenceDiagram: true, // 默认不解析
-        codeFold: true,
-      });
+    let converter = new Markdown.Converter();
+    Markdown.Extra.init(converter, {
+      extensions: "all",
+      table_class: "table",
     });
+    let html = converter.makeHtml($("#content textarea").val());
+    $("#content").append(html);
+
 
     function commit_comment() {
       let $comment = $("#commit #comment");

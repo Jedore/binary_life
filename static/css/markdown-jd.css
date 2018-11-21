@@ -20,6 +20,7 @@
 #content code {
   background-color: #e2e2e2;
   color: #282828;
+  padding: 0.125rem 0.3125rem 0.0625rem;
 }
 
 #content ul {

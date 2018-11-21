@@ -19,14 +19,18 @@ body, nav, #content {
   right: 0;
 }
 
-#card-me {
+#card-me, #card-tags, #card-types, #card-comments {
   background: transparent;
-  border: none;
+  /*border: none;*/
 }
 
-#card-tags, #card-types {
+.comment-link {
   background: transparent;
-  border: none;
+  color: gray;
+}
+
+.comment-link:hover {
+  color: black;
 }
 
 #commit #comment:focus, #commit #name:focus {
@@ -39,4 +43,9 @@ body, nav, #content {
   height: 0.2rem;
   border: none;
   background-color: #9e9e9e;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Old Standard TT', serif;
+  font-weight: bold;
 }

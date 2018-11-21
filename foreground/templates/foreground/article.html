@@ -8,7 +8,7 @@
 {% block content %}
   <div id="article">
     <div class="article-head">
-      <h1>{{ article.title }}</h1>
+      <h2>{{ article.title }}</h2>
       <div class="badge badge-light text-right text-secondary m-1">
         <i class="fa fa-clock-o mr-1"></i>{{ article.create_time | date:"Y-m-d H:i:s" }}
       </div>
@@ -22,7 +22,7 @@
     <div id="content" class="mt-4">
       <textarea hidden>{{ article.content }}</textarea>
     </div>
-    <div id="comments" class="pt-4">
+    <div id="comments" class="pt-4 pb-5">
       <h5>COMMENTS <span class="badge badge-pill badge-secondary">{{ article.comments.count }}</span></h5>
       <hr class="split-line">
       <div id="comment-list">

@@ -19,6 +19,7 @@ def index(request):
     articles = Article.objects.filter(is_hide=False).order_by("-create_time")
     types = ArticleType.objects.all()
     tags = ArticleTags.objects.all()
+    comments = ArticleComments.objects.all()[:5]
     return render(request, 'foreground/index.html', locals())
 
 
@@ -27,6 +28,7 @@ def index(request):
 def article(request, article_id):
     types = ArticleType.objects.all()
     tags = ArticleTags.objects.all()
+    comments = ArticleComments.objects.all()[:5]
     article = get_object_or_404(Article, id=article_id)
     return render(request, "foreground/article.html", locals())
 
@@ -35,6 +37,7 @@ def article(request, article_id):
 def type_articles(request, type_id):
     types = ArticleType.objects.all()
     tags = ArticleTags.objects.all()
+    comments = ArticleComments.objects.all()[:5]
     articles = Article.objects.filter(article_type=type_id, is_hide=False).order_by("-create_time")
     return render(request, "foreground/index.html", locals())
 
@@ -43,6 +46,7 @@ def type_articles(request, type_id):
 def tag_articles(request, tag_id):
     types = ArticleType.objects.all()
     tags = ArticleTags.objects.all()
+    comments = ArticleComments.objects.all()[:5]
     articles = Article.objects.filter(tags=tag_id, is_hide=False).order_by("-create_time")
     return render(request, "foreground/index.html", locals())
 

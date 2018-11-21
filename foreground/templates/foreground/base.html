@@ -12,8 +12,8 @@
   <title>{% block title %}JEDORE'S BLOG{% endblock %}</title>
   {% block head %}{% endblock %}
 </head>
-<body class="mb-5">
-<nav class="navbar bg-dark navbar-expand-lg sticky-top">
+<body>
+<nav class="navbar bg-dark navbar-expand-lg">
   <a href="/">
     <span class="navbar-brand text-light" style="font-size: 25px; font-weight: 700;">JEDORE CBC</span>
   </a>
@@ -63,7 +63,7 @@
       {% block content %}{% endblock %}
     </div>
     <div class="col-3">
-      <div id="card-me" class="card" style="width: 18rem;">
+      <div id="card-me" class="card mb-1">
         {#        <img class="card-img-top" src="..." alt="Card image cap">#}
         <div class="card-body">
           <h5 class="card-title">ABOUT ME</h5>
@@ -71,21 +71,21 @@
           {#          <a href="#" class="btn btn-primary">Go somewhere</a>#}
         </div>
       </div>
-      <div id="card-types" class="card" style="width: 18rem;">
-        {#        <img class="card-img-top" src="..." alt="Card image cap">#}
-        <div class="card-body">
-          <h5 class="card-title">CATEGORY</h5>
-          {% for type in types %}
-            <a href="{% url 'foreground:type_articles' type.id %}"
-               class="btn btn-sm btn-outline-dark text-left w-100 mb-1"> {{ type.name }}
-              {% if type.articles.count %}
-                <span class="badge badge-secondary"> {{ type.articles.count }}</span>
-              {% endif %}
-            </a>
-          {% endfor %}
-        </div>
-      </div>
-      <div id="card-tags" class="card" style="width: 18rem;">
+      {#      <div id="card-types" class="card" style="width: 18rem;">#}
+      {#        <img class="card-img-top" src="..." alt="Card image cap">#}
+      {#        <div class="card-body">#}
+      {#          <h5 class="card-title">CATEGORY</h5>#}
+      {#          {% for type in types %}#}
+      {#            <a href="{% url 'foreground:type_articles' type.id %}"#}
+      {#               class="btn btn-sm btn-outline-dark text-left w-100 mb-1"> {{ type.name }}#}
+      {#              {% if type.articles.count %}#}
+      {#                <span class="badge badge-secondary"> {{ type.articles.count }}</span>#}
+      {#              {% endif %}#}
+      {#            </a>#}
+      {#          {% endfor %}#}
+      {#        </div>#}
+      {#      </div>#}
+      <div id="card-tags" class="card mb-1">
         {#        <img class="card-img-top" src="..." alt="Card image cap">#}
         <div class="card-body">
           <h5 class="card-title">TAG</h5>
@@ -97,6 +97,24 @@
             </a>
           {% endfor %}
         </div>
+      </div>
+      <div id="card-comments" class="card">
+        {#        <img class="card-img-top" src="..." alt="Card image cap">#}
+        <div class="card-body">
+          {% if comments %}
+            <h5 class="card-title">RECENT COMMENTS</h5>
+          {% endif %}
+        </div>
+        <ul class="list-group list-group-flush">
+          {% for comment in comments %}
+            {#              <a class="btn btn-sm btn-outline-dark text-left mb-1 w-100">#}
+            <a class="list-group-item comment-link"
+               href="{% url 'foreground:article' comment.article.id %} }/#comments">
+              {{ comment.comment|slice:":30" }}
+            </a>
+            {#                {% if comment.comment|length > 20 %}...{% endif %}</a>#}
+          {% endfor %}
+        </ul>
       </div>
     </div>
   </div>
@@ -125,12 +143,12 @@
     </div>
   </div>
 </div>
-<div class="footer fixed-bottom bg-dark p-2">
-  <div class="container-fluid text-center text-light">
-    <span> &copy;2018</span>
-    <span> Jeodre CBC</span>
-  </div>
-</div>
+{#<div class="footer sticky-bottom bg-dark p-2">#}
+{#  <div class="container-fluid text-center text-light">#}
+{#    <span> &copy;2018</span>#}
+{#    <span> Jeodre CBC</span>#}
+{#  </div>#}
+{#</div>#}
 
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"

@@ -4,7 +4,7 @@
     {% for article in articles %}
       <a href="{% url 'foreground:article' article.id %}">
         <div class="article rounded m-3 p-2">
-          <h5 class="text-dark">{{ article.title }}</h5>
+          <h4 class="text-dark">{{ article.title }}</h4>
           <span class="badge badge-light text-secondary">
               <i class="fa fa-clock-o"></i> {{ article.create_time | date:"Y-m-d" }} </span>
           <span class="badge badge-light text-secondary"><i class="fa fa-eye"></i> {{ article.page_view }}</span>

@@ -8,6 +8,8 @@
           <span class="badge badge-light text-secondary">
               <i class="fa fa-clock-o"></i> {{ article.create_time | date:"Y-m-d" }} </span>
           <span class="badge badge-light text-secondary"><i class="fa fa-eye"></i> {{ article.page_view }}</span>
+          <span class="badge badge-light text-secondary">
+            <i class="fa fa-comments-o"></i> {{ article.comments.count }}</span>
           {% if article.tags.count %}
             <span class="badge badge-light text-secondary"><i class="fa fa-tags"></i>
             {% for tag in article.tags.iterator %}{{ tag.name }} {% endfor %} </span>

@@ -107,7 +107,7 @@
           {% for comment in comments %}
             {#              <a class="btn btn-sm btn-outline-dark text-left mb-1 w-100">#}
             <a class="list-group-item comment-link"
-               href="{% url 'foreground:article' comment.article.id %} }/#comments">
+               href="{% url 'foreground:article' comment.article.id %} }/#comment-{{ comment.id }}">
               {{ comment.comment|slice:":30" }}
             </a>
             {#                {% if comment.comment|length > 20 %}...{% endif %}</a>#}

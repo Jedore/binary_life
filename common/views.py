@@ -2,7 +2,6 @@ import json
 
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 
 from .models import Article
@@ -41,15 +40,16 @@ def record_page_view(func):
     """
     
     def wrapper_func(request, *args, **kwargs):
-        ViewsRecord.objects.create(
-            username=request.user.username,
-            is_anonymous=request.user.is_anonymous,
-            is_superuser=request.user.is_superuser,
-            scheme=request.scheme,
-            remote_addr=request.environ['REMOTE_ADDR'],
-            path=request.path,
-            cookies=json.dumps(request.COOKIES),
-        )
+        if not request.user.is_superuser:
+            ViewsRecord.objects.create(
+                username=request.user.username,
+                is_anonymous=request.user.is_anonymous,
+                is_superuser=request.user.is_superuser,
+                scheme=request.scheme,
+                remote_addr=request.environ['REMOTE_ADDR'],
+                path=request.path,
+                cookies=json.dumps(request.COOKIES),
+            )
         return func(request, *args, **kwargs)
     
     return wrapper_func
@@ -59,10 +59,11 @@ def article_page_view(func):
     """page view for article"""
     
     def wrapper_func(request, article_id):
-        article = Article.objects.filter(id=article_id).first()
-        if article_id:
-            article.page_view += 1
-            article.save()
+        if not request.user.is_superuser:
+            article = Article.objects.filter(id=article_id).first()
+            if article_id:
+                article.page_view += 1
+                article.save()
         return func(request, article_id)
     
     return wrapper_func

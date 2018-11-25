@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block head %}
-  <link href="{% static 'css/markdown-jd.css' %}" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css"/>
 {% endblock %}
 
 {% block content %}
@@ -79,6 +79,7 @@
   <script type="text/javascript" src="{% static 'js/Markdown.Converter.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/Markdown.Sanitizer.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/Markdown.Extra.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
   <script>
     $(function () {
       let $times = $.find(".c-time");
@@ -86,14 +87,18 @@
         let localtime = (new Date(Date.parse($t.innerText))).toLocaleString();
         $t.innerHTML = `<i class="fa fa-clock-o mr-1"></i>${localtime}`;
       })
+
       // convert markdown to html
       let converter = new Markdown.Converter();
       Markdown.Extra.init(converter, {
         extensions: "all",
         table_class: "table",
+        highlighter: "highlight",
       });
       let html = converter.makeHtml($("#content textarea").val());
       $("#content").append(html);
+
+      hljs.initHighlightingOnLoad();
     })
 
 

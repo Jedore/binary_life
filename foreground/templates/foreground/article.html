@@ -12,6 +12,9 @@
       <span class="badge badge-light text-right text-secondary m-1 c-time">
         <i class="fa fa-clock-o mr-1"></i>{{ article.create_time | date:"c" }}
       </span>
+      <span class="badge badge-light text-secondary m-1">
+            <i class="fa fa-comments-o mr-1"></i>{{ article.comments.count }}
+      </span>
       {% if request.user.is_superuser %}
         <a id="edit" href="{% url 'background:publish' %}?article_id={{ article_id }}" class="badge badge-secondary">
           <i class="fa fa-pencil-square-o mr-1" aria-hidden="true"></i>Edit

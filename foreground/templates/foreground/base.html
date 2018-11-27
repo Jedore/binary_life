@@ -90,7 +90,8 @@
         <div class="card-header">TAGS</div>
         <div class="card-body">
           {% for tag in tags %}
-            <a href="{% url 'foreground:tag_articles' tag.id %}" class="card-link text-dark">{{ tag.name }}
+            <a href="{% url 'foreground:tag_articles' tag.id %}" class="text-dark">
+              <span class="badge badge-secondary">{{ tag.name }}</span>
               {#              {% if tag.articles.count %}#}
               {#                <span class="badge badge-light">{{ tag.articles.count }}</span>#}
               {#              {% endif %}#}

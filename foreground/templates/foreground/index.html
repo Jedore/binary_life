@@ -3,7 +3,7 @@
   <div id="article-list">
     {% for article in articles %}
       <a href="{% url 'foreground:article' article.id %}">
-        <div class="article rounded m-3 p-2">
+        <div class="article rounded p-3">
           <h4 class="text-dark">{{ article.title }}</h4>
           <span class="badge badge-light text-secondary c-time">
               <i class="fa fa-clock-o mr-1"></i>{{ article.create_time|date:"c" }}</span>

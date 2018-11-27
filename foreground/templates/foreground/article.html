@@ -1,6 +1,10 @@
 {% extends "foreground/base.html" %}
 {% load static %}
 
+{% block title %}
+  {{ article.title }}
+{% endblock %}
+
 {% block head %}
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css"/>
 {% endblock %}

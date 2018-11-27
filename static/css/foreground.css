@@ -21,7 +21,6 @@ body, nav, #content {
 
 #card-me, #card-tags, #card-types, #card-comments {
   background: transparent;
-  /*border: none;*/
 }
 
 .comment-link {

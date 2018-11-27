@@ -18,7 +18,7 @@
 <body>
 <div id="background" class="container-fluid">
   <div class="row">
-    <div id="col-left" class="col-2 border-right pl-5 pt-3">
+    <div id="col-left" class="col-md-2 border-right pl-5 pt-3">
       <div id="side-bar">
         <div class="">
           <a class="nav-link text-dark" href="{% url 'index' %}">Foreground</a>
@@ -42,7 +42,7 @@
         </ul>
       </div>
     </div>
-    <div class="col-right col-10 border-right">
+    <div id="col-right" class="col-md-10 border-right">
       {% if messages %}
         {% for message in messages %}
           {% if message.tags == 'success' %}

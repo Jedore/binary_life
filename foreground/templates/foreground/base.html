@@ -9,13 +9,13 @@
   <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/foreground.css' %}">
   <link rel="icon" href="{% static 'image/binarylife.ico' %}" type="image/x-icon"/>
-  <title>{% block title %}JEDORE'S BLOG{% endblock %}</title>
+  <title>{% block title %}JC{% endblock %}</title>
   {% block head %}{% endblock %}
 </head>
 <body>
 <nav class="navbar bg-dark navbar-expand-lg">
   <a href="/">
-    <span class="navbar-brand text-light" style="font-size: 25px; font-weight: 700;">JEDORE CBC</span>
+    <span class="navbar-brand text-light" style="font-size: 25px; font-weight: 700;">JC</span>
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,20 +57,20 @@
     </ul>
   </div>
 </nav>
-<div class="container mt-5">
+<div class="container mt-3">
   <div class="row">
-    <div class="col-9">
+    <div class="col-md-8 col-lg-8">
       {% block content %}{% endblock %}
     </div>
-    <div class="col-3">
-      <div id="card-me" class="card mb-1">
-        {#        <img class="card-img-top" src="..." alt="Card image cap">#}
-        <div class="card-body">
-          <h5 class="card-title">ABOUT ME</h5>
-          <i class="card-text">Record something on way to ...</i>
-          {#          <a href="#" class="btn btn-primary">Go somewhere</a>#}
-        </div>
-      </div>
+    <div class="col-12 col-lg-4">
+      {#      <div id="card-me" class="card mb-1">#}
+      {#        <img class="card-img-top" src="..." alt="Card image cap">#}
+      {#        <div class="card-body">#}
+      {#          <h5 class="card-title">ABOUT ME</h5>#}
+      {#          <i class="card-text">Record something on way to ...</i>#}
+      {#          <a href="#" class="btn btn-primary">Go somewhere</a>#}
+      {#        </div>#}
+      {#      </div>#}
       {#      <div id="card-types" class="card" style="width: 18rem;">#}
       {#        <img class="card-img-top" src="..." alt="Card image cap">#}
       {#        <div class="card-body">#}
@@ -85,24 +85,22 @@
       {#          {% endfor %}#}
       {#        </div>#}
       {#      </div>#}
-      <div id="card-tags" class="card mb-1">
+      <div id="card-tags" class="card mb-3">
         {#        <img class="card-img-top" src="..." alt="Card image cap">#}
+        <div class="card-header">TAGS</div>
         <div class="card-body">
-          <h5 class="card-title">TAG</h5>
           {% for tag in tags %}
-            <a href="{% url 'foreground:tag_articles' tag.id %}" class="btn btn-sm btn-outline-dark mb-1">{{ tag.name }}
-              {% if tag.articles.count %}
-                <span class="badge badge-secondary">{{ tag.articles.count }}</span>
-              {% endif %}
+            <a href="{% url 'foreground:tag_articles' tag.id %}" class="card-link text-dark">{{ tag.name }}
+              {#              {% if tag.articles.count %}#}
+              {#                <span class="badge badge-light">{{ tag.articles.count }}</span>#}
+              {#              {% endif %}#}
             </a>
           {% endfor %}
         </div>
       </div>
       <div id="card-comments" class="card">
         {#        <img class="card-img-top" src="..." alt="Card image cap">#}
-        <div class="card-body">
-          <h5 class="card-title">RECENT COMMENTS</h5>
-        </div>
+        <div class="card-header">RECENT COMMENTS</div>
         <ul class="list-group list-group-flush">
           {% for comment in comments %}
             {#              <a class="btn btn-sm btn-outline-dark text-left mb-1 w-100">#}

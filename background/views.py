@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from common.models import Article
 from common.models import ArticleTags
@@ -59,6 +59,7 @@ def article_add(request):
                 article = Article.objects.create(title=title, content=content, is_hide=is_hide,
                                                  article_type=ArticleType.objects.get(id=article_type))
                 article.tags.set(list(ArticleTags.objects.filter(name__in=tags)))
+                msg = "POST SUCCESS"
             elif request.POST.get('method') == 'put':
                 article = Article.objects.filter(id=article_id).first()
                 if not article:
@@ -69,11 +70,13 @@ def article_add(request):
                 article.is_hide = is_hide
                 article.save()
                 article.tags.set(list(ArticleTags.objects.filter(name__in=tags)), clear=True)
-        messages.success(request, "success")
+                msg = "UPDATE SUCCESS"
+        messages.success(request, msg)
+        return redirect('foreground:article', article.id)
     except Exception as e:
         messages.error(request, "failed: {}".format(sys.exc_info()[1]))
-    article_types = ArticleType.objects.all()
-    return render(request, 'background/publish.html', locals())
+        article_types = ArticleType.objects.all()
+        return render(request, 'background/publish.html', locals())
 
 
 @record_page_view

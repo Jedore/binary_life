@@ -48,11 +48,11 @@
             </a>
           </div>
         </li>
-      {% else %}
-        <li class="nav-item">
-          <button class="btn btn-dark" data-toggle="modal" data-target="#loginModal">LOGIN
-          </button>
-        </li>
+        {#      {% else %}#}
+        {#        <li class="nav-item">#}
+        {#          <button class="btn btn-dark" data-toggle="modal" data-target="#loginModal">LOGIN#}
+        {#          </button>#}
+        {#        </li>#}
       {% endif %}
     </ul>
   </div>
@@ -118,28 +118,28 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content bg-light">
-      <div class="modal-body">
-        <form>
-          <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-          <div class="form-group">
-            <input type="text" class="form-control border-secondary" id="username" name="username"
-                   placeholder="username">
-          </div>
-          <div class="form-group">
-            <input type="password" class="form-control border-secondary" id="password" name="password"
-                   placeholder="password">
-          </div>
-          <p id="error" class="text-center" style="color: red;"></p>
-          <button id="login-click" type="button" class="btn btn-outline-secondary w-100">LOGIN</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+{#<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"#}
+{#     aria-hidden="true">#}
+{#  <div class="modal-dialog modal-dialog-centered" role="document">#}
+{#    <div class="modal-content bg-light">#}
+{#      <div class="modal-body">#}
+{#        <form>#}
+{#          <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">#}
+{#          <div class="form-group">#}
+{#            <input type="text" class="form-control border-secondary" id="username" name="username"#}
+{#                   placeholder="username">#}
+{#          </div>#}
+{#          <div class="form-group">#}
+{#            <input type="password" class="form-control border-secondary" id="password" name="password"#}
+{#                   placeholder="password">#}
+{#          </div>#}
+{#          <p id="error" class="text-center" style="color: red;"></p>#}
+{#          <button id="login-click" type="button" class="btn btn-outline-secondary w-100">LOGIN</button>#}
+{#        </form>#}
+{#      </div>#}
+{#    </div>#}
+{#  </div>#}
+{#</div>#}
 {#<div class="footer sticky-bottom bg-dark p-2">#}
 {#  <div class="container-fluid text-center text-light">#}
 {#    <span> &copy;2018</span>#}
@@ -155,48 +155,48 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 <script>
-  function login_click() {
-    $.ajax({
-      type: "POST",
-      url: {% url 'login' %},
-      beforeSend: function (xhr, settings) {
-        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-      },
-      cache: false,
-      data: JSON.stringify({
-        "username": $("#username").val(),
-        "password": $("#password").val()
-      }),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json"
-    }).done(function (data) {
-      if (data['ret_code'] === 0) {
-        window.location.href = window.location.href
-      } else {
-        $("#error").text(data['error']);
-      }
-    });
-  }
+  {#function login_click() {#}
+  {#  $.ajax({#}
+  {#    type: "POST",#}
+  {#    url: {% url 'login' %},#}
+  {#    beforeSend: function (xhr, settings) {#}
+  {#      xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");#}
+  {#    },#}
+  {#    cache: false,#}
+  {#    data: JSON.stringify({#}
+  {#      "username": $("#username").val(),#}
+  {#      "password": $("#password").val()#}
+  {#    }),#}
+  {#    contentType: "application/json; charset=utf-8",#}
+  {#    dataType: "json"#}
+  {#  }).done(function (data) {#}
+  {#    if (data['ret_code'] === 0) {#}
+  {#      window.location.href = window.location.href#}
+  {#    } else {#}
+  {#      $("#error").text(data['error']);#}
+  {#    }#}
+  {#  });#}
+  {#}#}
 
-  /*
-  function resize_height() {
-      var base_h = $("#article-list").height(),
-          body_h = $(window).outerHeight(),
-          footer_h = $("footer").height();
-      //$("#index").css("min-height", base_h - footer_h > body_h -footer_h ? base_h : body_h);
-      $("content").css("min-height", base_h > body_h ? base_h : body_h);
-  }
-  */
+    /*
+    function resize_height() {
+        var base_h = $("#article-list").height(),
+            body_h = $(window).outerHeight(),
+            footer_h = $("footer").height();
+        //$("#index").css("min-height", base_h - footer_h > body_h -footer_h ? base_h : body_h);
+        $("content").css("min-height", base_h > body_h ? base_h : body_h);
+    }
+    */
 
-  $(function () {
-    $("#login-click").click(function () {
-      login_click();
-    });
-    /*resize_height();
-    $(window).resize(function () {
-        resize_height();
-    });*/
-  })
+    $(function () {
+      {#$("#login-click").click(function () {#}
+      {#login_click();#}
+      {#\});#}
+      /*resize_height();
+      $(window).resize(function () {
+          resize_height();
+      });*/
+    })
 </script>
 {% block script %}{% endblock %}
 </body>

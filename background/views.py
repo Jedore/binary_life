@@ -71,7 +71,7 @@ def article_add(request):
                 article.save()
                 article.tags.set(list(ArticleTags.objects.filter(name__in=tags)), clear=True)
                 msg = "UPDATE SUCCESS"
-        messages.success(request, msg)
+        # messages.success(request, msg)
         return redirect('foreground:article', article.id)
     except Exception as e:
         messages.error(request, "failed: {}".format(sys.exc_info()[1]))

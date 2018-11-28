@@ -16,6 +16,7 @@
       <span class="badge badge-light text-right text-secondary m-1 c-time">
         <i class="fa fa-clock-o mr-1"></i>{{ article.create_time | date:"c" }}
       </span>
+      <span class="badge badge-light text-secondary"><i class="fa fa-eye mr-1"></i>{{ article.page_view }}</span>
       <span class="badge badge-light text-secondary m-1">
             <i class="fa fa-comments-o mr-1"></i>{{ article.comments.count }}
       </span>
@@ -76,7 +77,7 @@
           <input id="name" type="text" class="form-control form-control-sm mt-1" placeholder="* Name" maxlength="16">
         {% endif %}
         <input id="reply-id" type="text" value="" hidden>
-        <button class="btn btn-sm btn-dark mt-2 pl-4 pr-4" onclick="commit_comment()"> POST</button>
+        <button class="btn btn-sm btn-secondary mt-2 pl-4 pr-4" onclick="commit_comment()"> POST</button>
       </div>
     </div>
   </div>

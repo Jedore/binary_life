@@ -52,3 +52,7 @@ h1, h2, h3, h4, h5, h6 {
 #card-tags a {
   text-decoration: none;
 }
+
+pre code {
+  background: #e8e8e8 !important;
+}

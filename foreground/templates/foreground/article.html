@@ -171,7 +171,7 @@
           type: "POST",
           url: "{% url "foreground:comment" %}",
           data: {
-            "csrfmiddlewaretoken": $("[name='csrfmiddlewaretoken']").val(),
+            "csrfmiddlewaretoken": '{{ csrf_token }}',
             "comment": comment,
             "name": name,
             "article_id": {{ article.id }},

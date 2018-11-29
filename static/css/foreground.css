@@ -64,6 +64,16 @@ pre code {
   background: #e8e8e8 !important;
 }
 
-#card-toc .card-body a {
+#card-toc .card-body a, #content a {
   color: #619ccd;
+}
+
+#card-tags a {
+  background: #dcdcdc;
+  color: gray;
+}
+
+#card-tags a:hover {
+  background: #c7c7c7;
+  color: black;
 }

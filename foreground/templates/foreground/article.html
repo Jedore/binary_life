@@ -97,6 +97,9 @@
       })
 
       // convert markdown string to html
+      marked.setOptions({
+        breaks: true,
+      })
       $('#content').append(marked($("#content textarea").val()));
 
       // highlight

@@ -19,7 +19,7 @@ body, nav, #content {
   right: 0;
 }
 
-#card-me, #card-tags, #card-types, #card-comments {
+#card-me, #card-tags, #card-types, #card-comments, #card-toc {
   background: transparent;
 }
 
@@ -62,4 +62,8 @@ code {
 
 pre code {
   background: #e8e8e8 !important;
+}
+
+#card-toc .card-body a {
+  color: #619ccd;
 }

@@ -83,24 +83,3 @@ def commit_comment(request):
     except Exception as e:
         ret["failed"] = str(e)
     return JsonResponse(ret)
-
-
-def toc(contents):
-    """
-    Table of contents
-    :param contents:
-    :return:
-    """
-    tables = {}
-    pat = re.compile("\n(#{2,4}) *([^\r^#]+)\r?")
-    rets = re.finditer(pat, '\n' + contents)
-    tmp_len = 0
-    tmp_key = ""
-    for r in rets:
-        if not len(tables):
-            tmp_len = len(r.group(1))
-            tmp_key = r.group(2).lower().replace(' ', '-')
-            tables[tmp_key] = []
-        elif len(r.group(1)) < tmp_len:
-            pass
-    return tables

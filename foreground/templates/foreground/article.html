@@ -83,6 +83,15 @@
   </div>
 {% endblock %}
 
+{% block toc %}
+  <div id="card-toc" class="card mt-3">
+    <div class="card-header"><h4>Table of Contents</h4></div>
+    <div class="card-body">
+      <ul id="toc"></ul>
+    </div>
+  </div>
+{% endblock %}
+
 {% block script %}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
@@ -97,10 +106,41 @@
       })
 
       // convert markdown string to html
+      let renderer = new marked.Renderer();
+      let toc = [];
+      renderer.heading = function (text, level, raw) {
+        let anchor = this.options.headerPrefix + raw.toLowerCase();
+        toc.push({
+          anchor: anchor,
+          level: level,
+          text: text,
+          children: [],
+        });
+        return '<h'
+            + level
+            + ' id="'
+            + anchor
+            + '">'
+            + text
+            + '</h'
+            + level
+            + '>\n';
+      };
       marked.setOptions({
+        renderer: renderer,
         breaks: true,
+        smartLists: true,
       })
       $('#content').append(marked($("#content textarea").val()));
+
+      // create toc element
+      let first_level = toc[0].level;
+      toc.forEach(function (e) {
+        if (e.level - first_level > 1) {
+          return
+        }
+        $("#toc").append(`<li><a href="#${e.anchor}" class="ml-${(e.level - first_level) * 4}">${e.text}</a></li>`);
+      });
 
       // highlight
       hljs.initHighlightingOnLoad();

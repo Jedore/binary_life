@@ -57,56 +57,62 @@
     </ul>
   </div>
 </nav>
-<div class="container mt-3">
+<div class="container">
   <div class="row">
-    <div class="col-md-8 col-lg-8">
+    <div class="col-md-8 col-lg-8 mt-3">
       {% block content %}{% endblock %}
     </div>
     <div class="col-12 col-lg-4">
-      {#      <div id="card-me" class="card mb-1">#}
-      {#        <img class="card-img-top" src="..." alt="Card image cap">#}
-      {#        <div class="card-body">#}
-      {#          <h5 class="card-title">ABOUT ME</h5>#}
-      {#          <i class="card-text">Record something on way to ...</i>#}
-      {#          <a href="#" class="btn btn-primary">Go somewhere</a>#}
-      {#        </div>#}
-      {#      </div>#}
-      {#      <div id="card-types" class="card" style="width: 18rem;">#}
-      {#        <img class="card-img-top" src="..." alt="Card image cap">#}
-      {#        <div class="card-body">#}
-      {#          <h5 class="card-title">CATEGORY</h5>#}
-      {#          {% for type in types %}#}
-      {#            <a href="{% url 'foreground:type_articles' type.id %}"#}
-      {#               class="btn btn-sm btn-outline-dark text-left w-100 mb-1"> {{ type.name }}#}
-      {#              {% if type.articles.count %}#}
-      {#                <span class="badge badge-secondary"> {{ type.articles.count }}</span>#}
-      {#              {% endif %}#}
-      {#            </a>#}
-      {#          {% endfor %}#}
-      {#        </div>#}
-      {#      </div>#}
-      <div id="card-tags" class="card mb-3">
+      <div class="sticky-top pt-3">
+        {#      <div id="card-me" class="card mb-1">#}
         {#        <img class="card-img-top" src="..." alt="Card image cap">#}
-        <div class="card-header"><h5>TAGS</h5></div>
-        <div class="card-body">
-          {% for tag in tags %}
-            <a href="{% url 'foreground:tag_articles' tag.id %}" class="badge badge-secondary">{{ tag.name }}</a>
-          {% endfor %}
+        {#        <div class="card-body">#}
+        {#          <h5 class="card-title">ABOUT ME</h5>#}
+        {#          <i class="card-text">Record something on way to ...</i>#}
+        {#          <a href="#" class="btn btn-primary">Go somewhere</a>#}
+        {#        </div>#}
+        {#      </div>#}
+        {#      <div id="card-types" class="card" style="width: 18rem;">#}
+        {#        <img class="card-img-top" src="..." alt="Card image cap">#}
+        {#        <div class="card-body">#}
+        {#          <h5 class="card-title">CATEGORY</h5>#}
+        {#          {% for type in types %}#}
+        {#            <a href="{% url 'foreground:type_articles' type.id %}"#}
+        {#               class="btn btn-sm btn-outline-dark text-left w-100 mb-1"> {{ type.name }}#}
+        {#              {% if type.articles.count %}#}
+        {#                <span class="badge badge-secondary"> {{ type.articles.count }}</span>#}
+        {#              {% endif %}#}
+        {#            </a>#}
+        {#          {% endfor %}#}
+        {#        </div>#}
+        {#      </div>#}
+        <div id="card-tags" class="card">
+          {#        <img class="card-img-top" src="..." alt="Card image cap">#}
+          <div class="card-header"><h4>Tags</h4></div>
+          <div class="card-body">
+            {% for tag in tags %}
+              <a href="{% url 'foreground:tag_articles' tag.id %}" class="badge badge-secondary">{{ tag.name }}</a>
+            {% endfor %}
+          </div>
         </div>
-      </div>
-      <div id="card-comments" class="card">
+        {#      {% if comments.count %}#}
+        {#        <div id="card-comments" class="card mt-3">#}
         {#        <img class="card-img-top" src="..." alt="Card image cap">#}
-        <div class="card-header"><h5>RECENT COMMENTS</h5></div>
-        <ul class="list-group list-group-flush">
-          {% for comment in comments %}
-            {#              <a class="btn btn-sm btn-outline-dark text-left mb-1 w-100">#}
-            <a class="list-group-item comment-link"
-               href="{% url 'foreground:article' comment.article.id %} }/#comment-{{ comment.id }}">
-              {{ comment.comment|slice:":30" }}
-            </a>
-            {#                {% if comment.comment|length > 20 %}...{% endif %}</a>#}
-          {% endfor %}
-        </ul>
+        {#          <div class="card-header"><h4>Recent Comments</h4></div>#}
+        {#          <ul class="list-group list-group-flush">#}
+        {#            {% for comment in comments %}#}
+        {#              <a class="btn btn-sm btn-outline-dark text-left mb-1 w-100">#}
+        {#              <a class="list-group-item comment-link"#}
+        {#                 href="{% url 'foreground:article' comment.article.id %} }/#comment-{{ comment.id }}">#}
+        {#                {{ comment.comment|slice:":30" }}#}
+        {#              </a>#}
+        {#                {% if comment.comment|length > 20 %}...{% endif %}</a>#}
+        {#            {% endfor %}#}
+        {#          </ul>#}
+        {#        </div>#}
+        {#      {% endif %}#}
+        {% block toc %}
+        {% endblock %}
       </div>
     </div>
   </div>

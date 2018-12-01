@@ -13,13 +13,18 @@
   <div id="article">
     <div class="article-head">
       <h2>{{ article.title }}</h2>
-      <span class="badge text-right text-secondary m-1 c-time">
+      <span class="badge text-right text-secondary c-time">
         <i class="fa fa-clock-o mr-1"></i>{{ article.create_time | date:"c" }}
       </span>
       <span class="badge text-secondary"><i class="fa fa-eye mr-1"></i>{{ article.page_view }}</span>
-      <span class="badge text-secondary m-1">
+      <span class="badge text-secondary">
             <i class="fa fa-comments-o mr-1"></i>{{ article.comments.count }}
       </span>
+      {% if article.tags.count %}
+        <span class="badge badge-light text-secondary">
+              <i class="fa fa-tags mr-1"></i>{% for tag in article.tags.iterator %}{{ tag.name }} {% endfor %}
+            </span>
+      {% endif %}
       {% if request.user.is_superuser %}
         <a id="edit" href="{% url 'background:publish' %}?article_id={{ article_id }}" class="badge badge-secondary">
           <i class="fa fa-pencil-square-o mr-1" aria-hidden="true"></i>Edit

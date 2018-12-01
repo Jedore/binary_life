@@ -19,7 +19,7 @@ body, nav, #content {
   right: 0;
 }
 
-#card-me, #card-tags, #card-types, #card-comments {
+#card-me, #card-tags, #card-types, #card-comments, #card-toc {
   background: transparent;
 }
 
@@ -62,4 +62,42 @@ code {
 
 pre code {
   background: #e8e8e8 !important;
+}
+
+#card-toc .card-body a, #content a {
+  color: #619ccd;
+}
+
+#card-tags a {
+  background: #dcdcdc;
+  color: gray;
+}
+
+#card-tags a:hover {
+  background: #c7c7c7;
+  color: black;
+}
+
+.article-head span {
+  background: #dcdcdc;
+}
+
+/* Scrollbar styles */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #ccc;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #999;
 }

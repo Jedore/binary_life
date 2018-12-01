@@ -13,11 +13,11 @@
   <div id="article">
     <div class="article-head">
       <h2>{{ article.title }}</h2>
-      <span class="badge badge-light text-right text-secondary m-1 c-time">
+      <span class="badge text-right text-secondary m-1 c-time">
         <i class="fa fa-clock-o mr-1"></i>{{ article.create_time | date:"c" }}
       </span>
-      <span class="badge badge-light text-secondary"><i class="fa fa-eye mr-1"></i>{{ article.page_view }}</span>
-      <span class="badge badge-light text-secondary m-1">
+      <span class="badge text-secondary"><i class="fa fa-eye mr-1"></i>{{ article.page_view }}</span>
+      <span class="badge text-secondary m-1">
             <i class="fa fa-comments-o mr-1"></i>{{ article.comments.count }}
       </span>
       {% if request.user.is_superuser %}
@@ -25,14 +25,14 @@
           <i class="fa fa-pencil-square-o mr-1" aria-hidden="true"></i>Edit
         </a>
       {% endif %}
-      <hr class="split-line">
+      <hr class="split-line mt-0">
     </div>
     <div id="content" class="mt-4">
       <textarea hidden>{{ article.content }}</textarea>
     </div>
     <div id="comments" class="pt-4 pb-5">
       <h5>COMMENTS <span class="badge badge-pill badge-secondary">{{ article.comments.count }}</span></h5>
-      <hr class="split-line">
+      <hr class="split-line mt-0">
       <div id="comment-list">
         {% for comment in article.comments.iterator %}
           {% if not comment.reply_id %}
@@ -83,6 +83,11 @@
   </div>
 {% endblock %}
 
+{% block toc %}
+  <div id="toc">
+  </div>
+{% endblock %}
+
 {% block script %}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
@@ -92,12 +97,57 @@
       // convert time format
       let $times = $.find(".c-time");
       $times.forEach(function ($t) {
-        let localtime = (new Date(Date.parse($t.innerText))).toLocaleString();
+        let localtime = (new Date(Date.parse($t.innerText))).toLocaleString().toLowerCase();
         $t.innerHTML = `<i class="fa fa-clock-o mr-1"></i>${localtime}`;
       })
 
       // convert markdown string to html
+      let renderer = new marked.Renderer();
+      let toc = [];
+      renderer.heading = function (text, level, raw) {
+        let anchor = this.options.headerPrefix + raw.toLowerCase();
+        toc.push({
+          anchor: anchor,
+          level: level,
+          text: text,
+          children: [],
+        });
+        return '<h'
+            + level
+            + ' id="'
+            + anchor
+            + '">'
+            + text
+            + '</h'
+            + level
+            + '>\n';
+      };
+      renderer.link = function (href, title, text) {
+        let link = marked.Renderer.prototype.link.call(this, href, title, text);
+        return link.replace("<a", "<a target='_blank' ");
+      };
+      marked.setOptions({
+        renderer: renderer,
+        breaks: true,
+        smartLists: true,
+      })
       $('#content').append(marked($("#content textarea").val()));
+
+      // create toc element
+      if (toc.length > 0) {
+        $("#toc").append(
+            '<div id="card-toc" class="card mt-3">' +
+            '<div class="card-header"><h4>Table of Contents</h4></div>' +
+            '<div class="card-body"> <ul></ul> </div>' +
+            '</div>');
+        let first_level = toc[0].level;
+        toc.forEach(function (e) {
+          if (e.level - first_level > 1) {
+            return
+          }
+          $("#toc ul").append(`<li><a href="#${e.anchor}" class="ml-${(e.level - first_level) * 4}">${e.text}</a></li>`);
+        });
+      }
 
       // highlight
       hljs.initHighlightingOnLoad();
@@ -128,7 +178,7 @@
           type: "POST",
           url: "{% url "foreground:comment" %}",
           data: {
-            "csrfmiddlewaretoken": $("[name='csrfmiddlewaretoken']").val(),
+            "csrfmiddlewaretoken": '{{ csrf_token }}',
             "comment": comment,
             "name": name,
             "article_id": {{ article.id }},

@@ -2,3 +2,9 @@ body,
 #background {
   background: #f5f6f7;
 }
+
+
+#preview {
+  overflow: scroll;
+  height: 500px;
+}

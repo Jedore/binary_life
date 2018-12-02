@@ -1,4 +1,4 @@
-{% extends "foreground/base.html" %}
+{% extends "foreground/index.html" %}
 {% load static %}
 
 {% block title %}
@@ -66,7 +66,7 @@
                     {% endif %}
                     {{ reply.name }}
                   </div>
-                  <small class="text-secondary">{{ reply.create_time | date:"Y-m-d H:i" }}</small>
+                  <small class="text-secondary c-time">{{ reply.create_time | date:"c" }}</small>
                   <p>{{ reply.comment }}</p>
                 {% endfor %}
               </div>
@@ -82,11 +82,17 @@
         </button>
         <small class="d-block">Required fields are marked *</small>
         <textarea id="comment" class="form-control mt-2" placeholder="* Your comment" style="height: 100px;"></textarea>
-        {% if not request.user.is_authenticated %}
-          <input id="name" type="text" class="form-control form-control-sm mt-1" placeholder="* Name" maxlength="16">
-        {% endif %}
+        <div class="mt-1 d-flex w-100">
+          {% if not request.user.is_authenticated %}
+            <div>
+              <input id="name" type="text" class="form-control form-control-sm" placeholder="* Name" maxlength="16">
+            </div>
+          {% endif %}
+          <div class="ml-auto">
+            <button class="btn btn-sm btn-secondary px-4" onclick="commit_comment()"> POST</button>
+          </div>
+        </div>
         <input id="reply-id" type="text" value="" hidden>
-        <button class="btn btn-sm btn-secondary mt-2 pl-4 pr-4" onclick="commit_comment()"> POST</button>
       </div>
     </div>
   </div>
@@ -101,56 +107,28 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.5.2/marked.min.js"></script>
+  <script src="{% static 'js/jc.js' %}"></script>
   <script>
     $(function () {
       // convert time format
       let $times = $.find(".c-time");
       $times.forEach(function ($t) {
-        let localtime = (new Date(Date.parse($t.innerText))).toLocaleString().toLowerCase();
+        let localtime = (new Date(Date.parse($t.innerText))).toLocaleString('ca');
         $t.innerHTML = `<i class="fa fa-clock-o mr-1"></i>${localtime}`;
       })
 
-      // convert markdown string to html
-      let renderer = new marked.Renderer();
-      let toc = [];
-      renderer.heading = function (text, level, raw) {
-        let anchor = this.options.headerPrefix + raw.toLowerCase();
-        toc.push({
-          anchor: anchor,
-          level: level,
-          text: text,
-          children: [],
-        });
-        return '<h'
-            + level
-            + ' id="'
-            + anchor
-            + '">'
-            + text
-            + '</h'
-            + level
-            + '>\n';
-      };
-      renderer.link = function (href, title, text) {
-        let link = marked.Renderer.prototype.link.call(this, href, title, text);
-        return link.replace("<a", "<a target='_blank' ");
-      };
-      marked.setOptions({
-        renderer: renderer,
-        breaks: true,
-        smartLists: true,
-      })
-      $('#content').append(marked($("#content textarea").val()));
+      let ret = markdown_to_html($("#content textarea").val(), true);
+      $("#content").append(ret['html']);
 
       // create toc element
-      if (toc.length > 0) {
+      if (ret['toc'].length > 0) {
         $("#toc").append(
             '<div id="card-toc" class="card mt-3">' +
             '<div class="card-header"><h4>Table of Contents</h4></div>' +
             '<div class="card-body"> <ul></ul> </div>' +
             '</div>');
-        let first_level = toc[0].level;
-        toc.forEach(function (e) {
+        let first_level = ret['toc'][0].level;
+        ret['toc'].forEach(function (e) {
           if (e.level - first_level > 1) {
             return
           }
@@ -161,7 +139,6 @@
       // highlight
       hljs.initHighlightingOnLoad();
     })
-
 
     function commit_comment() {
       let $comment = $("#commit #comment");
@@ -217,12 +194,13 @@
                 author = "<span class=\"fa fa-paint-brush\"></span>"
               }
               $("#comment-list").prepend(
-                  " <div>" +
+                  ` <div id="comment-${data.id}">` +
                   `<div>${author}${name}</div>` +
                   `<small class="text-secondary">${data.create_time}</small>` +
                   `<p>${comment}</p>` +
                   `<button class="btn btn-sm btn-link p-0 reply" onclick="reply(this, ${data.id})"><i class="fa fa-reply mr-1" aria-hidden="true"></i>Reply` +
                   "</button>" +
+                  '<div class="reply-list ml-5"></div>' +
                   "</div>" +
                   "<hr>"
               );
@@ -234,29 +212,6 @@
           dataType: "json",
         });
       }
-    }
-
-    function reply(event, reply_id) {
-      $("#commit .cancel-reply").attr("hidden", false);
-      $("#commit #reply-id").val(reply_id);
-      $("#commit").insertAfter((event.parentNode));
-    }
-
-    function cancel_reply() {
-      $("#commit").insertAfter(($("#comment-list")));
-      $("#commit .cancel-reply").attr("hidden", true);
-      $("#commit #reply-id").val("");
-    }
-
-    function reset_commit() {
-      $("#commit").insertAfter(($("#comment-list")));
-      $("#commit .cancel-reply").attr("hidden", true);
-      $("#commit #reply-id").val("");
-
-      $("#commit #comment").val("");
-      {% if not request.user.is_authenticated %}
-        $("#commit #name").val("");
-      {% endif %}
     }
   </script>
 {% endblock %}

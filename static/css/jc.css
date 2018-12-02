@@ -84,8 +84,8 @@ pre code {
 
 /* Scrollbar styles */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -100,4 +100,8 @@ pre code {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #999;
+}
+
+#preview {
+  border: 1px solid gray;
 }

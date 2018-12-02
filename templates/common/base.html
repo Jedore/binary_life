@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/jc.css' %}">
+  <link rel="icon" href="{% static 'image/jc.ico' %}" type="image/x-icon"/>
+  <title>{% block title %}JC{% endblock %}</title>
+  {% block head %}{% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+  <a href="/">
+    <span class="navbar-brand text-light" style="font-size: 25px; font-weight: 700;">JC</span>
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  {% block navlink %}
+  {% endblock %}
+
+  <div class="collapse navbar-collapse ml-5" id="navbarSupportedContent">
+    <ul class="navbar-nav ml-auto">
+      {% if request.user.is_active %}
+        <li id="profile" class="nav-item dropdown">
+          <button type="button" class="btn btn-dark dropdown-toggle pl-4 pr-4" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> {{ request.user }}
+          </button>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            {% if not "background" in request.path %}
+              <a class="dropdown-item position-relative" href="{% url 'background:index' %}">
+                <i class="fa fa-inbox"></i> background
+              </a>
+              <a class="dropdown-item position-relative" href="{% url 'background:publish' %}">
+                <i class="fa fa-paper-plane"></i> publish
+              </a>
+            {% endif %}
+            <a class="dropdown-item position-relative" href="{% url 'logout' %}">
+              <i class="fa fa-sign-out"></i> log out
+            </a>
+          </div>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+{% block index %}
+
+{% endblock %}
+
+
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script>
+  /*
+  function resize_height() {
+      var base_h = $("#article-list").height(),
+          body_h = $(window).outerHeight(),
+          footer_h = $("footer").height();
+      //$("#index").css("min-height", base_h - footer_h > body_h -footer_h ? base_h : body_h);
+      $("content").css("min-height", base_h > body_h ? base_h : body_h);
+  }
+  */
+
+  $(function () {
+    /*resize_height();
+    $(window).resize(function () {
+        resize_height();
+    });*/
+  })
+</script>
+{% block script %}{% endblock %}
+</body>
+</html>
+

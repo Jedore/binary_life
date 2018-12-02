@@ -1,0 +1,32 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block navlink %}
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item {% if "dashboard" in request.path %}active{% endif %}">
+        <a class="nav-link" href="{% url 'background:index' %}"><strong>DashBoard</strong></a>
+      </li>
+      <li class="nav-item {% if "article" in request.path %}active{% endif %}">
+        <a class="nav-link" href="{% url 'background:article' %}"><strong>Article</strong></a>
+      </li>
+      <li class="nav-item {% if "article_type" in request.path %}active{% endif %}">
+        <a class="nav-link" href="{% url 'background:article_type' %}"><strong>ArticleType</strong></a>
+      </li>
+      <li class="nav-item {% if "publish" in request.path %}active{% endif %}">
+        <a class="nav-link" href="{% url 'background:publish' %}"><strong>Publish</strong></a>
+      </li>
+    </ul>
+  </div>
+{% endblock %}
+
+{% block index %}
+  <div class="container-fluid">
+    <div class="row">
+      <div class="w-100 px-2">
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

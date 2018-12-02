@@ -8,7 +8,7 @@ register_converter(converters.BoolConverter, 'bool')
 
 app_name = 'background'
 urlpatterns = [
-    path('', login_required(index), name='background'),
+    path('dashboard/', login_required(index), name='index'),
     path('publish/', login_required(publish), name='publish'),
     path('article_type/', login_required(article_types), name='article_type'),
     path('article_type/del/', login_required(article_type_del), name='article_type_del'),

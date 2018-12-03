@@ -1,17 +1,15 @@
 // convert markdown string to html
-function markdown_to_html(text, if_toc) {
+function markdown_to_html(text) {
   let renderer = new marked.Renderer();
   let toc = [];
   renderer.heading = function (text, level, raw) {
     let anchor = this.options.headerPrefix + raw.toLowerCase();
-    if (if_toc) {
-      toc.push({
-        anchor: anchor,
-        level: level,
-        text: text,
-        children: [],
-      });
-    }
+    toc.push({
+      anchor: anchor,
+      level: level,
+      text: text,
+      children: [],
+    });
     return '<h'
         + level
         + ' id="'

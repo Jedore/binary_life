@@ -117,7 +117,7 @@
         $t.innerHTML = `<i class="fa fa-clock-o mr-1"></i>${localtime}`;
       })
 
-      let ret = markdown_to_html($("#content textarea").val(), true);
+      let ret = markdown_to_html($("#content textarea").val());
       $("#content").append(ret['html']);
 
       // create toc element

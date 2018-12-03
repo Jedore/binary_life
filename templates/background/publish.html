@@ -1,6 +1,11 @@
 {% extends 'background/index.html' %}
 {% load static %}
 
+{% block head %}
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/solarized-light.min.css"/>
+{% endblock %}
+
 {% block content %}
   <div class="publish mt-2 w-100">
     <form method="post" action="{% url 'background:article_add' %}">
@@ -53,11 +58,11 @@
       <div class="form-group mt-2">
         <div class="row">
           <div class="col-lg-6">
-            <textarea id="content" name="content" class="w-100" placeholder="Enjoying blogging ..." oninput="contentChange()"
-                      style="height: 500px;">{% if article %}{{ article.content }}{% endif %}</textarea>
+            <textarea id="content" name="content" class="w-100" placeholder="Enjoying blogging ..."
+                      oninput="contentChange()">{% if article %}{{ article.content }}{% endif %}</textarea>
           </div>
           <div class="col-lg-6">
-            <div id="preview" class="h-100 px-1">
+            <div id="preview" class="px-1">
             </div>
           </div>
         </div>
@@ -67,42 +72,22 @@
 {% endblock %}
 
 {% block script %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.5.2/marked.min.js"></script>
+  <script src="{% static 'js/jc.js' %}"></script>
   <script>
     function contentChange() {
-      console.log($("#content").val());
-      // convert markdown string to html
-      let renderer = new marked.Renderer();
-      let toc = [];
-      renderer.heading = function (text, level, raw) {
-        let anchor = this.options.headerPrefix + raw.toLowerCase();
-        toc.push({
-          anchor: anchor,
-          level: level,
-          text: text,
-          children: [],
-        });
-        return '<h'
-            + level
-            + ' id="'
-            + anchor
-            + '">'
-            + text
-            + '</h'
-            + level
-            + '>\n';
-      };
-      renderer.link = function (href, title, text) {
-        let link = marked.Renderer.prototype.link.call(this, href, title, text);
-        return link.replace("<a", "<a target='_blank' ");
-      };
-      marked.setOptions({
-        renderer: renderer,
-        breaks: true,
-        smartLists: true,
-      })
+      // clear old content
       $("#preview").empty();
-      $('#preview').append(marked($("#content").val()));
+      // convert markdown string to html
+      $('#preview').append(markdown_to_html($("#content").val())['html']);
+      hljs.initHighlightingOnLoad();
+      MathJax.Hub.Typeset();
     }
+
+    $(function () {
+      contentChange();
+    })
   </script>
 {% endblock %}

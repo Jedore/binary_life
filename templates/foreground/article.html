@@ -110,6 +110,9 @@
   <script src="{% static 'js/jc.js' %}"></script>
   <script>
     $(function () {
+      // highlight
+      hljs.initHighlightingOnLoad();
+
       // convert time format
       let $times = $.find(".c-time");
       $times.forEach(function ($t) {
@@ -135,9 +138,6 @@
           $("#toc ul").append(`<li><a href="#${e.anchor}" class="ml-${(e.level - first_level) * 4}">${e.text}</a></li>`);
         });
       }
-
-      // highlight
-      hljs.initHighlightingOnLoad();
     })
 
     function commit_comment() {

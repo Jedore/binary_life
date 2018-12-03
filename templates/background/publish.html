@@ -82,12 +82,18 @@
       $("#preview").empty();
       // convert markdown string to html
       $('#preview').append(markdown_to_html($("#content").val())['html']);
-      hljs.initHighlightingOnLoad();
+      hljs.highlightBlock($("#preview").get(0));
       MathJax.Hub.Typeset();
     }
 
+    function initPreview() {
+      // convert markdown string to html
+      $('#preview').append(markdown_to_html($("#content").val())['html']);
+    }
+
     $(function () {
-      contentChange();
+      hljs.initHighlightingOnLoad();
+      initPreview();
     })
   </script>
 {% endblock %}

@@ -99,3 +99,10 @@ h1, h2, h3, h4, h5, h6 {
 .publish #content, #preview {
   height: 600px;
 }
+
+blockquote {
+  padding: 10px;
+  background-color: #f2f2f2;
+  border-left: 3px solid #b3b3b3;
+  word-break: break-word;
+}

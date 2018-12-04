@@ -3,7 +3,7 @@
 
 {% block head %}
   <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/solarized-light.min.css"/>
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/atelier-forest-light.min.css"/>
 {% endblock %}
 
 {% block content %}
@@ -82,18 +82,17 @@
       $("#preview").empty();
       // convert markdown string to html
       $('#preview').append(markdown_to_html($("#content").val())['html']);
-      hljs.highlightBlock($("#preview").get(0));
+      let $codes = $("pre code");
+      for (let i = 0; i < $codes.length; i++) {
+        hljs.highlightBlock($codes[i]);
+      }
       MathJax.Hub.Typeset();
-    }
-
-    function initPreview() {
-      // convert markdown string to html
-      $('#preview').append(markdown_to_html($("#content").val())['html']);
     }
 
     $(function () {
       hljs.initHighlightingOnLoad();
-      initPreview();
+      // convert markdown string to html
+      $('#preview').append(markdown_to_html($("#content").val())['html']);
     })
   </script>
 {% endblock %}

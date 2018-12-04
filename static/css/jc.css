@@ -2,7 +2,7 @@
   width: 300px;
 }
 
-body, nav, #content {
+body, nav {
   background: #f5f6f7;
 }
 
@@ -53,18 +53,7 @@ h1, h2, h3, h4, h5, h6 {
   text-decoration: none;
 }
 
-code {
-  background: #e8e8e8;
-  padding-left: .5rem;
-  padding-right: .5rem;
-  color: gray;
-}
-
-pre code {
-  background: #e8e8e8 !important;
-}
-
-#card-toc .card-body a, #content a {
+#card-toc .card-body a, #content a, .reply {
   color: #619ccd;
 }
 

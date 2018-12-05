@@ -58,7 +58,7 @@
       <div class="form-group mt-2">
         <div class="row">
           <div class="col-lg-6">
-            <textarea id="content" name="content" class="w-100" placeholder="Enjoying blogging ..."
+            <textarea id="content" name="content" class="w-100" placeholder="Enjoying blogging ..." spellcheck="false"
                       oninput="contentChange()">{% if article %}{{ article.content }}{% endif %}</textarea>
           </div>
           <div class="col-lg-6">
@@ -94,5 +94,24 @@
       // convert markdown string to html
       $('#preview').append(markdown_to_html($("#content").val())['html']);
     })
+
+    // replace 'tab' by four space
+    $(document).delegate('#content', 'keydown', function (e) {
+      let keyCode = e.keyCode || e.which;
+
+      if (keyCode == 9) {
+        e.preventDefault();
+        let start = this.selectionStart;
+        let end = this.selectionEnd;
+
+        // set textarea value to: text before caret + tab + text after caret
+        $(this).val($(this).val().substring(0, start)
+            + "    "
+            + $(this).val().substring(end));
+        // put caret at right position again
+        this.selectionStart =
+            this.selectionEnd = start + 1;
+      }
+    });
   </script>
 {% endblock %}

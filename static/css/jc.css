@@ -107,6 +107,6 @@ blockquote {
   word-break: break-word;
 }
 
-#article #content img, .publish #content img {
+#article #content img, .publish #preview img {
   width: 100%;
 }

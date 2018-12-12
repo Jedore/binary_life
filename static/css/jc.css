@@ -106,3 +106,7 @@ blockquote {
   border-left: 3px solid #b3b3b3;
   word-break: break-word;
 }
+
+#article #content img {
+  width: 100%;
+}

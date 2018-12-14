@@ -9,44 +9,47 @@
   <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/jc.css' %}">
   <link rel="icon" href="{% static 'image/jc.ico' %}" type="image/x-icon"/>
-  <title>{% block title %}JC{% endblock %}</title>
+  <title>{% block title %}JEDORE'S BLOG{% endblock %}</title>
   {% block head %}{% endblock %}
 </head>
 <body>
-<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
-  <a href="/">
-    <span class="navbar-brand text-light" style="font-size: 25px; font-weight: 700;">JC</span>
-  </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  {% block navlink %}
-  {% endblock %}
+<nav class="navbar navbar-dark bg-dark ">
+  <div class="container">
+    <a href="/">
+      <span class="navbar-brand text-light" style="font-size: 25px; font-weight: 700; font-family: Georgia, serif">
+        <i class="fa fa-home" aria-hidden="true"></i> JEDORE'S BLOG</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    {% block navlink %}
+    {% endblock %}
 
-  <div class="collapse navbar-collapse ml-5" id="navbarSupportedContent">
-    <ul class="navbar-nav ml-auto">
-      {% if request.user.is_active %}
-        <li id="profile" class="nav-item dropdown">
-          <button type="button" class="btn btn-dark dropdown-toggle pl-4 pr-4" data-toggle="dropdown"
-                  aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> {{ request.user }}
-          </button>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            {% if not "background" in request.path %}
-              <a class="dropdown-item position-relative" href="{% url 'background:index' %}">
-                <i class="fa fa-inbox"></i> background
+    <div class="collapse navbar-collapse ml-5" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        {% if request.user.is_active %}
+          <li id="profile" class="nav-item dropdown">
+            <button type="button" class="btn btn-dark dropdown-toggle pl-4 pr-4" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> {{ request.user }}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              {% if not "background" in request.path %}
+                <a class="dropdown-item position-relative" href="{% url 'background:index' %}">
+                  <i class="fa fa-inbox"></i> background
+                </a>
+                <a class="dropdown-item position-relative" href="{% url 'background:publish' %}">
+                  <i class="fa fa-paper-plane"></i> publish
+                </a>
+              {% endif %}
+              <a class="dropdown-item position-relative" href="{% url 'logout' %}">
+                <i class="fa fa-sign-out"></i> log out
               </a>
-              <a class="dropdown-item position-relative" href="{% url 'background:publish' %}">
-                <i class="fa fa-paper-plane"></i> publish
-              </a>
-            {% endif %}
-            <a class="dropdown-item position-relative" href="{% url 'logout' %}">
-              <i class="fa fa-sign-out"></i> log out
-            </a>
-          </div>
-        </li>
-      {% endif %}
-    </ul>
+            </div>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
   </div>
 </nav>
 {% block index %}

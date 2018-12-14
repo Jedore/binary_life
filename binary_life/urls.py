@@ -34,3 +34,5 @@ if not settings.DEBUG:
     urlpatterns += [
         re_path(r'^static/(?P<path>.*)$', static.serve, {'document_root': settings.STATIC_ROOT}),
     ]
+    
+handler404 = 'common.views.custom_404_handler'

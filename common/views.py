@@ -2,7 +2,7 @@ import json
 
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render_to_response
 
 from .models import Article
 from .models import ViewsRecord
@@ -67,3 +67,9 @@ def article_page_view(func):
         return func(request, article_id)
     
     return wrapper_func
+
+
+def custom_404_handler(request, exception, template_name="404.html"):
+    response = render_to_response("common/404.html")
+    response.status_code = 404
+    return response

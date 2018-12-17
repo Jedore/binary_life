@@ -22,8 +22,8 @@ from common.views import bl_logout
 from foreground.views import index
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('login/', bl_login, name='login'),
+    path('binary/', admin.site.urls),
+    # path('login/', bl_login, name='login'),
     path('logout/', bl_logout, name='logout'),
     path('', index, name='index'),
     path('foreground/', include('foreground.urls')),

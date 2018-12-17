@@ -15,7 +15,7 @@
   {% block head %}{% endblock %}
 </head>
 <body>
-<nav class="navbar navbar-dark bg-dark ">
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
   <div class="container">
     <a href="/">
       <span class="navbar-brand text-light" style="font-size: 25px; font-weight: 700; font-family: Georgia, serif">
@@ -25,14 +25,14 @@
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    {% block navlink %}
-    {% endblock %}
 
-    <div class="collapse navbar-collapse ml-5" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      {% block menu %}
+      {% endblock %}
       <ul class="navbar-nav ml-auto">
         {% if request.user.is_active %}
           <li id="profile" class="nav-item dropdown">
-            <button type="button" class="btn btn-dark dropdown-toggle pl-4 pr-4" data-toggle="dropdown"
+            <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> {{ request.user }}
             </button>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -40,10 +40,10 @@
                 <a class="dropdown-item position-relative" href="{% url 'background:index' %}">
                   <i class="fa fa-inbox"></i> background
                 </a>
-                <a class="dropdown-item position-relative" href="{% url 'background:publish' %}">
-                  <i class="fa fa-paper-plane"></i> publish
-                </a>
               {% endif %}
+              <a class="dropdown-item position-relative" href="{% url 'background:publish' %}">
+                <i class="fa fa-paper-plane"></i> publish
+              </a>
               <a class="dropdown-item position-relative" href="{% url 'logout' %}">
                 <i class="fa fa-sign-out"></i> log out
               </a>

@@ -35,7 +35,7 @@
             <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> {{ request.user }}
             </button>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="z-index: 9999;">
               {% if not "background" in request.path %}
                 <a class="dropdown-item position-relative" href="{% url 'background:index' %}">
                   <i class="fa fa-inbox"></i> background

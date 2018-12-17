@@ -1,7 +1,6 @@
 import json
 
-from django.contrib.auth import authenticate, login, logout
-from django.http import JsonResponse
+from django.contrib.auth import logout
 from django.shortcuts import redirect, render_to_response
 
 from .models import Article
@@ -11,17 +10,17 @@ from .models import ViewsRecord
 # Create your views here.
 
 
-def bl_login(requset):
-    if requset.method == "POST":
-        data = json.loads(requset.body)
-        username = data.get('username', '')
-        password = data.get('password', '')
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            login(requset, user)
-            return JsonResponse({"ret_code": 0})
-        else:
-            return JsonResponse({"ret_code": 1, "error": "user and password does't match."})
+# def bl_login(requset):
+#     if requset.method == "POST":
+#         data = json.loads(requset.body)
+#         username = data.get('username', '')
+#         password = data.get('password', '')
+#         user = authenticate(username=username, password=password)
+#         if user is not None:
+#             login(requset, user)
+#             return JsonResponse({"ret_code": 0})
+#         else:
+#             return JsonResponse({"ret_code": 1, "error": "user and password does't match."})
 
 
 def bl_logout(request):

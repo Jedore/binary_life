@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views import static
 
-from common.views import bl_login, bl_logout
+from common.views import bl_logout
 from foreground.views import index
 
 urlpatterns = [

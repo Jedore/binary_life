@@ -2,8 +2,8 @@
 {% load static %}
 {% block index %}
   <div class="container">
-    <div class="row">
-      <div class="col-md-8 col-lg-8 mt-3">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-12 col-lg-8 mt-3">
         {% block content %}
           <div id="article-list">
             {% for article in articles %}
@@ -11,21 +11,21 @@
                 <div class="article rounded p-3">
                   <h4 class="text-dark">{{ article.title }}</h4>
                   <span class="badge badge-light text-secondary c-time">
-              <i class="fa fa-clock-o mr-1"></i>{{ article.create_time|date:"c" }}
-          </span>
+                    <i class="fa fa-clock-o mr-1"></i>{{ article.create_time|date:"c" }}
+                  </span>
                   {% if article.page_view %}
                     <span class="badge badge-light text-secondary"><i
                         class="fa fa-eye mr-1"></i>{{ article.page_view }}</span>
                   {% endif %}
                   {% if article.comments.count %}
                     <span class="badge badge-light text-secondary">
-            <i class="fa fa-comments-o mr-1"></i>{{ article.comments.count }}
-          </span>
+                      <i class="fa fa-comments-o mr-1"></i>{{ article.comments.count }}
+                    </span>
                   {% endif %}
                   {% if article.tags.count %}
                     <span class="badge badge-light text-secondary">
-              <i class="fa fa-tags mr-1"></i>{% for tag in article.tags.iterator %}{{ tag.name }} {% endfor %}
-            </span>
+                      <i class="fa fa-tags mr-1"></i>{% for tag in article.tags.iterator %}{{ tag.name }} {% endfor %}
+                    </span>
                   {% endif %}
                 </div>
               </a>
@@ -33,7 +33,7 @@
           </div>
         {% endblock %}
       </div>
-      <div class="col-12 col-lg-4">
+      <div class="col-12 col-md-10 col-lg-4">
         <div class="sticky-top pt-3">
           <div id="card-tags" class="card">
             <div class="card-header"><h4>Tags</h4></div>

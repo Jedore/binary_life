@@ -135,7 +135,7 @@
           if (e.level - first_level > 1) {
             return
           }
-          $("#toc ul").append(`<li><a href="#${e.anchor}" class="ml-${(e.level - first_level) * 4}">${e.text}</a></li>`);
+          $("#toc ul").append(`<li class="pl-${(e.level - first_level) * 4}"><a href="#${e.anchor}">${e.text}</a></li>`);
         });
       }
     })

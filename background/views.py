@@ -1,5 +1,3 @@
-import sys
-
 from django.contrib import messages
 from django.db import transaction
 from django.http import JsonResponse
@@ -53,13 +51,19 @@ def article_add(request):
             raise Exception('is_hide error')
         tags = tags.split()
         with transaction.atomic():
+            # insert new tags, select old tags, case-insensitive
+            tag_list = []
             for tag in tags:
-                ArticleTags.objects.get_or_create(name=tag)
+                _tag = ArticleTags.objects.filter(name__iexact=tag).first()
+                if not _tag:
+                    _tag = ArticleTags.objects.create(name=tag)
+                tag_list.append(_tag)
+            
             if request.POST.get('method') == 'post':
                 article = Article.objects.create(title=title, content=content, is_hide=is_hide,
                                                  article_type=ArticleType.objects.get(id=article_type))
-                article.tags.set(list(ArticleTags.objects.filter(name__in=tags)))
-                msg = "POST SUCCESS"
+                article.tags.set(tag_list)
+                # msg = "POST SUCCESS"
             elif request.POST.get('method') == 'put':
                 article = Article.objects.filter(id=article_id).first()
                 if not article:
@@ -69,14 +73,13 @@ def article_add(request):
                 article.article_type = get_object_or_404(ArticleType, id=article_type)
                 article.is_hide = is_hide
                 article.save()
-                article.tags.set(list(ArticleTags.objects.filter(name__in=tags)), clear=True)
-                msg = "UPDATE SUCCESS"
+                article.tags.set(tag_list, clear=True)
+                # msg = "UPDATE SUCCESS"
         # messages.success(request, msg)
         return redirect('foreground:article', article.id)
     except Exception as e:
-        messages.error(request, "failed: {}".format(sys.exc_info()[1]))
-        article_types = ArticleType.objects.all()
-        return render(request, 'background/publish.html', locals())
+        messages.error(request, "failed: {}".format(e))
+        return redirect('background:publish')
 
 
 @record_page_view

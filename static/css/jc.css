@@ -73,7 +73,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Scrollbar styles */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
   height: 6px;
 }
 
@@ -103,7 +103,7 @@ h1, h2, h3, h4, h5, h6 {
 blockquote {
   padding: 10px;
   background-color: #f2f2f2;
-  border-left: 3px solid #b3b3b3;
+  border-left: 4px solid #b3b3b3;
   word-break: break-word;
 }
 

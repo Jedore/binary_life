@@ -7,15 +7,19 @@
         <span class="input-group-text">Name</span>
       </div>
       <input type="text" class="pl-1 pr-1" name="name" id="type-name" placeholder="type name">
-      <div class="input-group-append">
-        <div id="add-type" class="btn btn-secondary" onclick="add_type()">Add</div>
-      </div>
+      <div class="input-group-prepend ml-1"><span class="input-group-text">Non-Technical</span></div>
+      <select id="non_technical" name="non_technical" class="custom-select custom-select-sm" required>
+        <option value="True" selected>True</option>
+        <option value="False">False</option>
+      </select>
+      <div id="add-type" class="btn btn-sm btn-secondary ml-1" onclick="add_type()">Add</div>
     </div>
     <table class="table table-hover table-sm mt-2">
       <thead>
       <tr>
         <th scope="col" class="text-center">ID</th>
         <th scope="col" class="text-center">Name</th>
+        <th scope="col" class="text-center">Non-Technical</th>
         <th scope="col" class="text-center">Delete</th>
       </tr>
       </thead>
@@ -24,6 +28,7 @@
         <tr>
           <td class="text-center">{{ article_type.id }}</td>
           <td class="text-center">{{ article_type.name }}</td>
+          <td class="text-center">{{ article_type.non_technical }}</td>
           <td class="text-center">
             <button class="btn btn-sm btn-outline-danger" onclick="del_type(this, {{ article_type.id }})">Del
             </button>
@@ -63,12 +68,14 @@
 
     function add_type() {
       let type_name = $("#type-name").val();
+      let non_technical = $("#non_technical").val();
       $.ajax({
         type: "POST",
         url: "{% url "background:article_type_add" %}",
         data: {
           "csrfmiddlewaretoken": "{{ csrf_token }}",
           "type_name": type_name,
+          "non_technical": non_technical,
         },
         success: function (data) {
           if (data.hasOwnProperty('failed')) {
@@ -79,6 +86,7 @@
                 "<tr>" +
                 `<td class="text-center">${data.id}</td>` +
                 `<td class="text-center">${type_name}</td>` +
+                `<td class="text-center">${non_technical}</td>` +
                 "<td class=\"text-center\">" +
                 `<button class=\"btn btn-sm btn-outline-danger\" onclick=\"del_type(this, ${data.id})\">Del` +
                 "</button>" +

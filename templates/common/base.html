@@ -17,7 +17,7 @@
 <body>
 <nav class="navbar navbar-dark bg-dark navbar-expand-md">
   <div class="container">
-    <a href="/">
+    <a href="{% if 'non_technical' in request.path %}{% url 'non_technical:index' %}{% else %}/{% endif %}">
       <span class="navbar-brand text-light" style="font-size: 25px; font-weight: 700; font-family: Georgia, serif">
         <i class="fa fa-home" aria-hidden="true"></i> JEDORE'S BLOG</span>
     </a>
@@ -55,7 +55,6 @@
   </div>
 </nav>
 {% block index %}
-
 {% endblock %}
 
 

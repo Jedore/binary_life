@@ -37,6 +37,15 @@
             </select>
           </div>
         </div>
+        <div>
+          <div class="input-group input-group-sm">
+            <div class="input-group-prepend ml-1"><span class="input-group-text">TECHNICAL</span></div>
+            <select id="non_technical" name="non_technical" class="custom-select custom-select-sm" required>
+              <option value="False" {% if not article.non_technical %}selected{% endif %}>True</option>
+              <option value="True" {% if article.non_technical %}selected{% endif %}>False</option>
+            </select>
+          </div>
+        </div>
         <div class="w-25">
           <div class="input-group input-group-sm">
             <div class="input-group-prepend ml-1"><span class="input-group-text">Tags</span></div>
@@ -44,16 +53,16 @@
                    required value="{% for tag in article.tags.iterator %}{{ tag.name }} {% endfor %}">
           </div>
         </div>
-        <div class="w-50">
+        <div class="w-25">
           <div class="input-group input-group-sm">
             <div class="input-group-prepend ml-1"><span class="input-group-text">Title</span></div>
             <input type="text" id="title" name="title" class="form-control" placeholder="" required
                    value="{% if article %}{{ article.title }}{% endif %}">
             <div class="input-group-append">
-              <button id="submit" type="submit" class="btn btn-secondary">Publish</button>
             </div>
           </div>
         </div>
+        <button id="submit" type="submit" class="btn btn-secondary btn-sm">Publish</button>
       </div>
       <div class="form-group mt-2">
         <div class="row">

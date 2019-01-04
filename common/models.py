@@ -11,12 +11,14 @@ class ArticleType(models.Model):
     name = models.CharField(max_length=16, unique=True)
     create_time = models.DateTimeField(default=timezone.now)
     update_time = models.DateTimeField(default=timezone.now)
+    non_technical = models.BooleanField(default=False)
 
 
 class ArticleTags(models.Model):
     name = models.CharField(max_length=16, unique=True)
     create_time = models.DateTimeField(default=timezone.now)
     update_time = models.DateTimeField(default=timezone.now)
+    non_technical = models.BooleanField(default=False)
 
 
 class Article(models.Model):
@@ -32,6 +34,7 @@ class Article(models.Model):
     unique_view = models.PositiveIntegerField(default=0)
     ip_view = models.PositiveIntegerField(default=0)
     author = models.CharField(max_length=16)
+    non_technical = models.BooleanField(default=False)
 
 
 class ViewsRecord(models.Model):

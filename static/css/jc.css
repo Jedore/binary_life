@@ -53,7 +53,7 @@ h1, h2, h3, h4, h5, h6 {
   text-decoration: none;
 }
 
-#card-toc .card-body a, #content a, .reply {
+#card-toc .card-body a, #content a, .reply, .technical {
   color: #619ccd;
 }
 

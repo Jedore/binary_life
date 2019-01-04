@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'common',
     'foreground',
-    'background'
+    'background',
+    'non_technical',
 ]
 
 MIDDLEWARE = [

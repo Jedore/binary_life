@@ -28,11 +28,12 @@ urlpatterns = [
     path('', index, name='index'),
     path('foreground/', include('foreground.urls')),
     path('background/', include('background.urls')),
+    path('non_technical/', include('non_technical.urls')),
 ]
 
 if not settings.DEBUG:
     urlpatterns += [
         re_path(r'^static/(?P<path>.*)$', static.serve, {'document_root': settings.STATIC_ROOT}),
     ]
-    
+
 handler404 = 'common.views.custom_404_handler'

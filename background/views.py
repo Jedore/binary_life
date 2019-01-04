@@ -40,15 +40,12 @@ def article_add(request):
     tags = process_str(request.POST.get('tags'))
     is_hide = process_str(request.POST.get('is_hide'))
     article_id = request.POST.get('article_id')
+    non_technical = request.POST.get('non_technical')
     try:
         if not title or not tags or not article_type or not content or not is_hide:
             raise Exception("parameter error")
-        if is_hide == 'True':
-            is_hide = True
-        elif is_hide == 'False':
-            is_hide = False
-        else:
-            raise Exception('is_hide error')
+        is_hide = True if is_hide == 'True' else False
+        non_technical = True if non_technical == 'True' else False
         tags = tags.split()
         with transaction.atomic():
             # insert new tags, select old tags, case-insensitive
@@ -56,11 +53,12 @@ def article_add(request):
             for tag in tags:
                 _tag = ArticleTags.objects.filter(name__iexact=tag).first()
                 if not _tag:
-                    _tag = ArticleTags.objects.create(name=tag)
+                    _tag = ArticleTags.objects.create(name=tag, non_technical=non_technical)
                 tag_list.append(_tag)
             
             if request.POST.get('method') == 'post':
                 article = Article.objects.create(title=title, content=content, is_hide=is_hide,
+                                                 non_technical=non_technical,
                                                  article_type=ArticleType.objects.get(id=article_type))
                 article.tags.set(tag_list)
                 # msg = "POST SUCCESS"
@@ -72,11 +70,13 @@ def article_add(request):
                 article.content = content
                 article.article_type = get_object_or_404(ArticleType, id=article_type)
                 article.is_hide = is_hide
+                article.non_technical = non_technical
                 article.save()
                 article.tags.set(tag_list, clear=True)
                 # msg = "UPDATE SUCCESS"
         # messages.success(request, msg)
-        return redirect('foreground:article', article.id)
+        return redirect('non_technical:article', article.id) if non_technical else redirect('foreground:article',
+                                                                                            article.id)
     except Exception as e:
         messages.error(request, "failed: {}".format(e))
         return redirect('background:publish')
@@ -148,11 +148,12 @@ def article_type_add(request):
     if request.method != 'POST':
         return
     type_name = process_str(request.POST.get('type_name'))
+    non_technical = process_str(request.POST.get('non_technical'))
     ret = {}
     try:
         if not type_name:
             raise Exception("name is null")
-        article_type = ArticleType.objects.create(name=type_name)
+        article_type = ArticleType.objects.create(name=type_name, non_technical=non_technical)
         ret["id"] = article_type.id
     except Exception as e:
         ret["failed"] = str(e)

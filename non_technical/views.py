@@ -5,7 +5,6 @@ from django.shortcuts import render
 from common.models import Article
 from common.models import ArticleComments
 from common.models import ArticleTags
-from common.models import ArticleType
 from common.views import article_page_view
 from common.views import process_str
 from common.views import record_page_view
@@ -16,39 +15,39 @@ from common.views import record_page_view
 
 @record_page_view
 def index(request):
-    articles = Article.objects.filter(is_hide=False, non_technical=False).order_by("-create_time")
-    # types = ArticleType.objects.filter(non_technical=False)
-    tags = ArticleTags.objects.filter(non_technical=False)
+    articles = Article.objects.filter(is_hide=False, non_technical=True).order_by("-create_time")
+    # types = ArticleType.objects.filter(non_technical=True)
+    tags = ArticleTags.objects.filter(non_technical=True)
     # comments = ArticleComments.objects.all()[:5]
-    return render(request, 'foreground/index.html', locals())
+    return render(request, 'non_technical/index.html', locals())
 
 
 @record_page_view
 @article_page_view
 def article(request, article_id):
     # types = ArticleType.objects.all()
-    tags = ArticleTags.objects.filter(non_technical=False)
+    tags = ArticleTags.objects.filter(non_technical=True)
     # comments = ArticleComments.objects.all()[:5]
     article = get_object_or_404(Article, id=article_id)
-    return render(request, "foreground/article.html", locals())
+    return render(request, "non_technical/article.html", locals())
 
 
 @record_page_view
 def type_articles(request, type_id):
-    # types = ArticleType.objects.filter(non_technical=False)
-    tags = ArticleTags.objects.filter(non_technical=False)
+    # types = ArticleType.objects.all()
+    tags = ArticleTags.objects.filter(non_technical=True)
     # comments = ArticleComments.objects.all()[:5]
-    articles = Article.objects.filter(article_type=type_id, is_hide=False, non_technical=False).order_by("-create_time")
-    return render(request, "foreground/index.html", locals())
+    articles = Article.objects.filter(article_type=type_id, is_hide=False, non_technical=True).order_by("-create_time")
+    return render(request, "non_technical/index.html", locals())
 
 
 @record_page_view
 def tag_articles(request, tag_id):
-    # types = ArticleType.objects.filter(non_technical=False)
-    tags = ArticleTags.objects.filter(non_technical=False)
+    # types = ArticleType.objects.all()
+    tags = ArticleTags.objects.filter(non_technical=True)
     # comments = ArticleComments.objects.all()[:5]
-    articles = Article.objects.filter(tags=tag_id, is_hide=False, non_technical=False).order_by("-create_time")
-    return render(request, "foreground/index.html", locals())
+    articles = Article.objects.filter(tags=tag_id, is_hide=False, non_technical=True).order_by("-create_time")
+    return render(request, "non_technical/index.html", locals())
 
 
 @record_page_view

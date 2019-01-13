@@ -2,8 +2,6 @@ name: binary_life
 channels:
   - defaults
 dependencies:
-  - Django=2.0
-  - Jinja2=2.9.6
-  - MarkupSafe=1.0
-prefix: /opt/modules/anaconda3/envs/binary_life
+  - django=2.0.2
+  - python=3.6.5
 

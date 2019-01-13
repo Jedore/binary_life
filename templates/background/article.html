@@ -1,0 +1,99 @@
+{% extends 'background/index.html' %}
+
+{% block content %}
+  <div class="articles">
+    <table class="table table-hover table-sm">
+      <thead>
+      <tr>
+        <th scope="col" class="text-center">ID</th>
+        <th scope="col" class="text-center">Title</th>
+        <th scope="col" class="text-center">Views</th>
+        <th scope="col" class="text-center">CreateTime</th>
+{#        <th scope="col" class="text-center">UpdateTime</th>#}
+        <th scope="col" class="text-center">Hide</th>
+        <th scope="col" class="text-center">Hide&Show</th>
+        <th scope="col" class="text-center">Delete</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for article in articles %}
+        <tr>
+          <td class="text-center">{{ article.id }}</td>
+          <td class=""><a class="text-dark" href="{% url 'foreground:article' article.id %}">{{ article.title }}</a>
+          </td>
+          <td class="text-center">{{ article.page_view }}</td>
+          <td class="text-center">{{ article.create_time | date:"Y-m-d H:i:s" }}</td>
+{#          <td class="text-center">{{ article.update_time | date:"Y-m-d H:i:s" }}</td>#}
+          <td class="text-center">{{ article.is_hide }}</td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-outline-warning" onclick="hide_show_article(this, {{ article.id }})">
+              {% if article.is_hide %}Show{% else %}Hide{% endif %}
+            </button>
+          </td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-outline-danger ml-2"
+                    onclick="del_article(this, '{% url 'background:article_del' article.id %}')"> Del
+            </button>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+
+    function hide_show_article(event, article_id) {
+      // hide or show article
+      let $is_hide = event.parentNode.previousElementSibling;
+      let is_hide = $is_hide.textContent;
+      $.ajax({
+        url: `/background/article/hide_show/${article_id}/${is_hide}`,
+        data: {
+          "csrfmiddlewaretoken": $("[name='csrfmiddlewaretoken']").val(),
+        },
+        success: function (data) {
+          if (data.hasOwnProperty('failed')) {
+            alert(data.failed);
+          } else if (data.hasOwnProperty('is_hide')) {
+            $is_hide.textContent = data.is_hide;
+            event.textContent = data.is_hide == 'True' ? 'Show' : 'Hide';
+          } else {
+            alert('something error');
+          }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+          alert(XMLHttpRequest.status + ' ' + errorThrown);
+        },
+        dataType: "json",
+      });
+    }
+
+    function del_article(event, the_url) {
+      let $row = event.parentNode.parentNode;
+      $.ajax({
+        url: the_url,
+        data: {
+          "csrfmiddlewaretoken": $("[name='csrfmiddlewaretoken']").val(),
+        },
+        success: function (data) {
+          if (data.hasOwnProperty('failed')) {
+            alert(data.failed);
+          } else {
+            // delete row
+            $row.parentNode.deleteRow($row.rowIndex - 1);
+          }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+          alert(XMLHttpRequest.status + ' ' + errorThrown);
+        },
+        dataType: "json",
+      });
+    }
+  </script>
+{% endblock %}

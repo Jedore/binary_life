@@ -1,0 +1,126 @@
+{% extends 'background/index.html' %}
+{% load static %}
+
+{% block head %}
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/atelier-forest-light.min.css"/>
+{% endblock %}
+
+{% block content %}
+  <div class="publish mt-2 w-100">
+    <form method="post" action="{% url 'background:article_add' %}">
+      <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+      {% if article %}
+        <input type="hidden" name="method" , value="put">
+        <input type="hidden" name="article_id" , value="{{ article.id }}">
+      {% else %}
+        <input type="hidden" name="method" , value="post">
+      {% endif %}
+      <div class="form-group mb-1 d-flex justify-content-between">
+        <div>
+          <div class="input-group input-group-sm">
+            <div class="input-group-prepend"><span class="input-group-text">Type</span></div>
+            <select id="article-type" name="article_type" class="custom-select custom-select-sm" required>
+              {% for type in article_types %}
+                <option value="{{ type.id }}"
+                        {% if article and article.article_type.id == type.id %}selected{% endif %}>{{ type.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div>
+          <div class="input-group input-group-sm">
+            <div class="input-group-prepend ml-1"><span class="input-group-text">IsHide</span></div>
+            <select id="is_hide" name="is_hide" class="custom-select custom-select-sm" required>
+              <option value="False" {% if not article.is_hide %}selected{% endif %}>PUBLIC</option>
+              <option value="True" {% if article.is_hide %}selected{% endif %}>PRIVATE</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <div class="input-group input-group-sm">
+            <div class="input-group-prepend ml-1"><span class="input-group-text">TECHNICAL</span></div>
+            <select id="non_technical" name="non_technical" class="custom-select custom-select-sm" required>
+              <option value="False" {% if not article.non_technical %}selected{% endif %}>True</option>
+              <option value="True" {% if article.non_technical %}selected{% endif %}>False</option>
+            </select>
+          </div>
+        </div>
+        <div class="w-25">
+          <div class="input-group input-group-sm">
+            <div class="input-group-prepend ml-1"><span class="input-group-text">Tags</span></div>
+            <input type="text" id="tags" name="tags" class="form-control" placeholder=""
+                   required value="{% for tag in article.tags.iterator %}{{ tag.name }} {% endfor %}">
+          </div>
+        </div>
+        <div class="w-25">
+          <div class="input-group input-group-sm">
+            <div class="input-group-prepend ml-1"><span class="input-group-text">Title</span></div>
+            <input type="text" id="title" name="title" class="form-control" placeholder="" required
+                   value="{% if article %}{{ article.title }}{% endif %}">
+            <div class="input-group-append">
+            </div>
+          </div>
+        </div>
+        <button id="submit" type="submit" class="btn btn-secondary btn-sm">Publish</button>
+      </div>
+      <div class="form-group mt-2">
+        <div class="row">
+          <div class="col-lg-6">
+            <textarea id="content" name="content" class="w-100" placeholder="Enjoying blogging ..." spellcheck="false"
+                      oninput="contentChange()">{% if article %}{{ article.content }}{% endif %}</textarea>
+          </div>
+          <div class="col-lg-6">
+            <div id="preview" class="px-1">
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script src="{% static 'js/highlight.pack.js' %}"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.5.2/marked.min.js"></script>
+  <script src="{% static 'js/jc.js' %}"></script>
+  <script>
+    function contentChange() {
+      // clear old content
+      $("#preview").empty();
+      // convert markdown string to html
+      $('#preview').append(markdown_to_html($("#content").val())['html']);
+      let $codes = $("pre code");
+      for (let i = 0; i < $codes.length; i++) {
+        hljs.highlightBlock($codes[i]);
+      }
+      MathJax.Hub.Typeset();
+    }
+
+    $(function () {
+      hljs.initHighlightingOnLoad();
+      // convert markdown string to html
+      $('#preview').append(markdown_to_html($("#content").val())['html']);
+    })
+
+    // replace 'tab' by four space
+    $(document).delegate('#content', 'keydown', function (e) {
+      let keyCode = e.keyCode || e.which;
+
+      if (keyCode == 9) {
+        e.preventDefault();
+        let start = this.selectionStart;
+        let end = this.selectionEnd;
+
+        // set textarea value to: text before caret + tab + text after caret
+        $(this).val($(this).val().substring(0, start)
+            + "\t"
+            + $(this).val().substring(end));
+        // put caret at right position again
+        this.selectionStart =
+            this.selectionEnd = start + 1;
+      }
+    });
+  </script>
+{% endblock %}

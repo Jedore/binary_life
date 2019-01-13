@@ -18,19 +18,22 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views import static
 
-from common.views import bl_login, bl_logout
-from foreground.views import IndexView
+from common.views import bl_logout
+from foreground.views import index
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('login/', bl_login),
-    path('logout/', bl_logout),
-    path('', IndexView.as_view()),
+    path('binary/', admin.site.urls),
+    # path('login/', bl_login, name='login'),
+    path('logout/', bl_logout, name='logout'),
+    path('', index, name='index'),
     path('foreground/', include('foreground.urls')),
     path('background/', include('background.urls')),
+    path('non_technical/', include('non_technical.urls')),
 ]
 
 if not settings.DEBUG:
     urlpatterns += [
         re_path(r'^static/(?P<path>.*)$', static.serve, {'document_root': settings.STATIC_ROOT}),
     ]
+
+handler404 = 'common.views.custom_404_handler'

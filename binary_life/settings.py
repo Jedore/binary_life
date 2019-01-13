@@ -24,7 +24,7 @@ SECRET_KEY = 'd6#8=&akbdvbuve*2rc5u_jv#vi2y3x8d2)fcb-or+q#8g*%9)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'jedoremad.com']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 # Application definition
 
@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'common',
     'foreground',
-    'background'
+    'background',
+    'non_technical',
 ]
 
 MIDDLEWARE = [
@@ -54,16 +55,8 @@ ROOT_URLCONF = 'binary_life.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.jinja2.Jinja2',
-        'DIRS': [os.path.join(BASE_DIR, 'jinja2')],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            "environment": "binary_life.jinja2.environment"
-        },
-    },
-    {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,4 +119,4 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'binary_life/pd_static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'product_static')

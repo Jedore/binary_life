@@ -1,0 +1,218 @@
+{% extends "non_technical/index.html" %}
+{% load static %}
+
+{% block title %}
+  {{ article.title }}
+{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/atelier-forest-light.min.css"/>
+{% endblock %}
+
+{% block content %}
+  <div id="article">
+    <div class="article-head">
+      <h2>{{ article.title }}</h2>
+      <span class="badge text-right text-secondary c-time">
+        <i class="fa fa-clock-o mr-1"></i>{{ article.create_time | date:"c" }}
+      </span>
+      {% if article.page_view %}
+        <span class="badge text-secondary"><i class="fa fa-eye mr-1"></i>{{ article.page_view }}</span>
+      {% endif %}
+      {% if article.comments.count %}
+        <span class="badge text-secondary">
+            <i class="fa fa-comments-o mr-1"></i>{{ article.comments.count }}
+      </span>
+      {% endif %}
+      {% if article.tags.count %}
+        <span class="badge badge-light text-secondary">
+              <i class="fa fa-tags mr-1"></i>{% for tag in article.tags.iterator %}{{ tag.name }} {% endfor %}
+            </span>
+      {% endif %}
+      {% if request.user.is_superuser %}
+        <a id="edit" href="{% url 'background:publish' %}?article_id={{ article_id }}" class="badge badge-secondary">
+          <i class="fa fa-pencil-square-o mr-1" aria-hidden="true"></i>Edit
+        </a>
+      {% endif %}
+      <hr class="split-line mt-0">
+    </div>
+    <div id="content" class="mt-4">
+      <textarea hidden>{{ article.content }}</textarea>
+    </div>
+    <div id="comments" class="pt-4 pb-5">
+      <h5>COMMENTS <span class="badge badge-pill badge-secondary">{{ article.comments.count }}</span></h5>
+      <hr class="split-line mt-0">
+      <div id="comment-list">
+        {% for comment in article.comments.iterator %}
+          {% if not comment.reply_id %}
+            <div id="comment-{{ comment.id }}">
+              <div>
+                {% if comment.is_author %}
+                  <span class="fa fa-paint-brush"></span>
+                {% endif %}
+                {{ comment.name }}
+              </div>
+              <small class="text-secondary c-time">{{ comment.create_time | date:"c" }}</small>
+              <p>{{ comment.comment }}</p>
+              <button class="btn btn-sm btn-link p-0 reply" onclick="reply(this, {{ comment.id }})">
+                <i class="fa fa-reply mr-1" aria-hidden="true"></i>Reply
+              </button>
+              <div class="reply-list ml-5">
+                {% for reply in comment.replies.iterator %}
+                  <hr>
+                  <div>
+                    {% if reply.is_author %}
+                      <span class="fa fa-paint-brush"></span>
+                    {% endif %}
+                    {{ reply.name }}
+                  </div>
+                  <small class="text-secondary c-time">{{ reply.create_time | date:"c" }}</small>
+                  <p>{{ reply.comment }}</p>
+                {% endfor %}
+              </div>
+            </div>
+            <hr>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div id="commit">
+        <h5 class="d-inline">Leave a Comment</h5>
+        <button class="btn btn-sm btn-link cancel-reply" onclick="cancel_reply()" hidden>
+          <i class="fa fa-times"> Cancel reply</i>
+        </button>
+        <small class="d-block">Required fields are marked *</small>
+        <textarea id="comment" class="form-control mt-2" placeholder="* Your comment" style="height: 100px;"></textarea>
+        <div class="mt-1 d-flex w-100">
+          {% if not request.user.is_authenticated %}
+            <div>
+              <input id="name" type="text" class="form-control form-control-sm" placeholder="* Name" maxlength="16">
+            </div>
+          {% endif %}
+          <div class="ml-auto">
+            <button class="btn btn-sm btn-secondary px-4" onclick="commit_comment()"> POST</button>
+          </div>
+        </div>
+        <input id="reply-id" type="text" value="" hidden>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block toc %}
+  <div id="toc">
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script src="{% static 'js/highlight.pack.js' %}"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.5.2/marked.min.js"></script>
+  <script src="{% static 'js/jc.js' %}"></script>
+  <script>
+    $(function () {
+      // highlight
+      hljs.initHighlightingOnLoad();
+
+      // convert time format
+      let $times = $.find(".c-time");
+      $times.forEach(function ($t) {
+        let localtime = (new Date(Date.parse($t.innerText))).toLocaleString('ca');
+        $t.innerHTML = `<i class="fa fa-clock-o mr-1"></i>${localtime}`;
+      })
+
+      let ret = markdown_to_html($("#content textarea").val());
+      $("#content").append(ret['html']);
+
+      // create toc element
+      if (ret['toc'].length > 0) {
+        $("#toc").append(
+            '<div id="card-toc" class="card mt-3">' +
+            '<div class="card-header"><h4>Table of Contents</h4></div>' +
+            '<div class="card-body"> <ul></ul> </div>' +
+            '</div>');
+        let first_level = ret['toc'][0].level;
+        ret['toc'].forEach(function (e) {
+          if (e.level - first_level > 1) {
+            return
+          }
+          $("#toc ul").append(`<li class="pl-${(e.level - first_level) * 4}"><a href="#${e.anchor}">${e.text}</a></li>`);
+        });
+      }
+    })
+
+    function commit_comment() {
+      let $comment = $("#commit #comment");
+      let comment = $comment.val();
+      let reply_id = $("#reply-id").val();
+      let name;
+      {% if not request.user.is_authenticated %}
+        let $name = $("#commit #name");
+        name = $name.val();
+      {% else %}
+        name = "{{ request.user.username }}";
+      {% endif %}
+      if (comment.length === 0) {
+        $comment.focus();
+      }
+          {% if not request.user.is_authenticated %}
+            else if (name.length === 0) {
+            $name.focus();
+          }
+          {% endif %}
+      else {
+        $.ajax({
+          type: "POST",
+          url: "{% url "non_technical:comment" %}",
+          data: {
+            "csrfmiddlewaretoken": '{{ csrf_token }}',
+            "comment": comment,
+            "name": name,
+            "article_id": {{ article.id }},
+            "reply_id": reply_id,
+          },
+          success: function (data) {
+            if (data.hasOwnProperty('failed')) {
+              alert(data.failed);
+            } else if (data.hasOwnProperty('reply_id')) {
+              reset_commit();
+              // insert new comment reply
+              let author = "";
+              if (data.is_author === "True") {
+                author = "<span class=\"fa fa-paint-brush\"></span>"
+              }
+              $(`#comment-${reply_id} .reply-list`).prepend(
+                  "<hr>" +
+                  `<div>${author}${name}</div>` +
+                  `<small class="text-secondary">${data.create_time}</small>` +
+                  `<p>${comment}</p>`
+              );
+            } else {
+              reset_commit();
+              // insert new comment
+              let author = "";
+              if (data.is_author === "True") {
+                author = "<span class=\"fa fa-paint-brush\"></span>"
+              }
+              $("#comment-list").prepend(
+                  ` <div id="comment-${data.id}">` +
+                  `<div>${author}${name}</div>` +
+                  `<small class="text-secondary">${data.create_time}</small>` +
+                  `<p>${comment}</p>` +
+                  `<button class="btn btn-sm btn-link p-0 reply" onclick="reply(this, ${data.id})"><i class="fa fa-reply mr-1" aria-hidden="true"></i>Reply` +
+                  "</button>" +
+                  '<div class="reply-list ml-5"></div>' +
+                  "</div>" +
+                  "<hr>"
+              );
+            }
+          },
+          error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert(XMLHttpRequest.status + ' ' + errorThrown);
+          },
+          dataType: "json",
+        });
+      }
+    }
+  </script>
+{% endblock %}

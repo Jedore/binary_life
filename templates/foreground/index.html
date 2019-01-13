@@ -1,0 +1,71 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% block index %}
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-12 col-lg-8 mt-3">
+        {% block content %}
+          <div id="article-list">
+            {% for article in articles %}
+              <a href="{% url 'foreground:article' article.id %}">
+                <div class="article rounded p-3">
+                  <h4 class="text-dark">{{ article.title }}</h4>
+                  <span class="badge badge-light text-secondary c-time">
+                    <i class="fa fa-clock-o mr-1"></i>{{ article.create_time|date:"c" }}
+                  </span>
+                  {% if article.page_view %}
+                    <span class="badge badge-light text-secondary"><i
+                        class="fa fa-eye mr-1"></i>{{ article.page_view }}</span>
+                  {% endif %}
+                  {% if article.comments.count %}
+                    <span class="badge badge-light text-secondary">
+                      <i class="fa fa-comments-o mr-1"></i>{{ article.comments.count }}
+                    </span>
+                  {% endif %}
+                  {% if article.tags.count %}
+                    <span class="badge badge-light text-secondary">
+                      <i class="fa fa-tags mr-1"></i>{% for tag in article.tags.iterator %}{{ tag.name }} {% endfor %}
+                    </span>
+                  {% endif %}
+                </div>
+              </a>
+            {% endfor %}
+          </div>
+        {% endblock %}
+      </div>
+      <div class="col-12 col-md-10 col-lg-4">
+        <div class="sticky-top pt-3">
+          <a class="technical btn btn-link mb-2 w-100" href="{% url 'non_technical:index' %}">
+            <h5 class="m-0">
+              <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+              {% if "/non-technical/" in request.path %} TECHNICAL{% else %}NON-TECHNICAL{% endif %}
+            </h5>
+          </a>
+          <div id="card-tags" class="card">
+            <div class="card-header"><h4>Tags</h4></div>
+            <div class="card-body">
+              {% for tag in tags %}
+                <a href="{% url 'foreground:tag_articles' tag.id %}" class="badge px-2 py-1">{{ tag.name }}</a>
+              {% endfor %}
+            </div>
+          </div>
+          {% block toc %}
+          {% endblock %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script type="text/javascript" src="{% static 'js/jc.js' %}"></script>
+  <script>
+    $(function () {
+      let $times = $.find(".c-time");
+      $times.forEach(function ($t) {
+        let date = (new Date(Date.parse($t.innerText))).toDateString();
+        $t.innerHTML = `<i class="fa fa-clock-o mr-1"></i>${date}`;
+      })
+    });
+  </script>
+{% endblock %}
